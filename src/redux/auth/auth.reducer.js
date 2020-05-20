@@ -6,6 +6,12 @@ import * as types from './auth.types';
 
 const token = (state = null, action) => {
   switch(action.type) {
+    case types.REGISTER_STARTED: {
+      return null;
+    }
+    case types.REGISTER_COMPLETED: {
+      return action.payload.token
+    }
     case types.AUTHENTICATION_STARTED: {
       return null;
     }
@@ -18,6 +24,9 @@ const token = (state = null, action) => {
     case types.AUTHENTICATION_FAILED: {
       return null;
     }
+    case types.REGISTER_STARTED: {
+      return null;
+    }
     case types.AUTHENTICATION_IDENTITY_CLEARED: {
       return null;
     }
@@ -28,14 +37,23 @@ const token = (state = null, action) => {
 
 const decoded = (state = null, action) => {
   switch(action.type) {
+    case types.REGISTER_STARTED: {
+      return null;
+    }
     case types.AUTHENTICATION_STARTED: {
       return null;
+    }
+    case types.REGISTER_COMPLETED: {
+      return jwtDecode(action.payload.token);
     }
     case types.AUTHENTICATION_COMPLETED: {
       return jwtDecode(action.payload.token);
     }
     case types.TOKEN_REFRESH_COMPLETED: {
       return jwtDecode(action.payload.newToken);
+    }
+    case types.REGISTER_FAILED: {
+      return null;
     }
     case types.AUTHENTICATION_FAILED: {
       return null;
@@ -45,6 +63,37 @@ const decoded = (state = null, action) => {
     }
   }
 
+  return state;
+};
+
+const isRegistering = (state = false, action) => {
+  switch(action.type) {
+    case types.REGISTER_STARTED: {
+      return true;
+    }
+    case types.REGISTER_COMPLETED: {
+      return false;
+    }
+    case types.REGISTER_FAILED: {
+      return false;
+    }
+  }
+
+  return state;
+};
+
+const registeringError = (state = null, action) => {
+  switch(action.type) {
+    case types.REGISTER_STARTED: {
+      return null;
+    }
+    case types.REGISTER_COMPLETED: {
+      return null;
+    }
+    case types.REGISTER_FAILED: {
+      return action.payload.error;
+    }
+  }
   return state;
 };
 
@@ -115,8 +164,10 @@ const refreshingError = (state = null, action) => {
 const auth = combineReducers({
   token,
   decoded,
+  isRegistering,
   isAuthenticating,
   isRefreshing,
+  registeringError,
   error,
   refreshingError,
 });
@@ -126,6 +177,8 @@ export default auth;
 
 
 export const getAuthToken = state => state.token;
+export const getIsRegistering = state => state.isRegistering;
+export const getRegisteringError = state => state.registeringError;
 export const getIsAuthenticating = state => state.isAuthenticating;
 export const getAuthenticatingError = state => state.error;
 export const getAuthUserID = state => state.decoded ? state.decoded.user_id : null;

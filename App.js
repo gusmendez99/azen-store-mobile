@@ -13,7 +13,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 
 import { AppStyles } from "./src/AppStyles";
@@ -21,6 +21,7 @@ import { AppStyles } from "./src/AppStyles";
 import Login from './src/screens/Login/index';
 import SignUp from './src/screens/SignUp/index';
 import Welcome from './src/screens/Welcome/index';
+import Home from './src/screens/Categories/index';
 
 
 import * as selectors from './src/redux/root-reducer'
@@ -51,17 +52,14 @@ const App = ({
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
-
                 if (route.name === 'Home') {
-                  iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                  iconName = focused ? 'home' : 'home-outline';
                 } else if (route.name === 'Settings') {
-                  iconName = focused ? 'ios-list-box' : 'ios-list';
+                  iconName = focused ? 'doubleleft' : 'doubleright';
                 }
 
                 // You can return any component that you like here!
-                return <Ionicons name={iconName} size={size} color={color} />;
+                return <AntDesign name={iconName} size={size} color={color} />;
               },
             })}
             tabBarOptions={{
@@ -69,7 +67,7 @@ const App = ({
               inactiveTintColor: 'gray',
             }}
           >
-            <Tab.Screen name="Settings" component={SignUp} />
+            <Tab.Screen name="Home" component={Home} />
         
           </Tab.Navigator>
         ) : (

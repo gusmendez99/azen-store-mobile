@@ -2,71 +2,25 @@ import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "react-native-button";
 import { AppStyles } from "../../AppStyles";
-// import firebase from "react-native-firebase";
 
 class Signup extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: true,
-      fullname: "",
-      phone: "",
+      isRegistering: true,
+      username: "",
       email: "",
-      password: ""
+      password1: "",
+      password2: ""
     };
   }
 
-  componentDidMount() {
-    // this.authSubscription = firebase.auth().onAuthStateChanged(user => {
-    //   this.setState({
-    //     loading: false,
-    //     user
-    //   });
-    // });
-  }
 
-  componentWillUnmount() {
-    // this.authSubscription();
-  }
 
   onRegister = () => {
-    // const { email, password } = this.state;
-    // firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(email, password)
-    //   .then(response => {
-    //     const { navigation } = this.props;
-    //     const { fullname, phone, email } = this.state;
-    //     const data = {
-    //       email: email,
-    //       fullname: fullname,
-    //       phone: phone,
-    //       appIdentifier: "rn-android-universal-listings"
-    //     };
-    //     user_uid = response.user._user.uid;
-    //     firebase
-    //       .firestore()
-    //       .collection("users")
-    //       .doc(user_uid)
-    //       .set(data);
-    //     firebase
-    //       .firestore()
-    //       .collection("users")
-    //       .doc(user_uid)
-    //       .get()
-    //       .then(function(user) {
-    //         navigation.dispatch({ type: "Login", user: user });
-    //       })
-    //       .catch(function(error) {
-    //         const { code, message } = error;
-    //         alert(message);
-    //       });
-    //   })
-    //   .catch(error => {
-    //     const { code, message } = error;
-    //     alert(message);
-    //   });
+    const { email, password } = this.state;
+
   };
 
   render() {
@@ -76,9 +30,9 @@ class Signup extends React.Component {
         <View style={styles.InputContainer}>
           <TextInput
             style={styles.body}
-            placeholder="Full Name"
-            onChangeText={text => this.setState({ fullname: text })}
-            value={this.state.fullname}
+            placeholder="Pick a username"
+            onChangeText={text => this.setState({ username: text })}
+            value={this.state.username}
             placeholderTextColor={AppStyles.color.grey}
             underlineColorAndroid="transparent"
           />
@@ -86,17 +40,7 @@ class Signup extends React.Component {
         <View style={styles.InputContainer}>
           <TextInput
             style={styles.body}
-            placeholder="Phone Number"
-            onChangeText={text => this.setState({ phone: text })}
-            value={this.state.phone}
-            placeholderTextColor={AppStyles.color.grey}
-            underlineColorAndroid="transparent"
-          />
-        </View>
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.body}
-            placeholder="E-mail Address"
+            placeholder="Your email"
             onChangeText={text => this.setState({ email: text })}
             value={this.state.email}
             placeholderTextColor={AppStyles.color.grey}
@@ -106,10 +50,21 @@ class Signup extends React.Component {
         <View style={styles.InputContainer}>
           <TextInput
             style={styles.body}
-            placeholder="Password"
+            placeholder="Create a password"
             secureTextEntry={true}
-            onChangeText={text => this.setState({ password: text })}
-            value={this.state.password}
+            onChangeText={text => this.setState({ password1: text })}
+            value={this.state.password1}
+            placeholderTextColor={AppStyles.color.grey}
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View style={styles.InputContainer}>
+          <TextInput
+            style={styles.body}
+            placeholder="Confirm your password"
+            secureTextEntry={true}
+            onChangeText={text => this.setState({ password2: text })}
+            value={this.state.password2}
             placeholderTextColor={AppStyles.color.grey}
             underlineColorAndroid="transparent"
           />
@@ -121,6 +76,8 @@ class Signup extends React.Component {
         >
           Sign Up
         </Button>
+        <Text style={styles.or}>OR</Text>
+        
       </View>
     );
   }
