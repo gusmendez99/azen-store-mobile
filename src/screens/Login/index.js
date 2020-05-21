@@ -27,6 +27,7 @@ const {
 // };
 
 const onPressFacebook = (loginWithFacebook) => {
+  LoginManager.logOut();
   LoginManager.logInWithPermissions(["email", "public_profile"]).then(
     function(result) {
       if (result.isCancelled) {
