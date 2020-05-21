@@ -8,6 +8,11 @@ import { AppStyles } from "../../AppStyles";
 // const { LoginManager, AccessToken } = FBSDK;
 import {connect} from 'react-redux';
 import * as actions from '../../redux/auth/auth.actions';
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginManager,
+  AccessToken
+} = FBSDK;
 
 
 
@@ -21,64 +26,25 @@ import * as actions from '../../redux/auth/auth.actions';
 //   }
 // };
 
-onPressFacebook = () => {
-  return 
-  // LoginManager.logInWithReadPermissions([
-  //   "public_profile",
-  //   "user_friends",
-  //   "username"
-  // ]).then(
-  //   result => {
-  //     if (result.isCancelled) {
-  //       alert("Whoops!", "You cancelled the sign in.");
-  //     } else {
-  //       AccessToken.getCurrentAccessToken().then(data => {
-  //         const credential = firebase.auth.FacebookAuthProvider.credential(
-  //           data.accessToken
-  //         );
-  //         const accessToken = data.accessToken;
-  //         firebase
-  //           .auth()
-  //           .signInWithCredential(credential)
-  //           .then(result => {
-  //             var user = result.user;
-  //             AsyncStorage.setItem(
-  //               "@loggedInUserID:facebookCredentialAccessToken",
-  //               accessToken
-  //             );
-  //             AsyncStorage.setItem("@loggedInUserID:id", user.uid);
-  //             var userDict = {
-  //               id: user.uid,
-  //               fullname: user.displayName,
-  //               username: user.username,
-  //               profileURL: user.photoURL
-  //             };
-  //             var data = {
-  //               ...userDict,
-  //               appIdentifier: "rn-android-universal-listings"
-  //             };
-  //             firebase
-  //               .firestore()
-  //               .collection("users")
-  //               .doc(user.uid)
-  //               .set(data);
-  //             this.props.navigation.dispatch({
-  //               type: "Login",
-  //               user: userDict
-  //             });
-  //           })
-  //           .catch(error => {
-  //             alert("Please try again! " + error);
-  //           });
-  //       });
-  //     }
-  //   },
-  //   error => {
-  //     Alert.alert("Sign in error", error);
-  //   }
-  // );
-};
-const Login = ({onSubmit}) => {
+const onPressFacebook = (loginWithFacebook) => {
+  LoginManager.logInWithPermissions(["email", "public_profile"]).then(
+    function(result) {
+      if (result.isCancelled) {
+        alert('Login was cancelled, please try again!');
+      } else {
+        AccessToken.getCurrentAccessToken().then(data => {
+          console.log("data",data);
+          loginWithFacebook(data.accessToken);
+        })
+      }
+    },
+    function(error) {
+      alert('Login failed with error: ' + error);
+    }
+  );
+}
+
+const Login = ({onSubmit, loginWithFacebook}) => {
   const  [username, changeUsername ] = useState("");
   const  [password, changePassword ] = useState("");
   return (
@@ -116,9 +82,9 @@ const Login = ({onSubmit}) => {
       <Button
         containerStyle={styles.facebookContainer}
         style={styles.facebookText}
-        onPress={() => this.onPressFacebook()}
+        onPress={() => onPressFacebook(loginWithFacebook)}
       >
-        Login with Facebook
+        Log in with facebook
       </Button>
     </View>
   );
@@ -206,5 +172,8 @@ export default connect(
       }
       dispatch(actions.startLogin(username, password));
     },
+    loginWithFacebook(access_token){
+      dispatch(actions.startFacebookAuth(access_token));
+    }
   })
 )(Login);

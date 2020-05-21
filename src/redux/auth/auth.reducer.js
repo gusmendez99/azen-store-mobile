@@ -18,6 +18,13 @@ const token = (state = null, action) => {
     case types.AUTHENTICATION_COMPLETED: {
       return action.payload.token;
     }
+    case types.FACEBOOK_AUTHENTICATION_STARTED: {
+      return null;
+    }
+    case types.FACEBOOK_AUTHENTICATION_COMPLETED: {
+      return action.payload.token
+    }
+    
     case types.TOKEN_REFRESH_COMPLETED: {
       return action.payload.newToken;
     }
@@ -49,6 +56,9 @@ const decoded = (state = null, action) => {
     case types.AUTHENTICATION_COMPLETED: {
       return jwtDecode(action.payload.token);
     }
+    case  types.FACEBOOK_AUTHENTICATION_COMPLETED: {
+      return jwtDecode(action.payload.token);
+    }
     case types.TOKEN_REFRESH_COMPLETED: {
       return jwtDecode(action.payload.newToken);
     }
@@ -56,6 +66,9 @@ const decoded = (state = null, action) => {
       return null;
     }
     case types.AUTHENTICATION_FAILED: {
+      return null;
+    }
+    case types.FACEBOOK_AUTHENTICATION_FAILED: {
       return null;
     }
     case types.AUTHENTICATION_IDENTITY_CLEARED: {
@@ -129,6 +142,35 @@ const error = (state = null, action) => {
   return state;
 };
 
+const isAuthenticatingFacebook = (state = false, action) => {
+  switch(action.type){
+    case types.FACEBOOK_AUTHENTICATION_STARTED: {
+      return true
+    }
+    case types.FACEBOOK_AUTHENTICATION_COMPLETED: {
+      return false;
+    }
+    case types.FACEBOOK_AUTHENTICATION_FAILED: {
+      return false;
+    } 
+  }
+  return state
+}
+const facebookAuthError = (state = null, action) => {
+  switch(action.type) {
+    case types.FACEBOOK_AUTHENTICATION_STARTED: {
+      return null;
+    }
+    case types.FACEBOOK_AUTHENTICATION_COMPLETED: {
+      return null;
+    }
+    case types.FACEBOOK_AUTHENTICATION_FAILED: {
+      return action.payload.error;
+    }
+  }
+  return state;
+}
+
 const isRefreshing = (state = false, action) => {
   switch(action.type) {
     case types.TOKEN_REFRESH_STARTED: {
@@ -166,9 +208,11 @@ const auth = combineReducers({
   decoded,
   isRegistering,
   isAuthenticating,
+  isAuthenticatingFacebook,
   isRefreshing,
   registeringError,
   error,
+  facebookAuthError,
   refreshingError,
 });
 
@@ -181,6 +225,8 @@ export const getIsRegistering = state => state.isRegistering;
 export const getRegisteringError = state => state.registeringError;
 export const getIsAuthenticating = state => state.isAuthenticating;
 export const getAuthenticatingError = state => state.error;
+export const getIsAuthenticatingFacebook = state => state.isAuthenticatingFacebook;
+export const getFacebookAuthError = state => state.facebookAuthError;
 export const getAuthUserID = state => state.decoded ? state.decoded.user_id : null;
 export const getAuthExpiration = state => state.decoded ? state.decoded.exp : null;
 export const getAuthUsername = state => state.decoded ? state.decoded.username : null;

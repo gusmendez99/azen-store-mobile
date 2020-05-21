@@ -30,6 +30,21 @@ export const failLogin = error => ({
   payload: { error },
 });
 
+export const startFacebookAuth = ( access_token ) => ({
+  type: types.FACEBOOK_AUTHENTICATION_STARTED,
+  payload: { access_token }
+});
+
+export const completeFacebookAuth = token => ({
+  type: types.FACEBOOK_AUTHENTICATION_COMPLETED,
+  payload: { token },
+}) 
+
+export const failFacebookAuth = error => ({
+  type: types.FACEBOOK_AUTHENTICATION_FAILED,
+  payload: { error },
+});
+
 export const logout = () => ({
   type: types.AUTHENTICATION_IDENTITY_CLEARED,
 });

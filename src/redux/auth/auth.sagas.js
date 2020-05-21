@@ -35,16 +35,17 @@ import {
         yield put(actions.failRegister(non_field_errors[0]))
       }
     } catch (error){
-      yield put(actions.failRegister(error.message))
+      yield put(actions.failRegister(error))
     }    
   }
 
   export function* watchRegisterStarted(){
     yield takeEvery(
-      types.REGISTER_COMPLETED,
-      register
+      types.REGISTER_STARTED,
+      register,
     );
   }
+
   function* login(action) {
     try {
       const response = yield call(
@@ -67,7 +68,7 @@ import {
         yield put(actions.failLogin(non_field_errors[0]));
       }
     } catch (error) {
-      yield put(actions.failLogin(error.message));
+      yield put(actions.failLogin(error));
     }
   }
   
@@ -77,7 +78,42 @@ import {
       login,
     );
   }
+
+  function* authenticateWithFacebook(action){
+    try {
+      console.log("In Sagas", action.payload);
+      const response = yield call(
+        fetch,
+        `${API_BASE_URL}/auth/facebook/`,
+        {
+          method: 'POST',
+          body: JSON.stringify(action.payload),
+          headers:{
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log(response.status);
+      if (response.status === 200 || response.status === 201){
+        const { token } = yield response.json();
+        yield put(actions.completeFacebookAuth(token))
+      } else {
+        const { non_field_errors } = yield response.json();
+        yield put(actions.failFacebookAuth(non_field_errors[0]));
+      }
+    } catch (error){
+      yield put(actions.failFacebookAuth(error))
+    }
+  }
+
+  export function* watchFacebookAuthenticationStarted() {
+    yield takeEvery(
+      types.FACEBOOK_AUTHENTICATION_STARTED,
+      authenticateWithFacebook,
+    );
+  }
   
+
   function* refreshToken(action) {
     const expiration = yield select(selectors.getAuthExpiration);
     const now =  parseInt(new Date().getTime() / 1000);

@@ -13,6 +13,8 @@ export const getIsRegistering = state => authSelectors.getIsRegistering(state.au
 export const getRegisteringError = state => authSelectors.getRegisteringError(state.auth);
 export const getIsAuthenticating = state => authSelectors.getIsAuthenticating(state.auth);
 export const getAuthenticatingError = state => authSelectors.getAuthenticatingError(state.auth);
+export const getIsAuthenticatingFacebook = state => authSelectors.getIsAuthenticatingFacebook(state.auth);
+export const getAuthenticatingFacebookError = state => authSelectors.getAuthenticatingFacebookError(state.auth);
 export const isAuthenticated = state => getAuthToken(state) != null;
 export const getAuthUserID = state => authSelectors.getAuthUserID(state.auth);
 export const getAuthExpiration = state => authSelectors.getAuthExpiration(state.auth);
