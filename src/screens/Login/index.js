@@ -2,10 +2,6 @@ import React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import Button from 'react-native-button';
 import {AppStyles} from '../../AppStyles';
-// import firebase from "react-native-firebase";
-// import { AsyncStorage } from "react-native";
-// const FBSDK = require("react-native-fbsdk");
-// const { LoginManager, AccessToken } = FBSDK;
 import {connect} from 'react-redux';
 import * as actions from '../../redux/auth/auth.actions';
 
@@ -13,16 +9,6 @@ import {Field, reduxForm} from 'redux-form';
 
 const FBSDK = require('react-native-fbsdk');
 const {LoginManager, AccessToken} = FBSDK;
-
-// onPressLogin = (username, password, onSubmit) => {
-//   if (username.length <= 0 || password.length <= 0) {
-//     alert("Please fill out the required fields.");
-//     return;
-//   }
-//   else {
-//     onSubmit(username, password);
-//   }
-// };
 
 const onPressFacebook = loginWithFacebook => {
   LoginManager.logOut();

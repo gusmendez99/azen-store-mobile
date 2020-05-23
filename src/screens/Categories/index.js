@@ -1,42 +1,51 @@
-import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
-import HomeCategory from "../../components/Category/index";
+import React, { Component, useEffect } from "react";
+import { StyleSheet, Text ,View, ScrollView, FlatList, StatusBar} from "react-native";
+import LinearGradient from 'react-native-linear-gradient';
+import { connect } from 'react-redux';
 
-class Home extends Component {
-  render() {
-    return (
-      <View
-        style={{
-          flex: 1
-        }}
-      >
-        <ScrollView scrollEnabled>
-          <HomeCategory
-            imageUri={require("../../assets/women_fashion.jpg")}
-            titleFirst="Womens"
-            titleSecond="Fashion"
-            subTitle="Spring Season. Opened!"
-            screenProps="Super"
-            {...this.props}
-          />
-          <HomeCategory
-            imageUri={require("../../assets/men_fashion.jpeg")}
-            titleFirst="Mens"
-            titleSecond="Fashion"
-            subTitle="Pure. Old Fashioned."
-            {...this.props}
-          />
-          <HomeCategory
-            imageUri={require("../../assets/kids_fashion.jpg")}
-            titleFirst="Kids"
-            titleSecond="Fashion"
-            subTitle="For the smallest."
-            {...this.props}
-          />
-        </ScrollView>
-      </View>
-    );
-  }
-}
+import Category from "../../components/Category/index";
+import {AppStyles} from '../../AppStyles';
+import * as actions from '../../redux/categories/categories.actions';
+import * as selectors from '../../redux/root-reducer';
 
-export default Home;
+const numColumns =2;
+const Categories = ({fetchCategories, isFetching, dataList})  => {
+  useEffect(() => fetchCategories(), []);
+
+  return(
+    <LinearGradient colors={[AppStyles.color.primaryGradientStart, AppStyles.color.primaryGradientEnd]} style={styles.container}>
+      {isFetching ? (
+        <Text style={styles.isFetchingText}>Retrieving data...</Text>
+      ):(
+        <FlatList 
+          data={dataList}
+          renderItem={Category}
+          keyExtractor={(item,index) => index.toString()}
+          numColumns = {numColumns}
+        >
+        </FlatList>
+      )}
+    </LinearGradient>
+  );
+};
+const styles = StyleSheet.create({
+    container: {
+      flex:1,
+    },
+    isFetchingText: {
+      color: AppStyles.color.white,
+      fontSize: AppStyles.fontSize.content,
+      alignSelf: "center"
+    }
+})
+export default connect(
+  state => ({
+    isFetching: selectors.getIsFetchingCategories(state),
+    dataList: selectors.getCategories(state)
+  }),
+  dispatch =>({
+    fetchCategories(){
+      dispatch(actions.startFetchingCategories())
+    }
+  })
+  )(Categories);

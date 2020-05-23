@@ -13,7 +13,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
 
 import { AppStyles } from "./src/AppStyles";
@@ -21,10 +21,26 @@ import { AppStyles } from "./src/AppStyles";
 import Login from './src/screens/Login/index';
 import SignUp from './src/screens/SignUp/index';
 import Welcome from './src/screens/Welcome/index';
-import Home from './src/screens/Categories/index';
+import Categories from './src/screens/Categories/index';
 
 
 import * as selectors from './src/redux/root-reducer'
+
+const productStack = createStackNavigator();
+function productStackNavigator (){
+  return (
+    <>
+      <productStack.Navigator>
+        <productStack.Screen name="Categories" component={Categories} />
+
+        {/* Acá podes meter las pantallas de Products y Product DetaiL 
+        <productStack.Screen name="Login" component={Login} />
+        <productStack.Screen name="Signup" component={SignUp} /> */}
+      </productStack.Navigator>
+    </>
+  );
+
+}
 const authStack = createStackNavigator();
 function  AuthStackNavigator ()  {
     return (
@@ -43,7 +59,6 @@ const Tab = createBottomTabNavigator();
 const App = ({
   isAuthenticated = false
 }) =>  {
-  console.log(isAuthenticated);
   return (
     <>
       <NavigationContainer>
@@ -53,13 +68,13 @@ const App = ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
                 if (route.name === 'Home') {
-                  iconName = focused ? 'home' : 'home-outline';
-                } else if (route.name === 'Settings') {
-                  iconName = focused ? 'doubleleft' : 'doubleright';
+                  iconName = 'th-large';
+                } else if (route.name === 'Search') {
+                  iconName = 'Search'
                 }
 
                 // You can return any component that you like here!
-                return <AntDesign name={iconName} size={size} color={color} />;
+                return <FontAwesome5 name={iconName} size={size} color={color} />;
               },
             })}
             tabBarOptions={{
@@ -67,7 +82,7 @@ const App = ({
               inactiveTintColor: 'gray',
             }}
           >
-            <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="Home" component={productStackNavigator} />
         
           </Tab.Navigator>
         ) : (

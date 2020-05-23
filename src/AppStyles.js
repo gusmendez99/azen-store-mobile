@@ -9,9 +9,7 @@ export const AppStyles = {
     primary: '#555CC4',
     primaryLight: '#829BF8',
     primaryGradientStart: '#4f44b6',
-    primaryGradientEnd: '#4f44b6',
-    secondaryGradientStart: '#FF1358',
-    secondaryGradientEnd: '#FF1358',
+    primaryGradientEnd: '#FF1358',
     profileGradientStart: '#54CBF6',
     profileGradientEnd: '#49D2D0',
     secondary: '#FF1358',
@@ -68,24 +66,19 @@ export const AppStyles = {
   }
 };
 
-// export const AppIcon = {
-//   container: {
-//     backgroundColor: "white",
-//     borderRadius: 20,
-//     padding: 8,
-//     marginRight: 10
-//   },
-//   style: {
-//     tintColor: AppStyles.color.tint,
-//     width: 25,
-//     height: 25
-//   },
-//   images: {
-//     home: require("../assets/icons/home.png"),
-//     defaultUser: require("../assets/icons/default_user.jpg"),
-//     logout: require("../assets/icons/shutdown.png")
-//   }
-// };
+export const AppIcon = {
+  container: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 8,
+    marginRight: 10
+  },
+  style: {
+    tintColor: AppStyles.color.tint,
+    width: 25,
+    height: 25
+  }
+};
 
 export const HeaderButtonStyle = StyleSheet.create({
   multi: {
