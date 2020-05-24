@@ -29,13 +29,13 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
     Alert.alert('Success', 'The product has been added to your cart')
   }
 
-  /*const navigateToProductDetail = (item) => {
-    console.log('Stating to navigate...')
+  const navigateToProductDetail = (item) => {
+    console.log('Stating to navigate to ProductDetail...')
     navigation.navigate('ProductDetail', {
       name: item.name,
-      id: item.id
+      item: item
     })
-  }*/
+  }
 
   return (
     <LinearGradient colors={[AppStyles.color.primaryGradientStart, AppStyles.color.primaryGradientEnd]} style={styles.container}>
@@ -58,7 +58,7 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  activeOpacity={0.8} style={styles.item}>
+                  activeOpacity={0.8} style={styles.item} onPress={() => navigateToProductDetail(item)}>
 
                   <ProductPreview item={item} />
                 </TouchableOpacity>

@@ -23,6 +23,7 @@ import SignUp from './src/screens/SignUp/index';
 import Welcome from './src/screens/Welcome/index';
 import Categories from './src/screens/Categories/index';
 import Products from './src/screens/Products/index';
+import ProductDetail from './src/screens/ProductDetail/index';
 
 
 
@@ -39,6 +40,7 @@ function productStackNavigator (){
         <productStack.Screen name="Login" component={Login} />
         <productStack.Screen name="Signup" component={SignUp} /> */}
         <productStack.Screen name="Products" component={Products}/>
+        <productStack.Screen name="ProductDetail" component={ProductDetail}/>
       </productStack.Navigator>
     </>
   );

@@ -4,16 +4,22 @@ import {
   View,
   TouchableOpacity,
   Image,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
 const ProductPreview = ({ item }) => {
+
+  const addToCart = () => {
+    Alert.alert("Success", "Product has beed added to cart")
+  }
+
 	return (
 		<View style={styles.card}>
       <Text style={styles.title}>{item.name}</Text>
-			<Text style={styles.price}>{item.price}</Text>
+			<Text style={styles.price}>Q{item.price}</Text>
 
 			<Image style={styles.cardImage} source={{ uri: `${HOST_BASE_URL}${item.featured_image}` }} />
 
@@ -21,8 +27,8 @@ const ProductPreview = ({ item }) => {
 				<View style={styles.socialBarContainer}>
 					<View style={styles.socialBarSection}>
 						<TouchableOpacity style={styles.socialBarButton} onPress={() => this.addProductToCart()}>
-							<Image style={styles.icon} source={{ uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png' }} />
-							<Text style={[styles.socialBarLabel, styles.buyNow]}>Buy Now</Text>
+							<Image style={styles.icon} source={{ uri: 'https://www.shareicon.net/data/512x512/2016/09/10/828167_cart_512x512.png' }} />
+							<Text style={[styles.socialBarLabel, styles.buyNow]} onPress={() => addToCart()}>Add to Cart</Text>
 						</TouchableOpacity>
 					</View>
 					<View style={styles.socialBarSection}>

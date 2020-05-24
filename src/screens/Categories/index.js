@@ -14,7 +14,7 @@ const Categories = ({ fetchCategories, isFetching, dataList, navigation }) => {
   useEffect(() => fetchCategories(), []);
 
   const navigateToProduct = (item) => {
-    console.log('Stating to navigate...')
+    console.log('Stating to navigate to Product...')
     navigation.navigate('Products', {
       title: item.name,
       idCategory: item.id
