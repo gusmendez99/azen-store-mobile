@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Button from 'react-native-button';
-import {connect} from 'react-redux';
-import {Field, reduxForm} from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 
 const FBSDK = require('react-native-fbsdk');
 
-const {LoginManager, AccessToken} = FBSDK;
+const { LoginManager, AccessToken } = FBSDK;
 
 import * as actions from '../../redux/auth/auth.actions';
 
-import {AppStyles} from '../../AppStyles';
+import { AppStyles } from '../../AppStyles';
 
 const onPressFacebook = registerWithFacebook => {
   LoginManager.logInWithPermissions(['email', 'public_profile']).then(
-    function(result) {
+    function (result) {
       if (result.isCancelled) {
         alert('Login was cancelled, please try again!');
       } else {
@@ -24,14 +24,14 @@ const onPressFacebook = registerWithFacebook => {
         });
       }
     },
-    function(error) {
+    function (error) {
       alert('Login failed with error: ' + error);
     },
   );
 };
 
-const Signup = ({onRegister, registerWithFacebook, handleSubmit}) => {
-  const renderInput = ({input: {onChange, ...input}, ...rest}) => {
+const Signup = ({ onRegister, registerWithFacebook, handleSubmit }) => {
+  const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
     return (
       <TextInput
         style={styles.body}
@@ -92,7 +92,7 @@ const Signup = ({onRegister, registerWithFacebook, handleSubmit}) => {
         />
       </View>
       <Button
-        containerStyle={[styles.loginContainer, {marginTop: 50}]}
+        containerStyle={[styles.loginContainer, { marginTop: 50 }]}
         style={styles.loginText}
         onPress={handleSubmit(onRegister)}>
         Sign Up
@@ -179,12 +179,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default reduxForm({form: 'register-form'})(
+export default reduxForm({ form: 'register-form' })(
   connect(
     undefined,
     dispatch => ({
       onRegister(values) {
-        const {username, password1, password2, email} = values;
+        const { username, password1, password2, email } = values;
         if (
           username.length <= 0 ||
           password1.length <= 0 ||

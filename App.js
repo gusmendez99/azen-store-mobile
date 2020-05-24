@@ -22,6 +22,8 @@ import Login from './src/screens/Login/index';
 import SignUp from './src/screens/SignUp/index';
 import Welcome from './src/screens/Welcome/index';
 import Categories from './src/screens/Categories/index';
+import Products from './src/screens/Products/index';
+
 
 
 import * as selectors from './src/redux/root-reducer'
@@ -36,6 +38,7 @@ function productStackNavigator (){
         {/* Acá podes meter las pantallas de Products y Product DetaiL 
         <productStack.Screen name="Login" component={Login} />
         <productStack.Screen name="Signup" component={SignUp} /> */}
+        <productStack.Screen name="Products" component={Products}/>
       </productStack.Navigator>
     </>
   );

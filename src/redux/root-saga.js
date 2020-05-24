@@ -7,7 +7,8 @@ import {
   watchRefreshTokenStarted,
 } from './auth/auth.sagas';
 import {
-  watchCategoriesFetch
+  watchCategoriesFetch,
+  watchCategoryProductsFetch
 } from './categories/categories.sagas'
 
 
@@ -18,6 +19,7 @@ function* rootSaga() {
     fork(watchFacebookAuthenticationStarted),
     fork(watchRefreshTokenStarted),
     fork(watchCategoriesFetch),
+    fork(watchCategoryProductsFetch)
   ]);
 }
 

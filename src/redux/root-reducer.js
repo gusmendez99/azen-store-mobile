@@ -25,6 +25,8 @@ export const getAuthExpiration = state => authSelectors.getAuthExpiration(state.
 export const getAuthUsername = state => authSelectors.getAuthUsername(state.auth);
 export const getIsRefreshingToken = state => authSelectors.getIsRefreshingToken(state.auth);
 export const getRefreshingError = state => authSelectors.getRefreshingError(state.auth);
+
 export const getCategories = state => categoriesSelectors.getCategories(state.categories);
+export const getCategoryProducts = state => categoriesSelectors.getCategoryProducts(state.categories);
 export const getIsFetchingCategories = state => categoriesSelectors.getIsFetchingCategories(state.categories);
 export const getIsFetchingCategoriesError = state => categoriesSelectors.getIsFetchingCategoriesError(state.categories);

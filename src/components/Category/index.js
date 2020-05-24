@@ -1,60 +1,33 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
   StyleSheet
 } from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {AppStyles, AppIcon} from '../../AppStyles';
+import { AppStyles, AppIcon } from '../../AppStyles';
 
-
-
-const {width} = Dimensions.get('window');
-
-const Category=({item, index}) => {
-  let iconName = '';
+const Category = ({ item, index }) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      style = {styles.item}
-      // onPress={() =>
-      //   this.props.navigation.navigate('Category', {
-      //     name: titleFirst,
-      //   })
-      // }
-      > 
-        <View style={styles.icon}>
-        <FontAwesome5 name={item.icon} color={AppStyles.color.tint} size={25}/>
-        </View>
-        <Text
+    <View
+      style={styles.item}
+    >
+      <View style={styles.icon}>
+        <FontAwesome5 name={item.icon} color={AppStyles.color.tint} size={25} />
+      </View>
+      <Text
         style={styles.titleText}>{item.name}</Text>
-        <Text
+      <Text
         style={styles.descriptionText}>{item.description}</Text>
-    </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: AppStyles.color.white,
     alignItems: 'center',
-    justifyContent: 'center',
-    // height: 100,
-    flex: 1,
-    marginLeft: 6,
-    marginRight: 6,
-    marginBottom: 6,
-    marginTop: 6,
-    borderRadius: 15
+    justifyContent: 'center'
   },
   titleText: {
     fontSize: AppStyles.fontSize.content,

@@ -1,19 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Button from 'react-native-button';
-import {AppStyles} from '../../AppStyles';
-import {connect} from 'react-redux';
+import { AppStyles } from '../../AppStyles';
+import { connect } from 'react-redux';
 import * as actions from '../../redux/auth/auth.actions';
 
-import {Field, reduxForm} from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 
 const FBSDK = require('react-native-fbsdk');
-const {LoginManager, AccessToken} = FBSDK;
+const { LoginManager, AccessToken } = FBSDK;
 
 const onPressFacebook = loginWithFacebook => {
   LoginManager.logOut();
   LoginManager.logInWithPermissions(['email', 'public_profile']).then(
-    function(result) {
+    function (result) {
       if (result.isCancelled) {
         alert('Login was cancelled, please try again!');
       } else {
@@ -23,14 +23,14 @@ const onPressFacebook = loginWithFacebook => {
         });
       }
     },
-    function(error) {
+    function (error) {
       alert('Login failed with error: ' + error);
     },
   );
 };
 
-const Login = ({onSubmit, loginWithFacebook, handleSubmit}) => {
-  const renderInput = ({input: {onChange, ...input}, ...rest}) => {
+const Login = ({ onSubmit, loginWithFacebook, handleSubmit }) => {
+  const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
     return (
       <TextInput
         style={styles.body}
@@ -155,12 +155,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default reduxForm({form: 'login-form'})(
+export default reduxForm({ form: 'login-form' })(
   connect(
     undefined,
     dispatch => ({
       onSubmit(values) {
-        const {username, password} = values;
+        const { username, password } = values;
         console.log('Credentials: ' + username + ', ' + password);
         if (username.length <= 0 || password.length <= 0) {
           alert('Please fill out the required fields.');
