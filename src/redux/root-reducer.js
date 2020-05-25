@@ -3,10 +3,12 @@ import {reducer as formReducer} from 'redux-form';
 
 import auth, * as authSelectors from './auth/auth.reducer';
 import categories, * as categoriesSelectors from './categories/categories.reducer';
+import cart, * as cartSelectors from './cart/cart.reducer';
 
 const reducer = combineReducers({
     auth,
     categories,
+    cart,
     form: formReducer
   });
   
@@ -30,3 +32,8 @@ export const getCategories = state => categoriesSelectors.getCategories(state.ca
 export const getCategoryProducts = state => categoriesSelectors.getCategoryProducts(state.categories);
 export const getIsFetchingCategories = state => categoriesSelectors.getIsFetchingCategories(state.categories);
 export const getIsFetchingCategoriesError = state => categoriesSelectors.getIsFetchingCategoriesError(state.categories);
+
+export const getCartItem = (state, id) => cartSelectors.getCartItem(state.cart, id);
+export const getCartItems = (state) => cartSelectors.getCartItems(state.cart);
+export const getIsFetchingCartItems = (state) => cartSelectors.getIsFetchingCartItems(state.cart);
+export const getIsFetchingCartItemsError = state => cartSelectors.getIsFetchingCartItemsError(state.cart);

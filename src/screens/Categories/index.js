@@ -6,12 +6,18 @@ import { connect } from 'react-redux';
 import Category from "../../components/Category/index";
 import { AppStyles } from '../../AppStyles';
 import * as actions from '../../redux/categories/categories.actions';
+import * as cartActions from '../../redux/cart/cart.actions';
 import * as selectors from '../../redux/root-reducer';
 
 const COLUMNS_COUNT = 2;
 
-const Categories = ({ fetchCategories, isFetching, dataList, navigation }) => {
-  useEffect(() => fetchCategories(), []);
+const Categories = ({ fetchCategories, isFetching, dataList, authUserId, fetchCart, fetchCartItems, navigation }) => {
+  useEffect(() => {
+    fetchCategories(); 
+  }, []);
+  useEffect(() => {
+    fetchCart();
+  }, [authUserId]);
 
   const navigateToProduct = (item) => {
     console.log('Stating to navigate to Product...')
@@ -71,11 +77,26 @@ const styles = StyleSheet.create({
 export default connect(
   state => ({
     isFetching: selectors.getIsFetchingCategories(state),
-    dataList: selectors.getCategories(state)
+    dataList: selectors.getCategories(state),
+    authUserId: selectors.getAuthUserID(state),
   }),
   dispatch => ({
     fetchCategories() {
       dispatch(actions.startFetchingCategories())
+    },
+    fetchCartItems(){
+      dispatch(cartActions.startFetchingCart())
     }
+  }),
+  (stateProps, dispatchProps, ownProps) => ({
+    ...ownProps,
+    ...stateProps,
+    ...dispatchProps,
+    fetchCart(){
+      if(stateProps.authUserId !== null){
+        dispatchProps.fetchCartItems()
+      }
+    }
+
   })
 )(Categories);
