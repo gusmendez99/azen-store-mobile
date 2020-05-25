@@ -11,7 +11,11 @@ import {
   watchCategoryProductsFetch
 } from './categories/categories.sagas'
 import {
-  watchCartFetch
+  watchCartFetch,
+  watchCartItemsFetch,
+  watchAddCartItem,
+  watchRemoveCartItem,
+  watchUpdateCartItem,
 } from './cart/cart.sagas';
 
 
@@ -24,6 +28,10 @@ function* rootSaga() {
     fork(watchCategoriesFetch),
     fork(watchCategoryProductsFetch),
     fork(watchCartFetch),
+    fork(watchCartItemsFetch),
+    fork(watchAddCartItem),
+    fork(watchRemoveCartItem),
+    fork(watchUpdateCartItem),
   ]);
 }
 

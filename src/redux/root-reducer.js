@@ -37,3 +37,10 @@ export const getCartItem = (state, id) => cartSelectors.getCartItem(state.cart, 
 export const getCartItems = (state) => cartSelectors.getCartItems(state.cart);
 export const getIsFetchingCartItems = (state) => cartSelectors.getIsFetchingCartItems(state.cart);
 export const getIsFetchingCartItemsError = state => cartSelectors.getIsFetchingCartItemsError(state.cart);
+export const getCartItemByProductId = (state,productId) => cartSelectors.getCartItemByProductId(state.cart, productId);
+export const getAddCartItemError = (state) => cartSelectors.getAddCartItemError(state.cart);
+export const getRemoveCartItemError = (state) => cartSelectors.getRemoveCartItemError(state.cart);
+export const getUpdateCartItemError = (state) => cartSelectors.getUpdateCartItemError(state.cart);
+export const getCart = state => cartSelectors.getCart(state.cart);
+export const getIsFetchingCart = state => cartSelectors.getIsFetchingCart(state.cart);
+export const getFetchCartError = state => state.getFetchCartError(state.cart); 
