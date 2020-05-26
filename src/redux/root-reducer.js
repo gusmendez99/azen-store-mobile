@@ -4,11 +4,13 @@ import {reducer as formReducer} from 'redux-form';
 import auth, * as authSelectors from './auth/auth.reducer';
 import categories, * as categoriesSelectors from './categories/categories.reducer';
 import cart, * as cartSelectors from './cart/cart.reducer';
+import products, * as productsSelectors from './products/products.reducer';
 
 const reducer = combineReducers({
     auth,
     categories,
     cart,
+    products,
     form: formReducer
   });
   
@@ -43,4 +45,7 @@ export const getRemoveCartItemError = (state) => cartSelectors.getRemoveCartItem
 export const getUpdateCartItemError = (state) => cartSelectors.getUpdateCartItemError(state.cart);
 export const getCart = state => cartSelectors.getCart(state.cart);
 export const getIsFetchingCart = state => cartSelectors.getIsFetchingCart(state.cart);
-export const getFetchCartError = state => state.getFetchCartError(state.cart); 
+export const getFetchCartError = state => cartSelectors.getFetchCartError(state.cart); 
+
+export const getProduct = (state,id) => productsSelectors.getProduct(state.products,id);
+export const getProducts = state => productsSelectors.getProducts(state.products);

@@ -24,7 +24,6 @@ export function* fetchCart(action){
     if (isAuth) {
       const userId = yield select(selectors.getAuthUserID);
       const token = yield select(selectors.getAuthToken);
-      console.log("llegue mano")
       const response = yield call(
         fetch,
         `${API_BASE_URL}/carts?user=${userId}`,
@@ -36,10 +35,8 @@ export function* fetchCart(action){
           },
         }
       );
-      console.log(response.status)
       if (response.status === 200) {
         const jsonResult = yield response.json();
-        console.log(jsonResult)
         yield put(actions.completeFetchingCart(jsonResult[0]));
       } else {
         const { non_field_errors } = yield response.json();
@@ -139,7 +136,6 @@ function* addCartItem(action) {
     }
   } catch (error) {
     yield put(actions.failAddingCartItem('Server error'));
-    console.log("ERROR", error)
   }
 }
 
@@ -167,8 +163,7 @@ function* removeCartItem(action) {
           },
         }
       );
-
-      if (response.status === 200) {
+      if (response.status === 204) {
         yield put(actions.completeRemovingCartItem(action.payload.id));
       } else {
         const { non_field_errors } = yield response.json();
@@ -206,7 +201,6 @@ function* updateCartItem(action) {
           },
         }
       );
-      console.log(response.status)
       if (response.status === 200) {
         const jsonResult = yield response.json();
         yield put(

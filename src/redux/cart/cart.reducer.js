@@ -1,4 +1,5 @@
 import omit from 'lodash/omit';
+import difference from 'lodash/difference';
 import { combineReducers } from 'redux';
 
 import * as types from './cart.types';
@@ -65,7 +66,8 @@ const byId = (state = {}, action) => {
 const order = (state = [], action) => {
   switch(action.type) {
     case types.CART_ITEMS_FETCH_COMPLETED: {
-      return [...state, ...action.payload.order];
+      const newOrder = difference(action.payload.order,state);
+      return [...state, ...newOrder];
     }
     case types.CART_ITEM_ADD_STARTED: {
       return [...state, action.payload.id];

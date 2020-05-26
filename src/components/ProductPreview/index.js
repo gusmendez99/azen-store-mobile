@@ -15,9 +15,6 @@ import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
 const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem }) => {
-  console.log(item)
-  console.log(cartItem)
-  console.log(cartId)
   const addToCart = () => {
     if(cartItem){
       updateCartItem({...cartItem, quantity: cartItem.quantity+1});
@@ -42,7 +39,7 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem })
 			<View style={styles.cardFooter}>
 				<View style={styles.socialBarContainer}>
 					<View style={styles.socialBarSection}>
-						<TouchableOpacity style={styles.socialBarButton} onPress={() => addToCart()}>
+						<TouchableOpacity style={styles.socialBarButton} onPress={() => console.log('funcion de calificar')}>
 							<Image style={styles.icon} source={{ uri: 'https://www.shareicon.net/data/512x512/2016/09/10/828167_cart_512x512.png' }} />
 							<Text style={[styles.socialBarLabel, styles.buyNow]} onPress={() => addToCart()}>Add to Cart</Text>
 						</TouchableOpacity>

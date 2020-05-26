@@ -17,7 +17,9 @@ import {
   watchRemoveCartItem,
   watchUpdateCartItem,
 } from './cart/cart.sagas';
-
+import {
+  watchSingleProductFetch
+} from './products/products.sagas'
 
 function* rootSaga() {
   yield all([
@@ -32,6 +34,7 @@ function* rootSaga() {
     fork(watchAddCartItem),
     fork(watchRemoveCartItem),
     fork(watchUpdateCartItem),
+    fork(watchSingleProductFetch)
   ]);
 }
 

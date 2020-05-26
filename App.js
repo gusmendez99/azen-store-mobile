@@ -24,6 +24,7 @@ import Welcome from './src/screens/Welcome/index';
 import Categories from './src/screens/Categories/index';
 import Products from './src/screens/Products/index';
 import ProductDetail from './src/screens/ProductDetail/index';
+import Cart from './src/screens/Cart/index';
 
 
 
@@ -35,17 +36,24 @@ function productStackNavigator (){
     <>
       <productStack.Navigator>
         <productStack.Screen name="Categories" component={Categories} />
-
-        {/* Acá podes meter las pantallas de Products y Product DetaiL 
-        <productStack.Screen name="Login" component={Login} />
-        <productStack.Screen name="Signup" component={SignUp} /> */}
         <productStack.Screen name="Products" component={Products}/>
         <productStack.Screen name="ProductDetail" component={ProductDetail}/>
       </productStack.Navigator>
     </>
   );
-
 }
+const cartStack = createStackNavigator();
+function cartStackNavigator (){
+  return (
+    <>
+      <cartStack.Navigator>
+        <cartStack.Screen name="Cart" component={Cart} />
+      </cartStack.Navigator>
+    </>
+  );
+}
+
+
 const authStack = createStackNavigator();
 function  AuthStackNavigator ()  {
     return (
@@ -76,9 +84,9 @@ const App = ({
                   iconName = 'th-large';
                 } else if (route.name === 'Search') {
                   iconName = 'Search'
+                } else if (route.name === 'Cart') {
+                  iconName = 'shopping-cart'
                 }
-
-                // You can return any component that you like here!
                 return <FontAwesome5 name={iconName} size={size} color={color} />;
               },
             })}
@@ -88,6 +96,7 @@ const App = ({
             }}
           >
             <Tab.Screen name="Home" component={productStackNavigator} />
+            <Tab.Screen name="Cart" component={cartStackNavigator} />
         
           </Tab.Navigator>
         ) : (
