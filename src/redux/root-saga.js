@@ -20,7 +20,9 @@ import {
 import {
   watchSingleProductFetch
 } from './products/products.sagas'
-
+import {
+  watchCouponFetch
+} from './coupon/coupon.sagas'
 function* rootSaga() {
   yield all([
     fork(watchRegisterStarted),
@@ -34,7 +36,8 @@ function* rootSaga() {
     fork(watchAddCartItem),
     fork(watchRemoveCartItem),
     fork(watchUpdateCartItem),
-    fork(watchSingleProductFetch)
+    fork(watchSingleProductFetch),
+    fork(watchCouponFetch)
   ]);
 }
 

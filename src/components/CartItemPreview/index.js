@@ -33,28 +33,28 @@ const CartItemPreview = ({item, product, onProductFetch, updateCartItem, removeC
   useEffect(() => {onProductFetch()}, []);
   return(
     product ? (
-    <View style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120}}>
-    <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-      <TouchableOpacity onPress={() => console.log('image')} style={{paddingRight: 10}}>
-        <Image source={{ uri: `${product.featured_image}` }} style={[styles.centerElement, {height: 60, width: 60, backgroundColor: '#eeeeee'}]} />
+    <View style={styles.cartItemContainer}>
+    <View style={styles.cartItemSecondaryContainer}>
+      <TouchableOpacity style={styles.imageContainer}>
+        <Image source={{ uri: `${product.featured_image}` }} style={[styles.centerElement, styles.image]} />
       </TouchableOpacity>
-      <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-        <Text numberOfLines={1} style={{fontSize: 15}}>{product.name}</Text>
-        <Text numberOfLines={1} style={{color: '#8f8f8f'}}>{product.description}</Text>
-        <Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>Q{product.price * item.quantity}</Text>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity onPress={() => quantityHandler('less', item, updateCartItem)} style={{ borderWidth: 1, borderColor: '#cccccc' }}>
+      <View style={styles.detailsContainer}>
+        <Text numberOfLines={1} style={styles.nameText}>{product.name}</Text>
+        <Text numberOfLines={1} style={styles.descriptionText}>{product.description}</Text>
+        <Text numberOfLines={1} style={styles.itemTotalText}>Q{product.price * item.quantity}</Text>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity onPress={() => quantityHandler('less', item, updateCartItem)} style={styles.quantityButton}>
             <MaterialIcons name={"remove"} size={22} color={"#cccccc"} />
           </TouchableOpacity>
-          <Text style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#cccccc', paddingHorizontal: 7, paddingTop: 3, color: '#bbbbbb', fontSize: 13 }}>{item.quantity}</Text>
-          <TouchableOpacity onPress={() => quantityHandler('more', item, updateCartItem)} style={{ borderWidth: 1, borderColor: '#cccccc' }}>
+          <Text style={styles.quantityText}>{item.quantity}</Text>
+          <TouchableOpacity onPress={() => quantityHandler('more', item, updateCartItem)} style={styles.quantityButton}>
           <MaterialIcons name={"add"} size={22} color={"#cccccc"} />
           </TouchableOpacity>
         </View>
       </View>
     </View>
-    <View style={[styles.centerElement, {width: 60}]}>
-      <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => deleteHandler(removeCartItem)}>
+    <View style={[styles.centerElement, styles.removeCartItemContainer]}>
+      <TouchableOpacity style={[styles.centerElement,styles.removeCartItemSecondaryContainer ]} onPress={() => deleteHandler(removeCartItem)}>
         <Ionicons name="md-trash" size={25} color="#ee4d2d" />
       </TouchableOpacity>
     </View>
@@ -65,6 +65,19 @@ const CartItemPreview = ({item, product, onProductFetch, updateCartItem, removeC
   );
 };
 const styles = StyleSheet.create({
+  cartItemContainer: {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120},
+  cartItemSecondaryContainer: {flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'},
+  imageContainer: {paddingRight: 10},
+  image: {height: 60, width: 60, backgroundColor: '#eeeeee'},
+  detailsContainer: {flexGrow: 1, flexShrink: 1, alignSelf: 'center'},
+  nameText: {fontSize: 15},
+  descriptionText: {color: '#8f8f8f'},
+  itemTotalText: {color: '#333333', marginBottom: 10},
+  quantityContainer: {flexDirection: 'row'},
+  quantityButton: { borderWidth: 1, borderColor: '#cccccc' },
+  quantityText: { borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#cccccc', paddingHorizontal: 7, paddingTop: 3, color: '#bbbbbb', fontSize: 13 },
+  removeCartItemContainer: {width: 60},
+  removeCartItemSecondaryContainer:  {width: 32, height: 32}, 
   centerElement: {
     justifyContent: 'center', 
     alignItems: 'center'},

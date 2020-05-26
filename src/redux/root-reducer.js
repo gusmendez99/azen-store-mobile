@@ -5,12 +5,14 @@ import auth, * as authSelectors from './auth/auth.reducer';
 import categories, * as categoriesSelectors from './categories/categories.reducer';
 import cart, * as cartSelectors from './cart/cart.reducer';
 import products, * as productsSelectors from './products/products.reducer';
+import coupon, * as couponSelectors from './coupon/coupon.reducer';
 
 const reducer = combineReducers({
     auth,
     categories,
     cart,
     products,
+    coupon,
     form: formReducer
   });
   
@@ -49,3 +51,8 @@ export const getFetchCartError = state => cartSelectors.getFetchCartError(state.
 
 export const getProduct = (state,id) => productsSelectors.getProduct(state.products,id);
 export const getProducts = state => productsSelectors.getProducts(state.products);
+
+export const getCoupon = state => couponSelectors.getCoupon(state.coupon);
+export const getIsFetchingCoupon = state => couponSelectors.getIsFetchingCoupon(state.coupon);
+export const getFetchingCouponError = state => couponSelectors.getFetchingCouponError(state.coupon);
+export const getCouponField = state => couponSelectors.getCouponField(state.coupon);
