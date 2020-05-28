@@ -1,5 +1,6 @@
 import * as types from './coupon.types';
 import { combineReducers } from 'redux';
+import isEmpty from 'lodash/isEmpty';
 
 export const couponField = (state = '', action) => {
   switch(action.type){
@@ -69,7 +70,7 @@ export default combineReducers({
   error
 })
 
-export const getCoupon = state => state.coupon;
+export const getCoupon = state => isEmpty(state.coupon) ? null : state.coupon;
 export const getIsFetchingCoupon = state => state.isFetching;
 export const getFetchingCouponError = state => state.error;
 export const getCouponField = state => state.couponField;

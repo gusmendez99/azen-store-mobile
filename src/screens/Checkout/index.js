@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { AppStyles } from '../../AppStyles';
 
-
+import * as actions from "../../redux/order/order.actions";
 const Checkout = ({ onCheckout, handleSubmit }) => {
   const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
     return (
@@ -186,11 +186,22 @@ export default reduxForm({ form: 'checkout' })(
             billingName.length <= 0 ||
             billingAddress.length <= 0 ||
             billingSsn.length <= 0 
-            //dispatch(actions.startRegister(username, password1, password2, email));
+            
           ) {
             alert('Please fill out the required fields.');
             return;
-          }  
+          }
+          dispatch(actions.startpostingOrder({
+            delivery_name: deliveryName, 
+            delivery_address: deliveryAddress, 
+            details: details, 
+            status: 0}, 
+            {
+              billing_name: billingName,
+              billing_address: billingAddress,
+              billing_ssn: billingSsn
+            })
+          );
         }
       },
     }),

@@ -19,10 +19,20 @@ import {
 } from './cart/cart.sagas';
 import {
   watchSingleProductFetch
-} from './products/products.sagas'
+} from './products/products.sagas';
 import {
   watchCouponFetch
-} from './coupon/coupon.sagas'
+} from './coupon/coupon.sagas';
+import {
+  watchPostOrder
+} from './order/order.sagas';
+import {
+  watchPostInvoice
+} from './invoice/invoice.sagas';
+import {
+  watchPostPayment
+} from './payment/payment.sagas';
+
 function* rootSaga() {
   yield all([
     fork(watchRegisterStarted),
@@ -37,7 +47,10 @@ function* rootSaga() {
     fork(watchRemoveCartItem),
     fork(watchUpdateCartItem),
     fork(watchSingleProductFetch),
-    fork(watchCouponFetch)
+    fork(watchCouponFetch),
+    fork(watchPostOrder),
+    fork(watchPostInvoice),
+    fork(watchPostPayment),
   ]);
 }
 

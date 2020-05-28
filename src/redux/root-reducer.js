@@ -6,6 +6,9 @@ import categories, * as categoriesSelectors from './categories/categories.reduce
 import cart, * as cartSelectors from './cart/cart.reducer';
 import products, * as productsSelectors from './products/products.reducer';
 import coupon, * as couponSelectors from './coupon/coupon.reducer';
+import order, * as orderSelectors from './order/order.reducer';
+import invoice, * as invoiceSelectors from './invoice/invoice.reducer';
+import payment, * as paymentSelectors from './payment/payment.reducer';
 
 const reducer = combineReducers({
     auth,
@@ -13,6 +16,9 @@ const reducer = combineReducers({
     cart,
     products,
     coupon,
+    order,
+    invoice,
+    payment,
     form: formReducer
   });
   
@@ -56,3 +62,16 @@ export const getCoupon = state => couponSelectors.getCoupon(state.coupon);
 export const getIsFetchingCoupon = state => couponSelectors.getIsFetchingCoupon(state.coupon);
 export const getFetchingCouponError = state => couponSelectors.getFetchingCouponError(state.coupon);
 export const getCouponField = state => couponSelectors.getCouponField(state.coupon);
+
+export const getOrder = state => orderSelectors.getOrder(state.order);
+export const getIsPostingOrder = state => orderSelectors.getIsPostingOrder(state.order);
+export const getPostingOrderError = state => orderSelectors.getPostingOrderError(state.order);
+
+export const getInvoice = state => invoiceSelectors.getInvoice(state.invoice);
+export const getIsPostingInvoice = state => invoiceSelectors.getIsPostingInvoice(state.invoice)
+export const getPostingInvoiceError = state => invoiceSelectors.getPostingInvoiceError(state.invoice);
+
+export const getPayment = state => paymentSelectors.getPayment(state.payment);
+export const getIsPostingPayment = state => paymentSelectors.getIsPostingPayment(state.payment)
+export const getPostingPaymentError = state => paymentSelectors.getPostingPaymentError(state.payment);
+
