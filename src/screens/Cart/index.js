@@ -12,11 +12,15 @@ import * as actions from '../../redux/coupon/coupon.actions';
 
 const HOST_BASE_URL = "https://azenstore.herokuapp.com";
 
-const validateCoupon = () => {
 
-}
 
-const Cart = ({cartItems, subtotal, onCouponFieldChange, onCouponValidate, couponField}) => {
+const Cart = ({cartItems, subtotal, onCouponFieldChange, onCouponValidate, couponField, navigation}) => {
+  const navigateToCheckout = () => {
+    console.log('Stating to navigate to Checkout...')
+    navigation.navigate('Checkout')
+  }
+  
+  
   return(
     <View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
       <ScrollView>	
@@ -46,7 +50,7 @@ const Cart = ({cartItems, subtotal, onCouponFieldChange, onCouponValidate, coupo
           <Text>Q{'Algunos quetzales'}</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: 32, padding: 20, alignItems: 'center'}}>
-          <TouchableOpacity style={[styles.centerElement, {backgroundColor: '#0faf9a', width: 100, height: 25, borderRadius: 5}]} onPress={() => console.log('test')}>
+          <TouchableOpacity style={[styles.centerElement, {backgroundColor: '#0faf9a', width: 100, height: 25, borderRadius: 5}]} onPress={() => navigateToCheckout()}>
             <Text style={{color: '#ffffff'}}>Checkout</Text>
           </TouchableOpacity>
         </View>

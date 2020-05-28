@@ -25,7 +25,7 @@ import Categories from './src/screens/Categories/index';
 import Products from './src/screens/Products/index';
 import ProductDetail from './src/screens/ProductDetail/index';
 import Cart from './src/screens/Cart/index';
-
+import Checkout from './src/screens/Checkout/index';
 
 
 import * as selectors from './src/redux/root-reducer'
@@ -48,6 +48,7 @@ function cartStackNavigator (){
     <>
       <cartStack.Navigator>
         <cartStack.Screen name="Cart" component={Cart} />
+        <cartStack.Screen name="Checkout" component={Checkout} />
       </cartStack.Navigator>
     </>
   );
