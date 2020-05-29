@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
 
 import auth, * as authSelectors from './auth/auth.reducer';
+import user, * as userSelectors from './user/user.reducer';
 import categories, * as categoriesSelectors from './categories/categories.reducer';
 import cart, * as cartSelectors from './cart/cart.reducer';
 
@@ -9,6 +10,7 @@ const reducer = combineReducers({
     auth,
     categories,
     cart,
+    user,
     form: formReducer
   });
   
@@ -27,6 +29,10 @@ export const getAuthExpiration = state => authSelectors.getAuthExpiration(state.
 export const getAuthUsername = state => authSelectors.getAuthUsername(state.auth);
 export const getIsRefreshingToken = state => authSelectors.getIsRefreshingToken(state.auth);
 export const getRefreshingError = state => authSelectors.getRefreshingError(state.auth);
+
+export const getUser = (state) => userSelectors.getUser(state.user);
+export const getIsFetchingUser = (state) => userSelectors.getIsFetchingUser(state.user);
+export const getIsFetchingUserError = state => userSelectors.getFetchingUserError(state.user);
 
 export const getCategories = state => categoriesSelectors.getCategories(state.categories);
 export const getCategoryProducts = state => categoriesSelectors.getCategoryProducts(state.categories);

@@ -30,17 +30,18 @@ const onPressFacebook = registerWithFacebook => {
   );
 };
 
+const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+  return (
+    <TextInput
+      style={styles.body}
+      onChangeText={onChange}
+      {...input}
+      {...rest}
+    />
+  );
+};
+
 const Signup = ({ onRegister, registerWithFacebook, handleSubmit }) => {
-  const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
-    return (
-      <TextInput
-        style={styles.body}
-        onChangeText={onChange}
-        {...input}
-        {...rest}
-      />
-    );
-  };
 
   return (
     <View style={styles.container}>
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default reduxForm({ form: 'register-form' })(
+export default reduxForm({ form: 'register-form'})(
   connect(
     undefined,
     dispatch => ({

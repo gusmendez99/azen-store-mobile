@@ -7,15 +7,13 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { connect } from 'react-redux';
-
 import { AppStyles } from "./src/AppStyles";
 
 import Login from './src/screens/Login/index';
@@ -24,8 +22,7 @@ import Welcome from './src/screens/Welcome/index';
 import Categories from './src/screens/Categories/index';
 import Products from './src/screens/Products/index';
 import ProductDetail from './src/screens/ProductDetail/index';
-
-
+import Profile from './src/screens/Profile/index';
 
 import * as selectors from './src/redux/root-reducer'
 
@@ -59,6 +56,18 @@ function  AuthStackNavigator ()  {
     );
 }
 
+const profileStack = createStackNavigator();
+function profileStackNavigator (){
+  return (
+    <>
+      <profileStack.Navigator>
+        <profileStack.Screen name="Profile" component={Profile} />
+      </profileStack.Navigator>
+    </>
+  );
+
+}
+
 const Tab = createBottomTabNavigator();
 
 const App = ({
@@ -75,7 +84,9 @@ const App = ({
                 if (route.name === 'Home') {
                   iconName = 'th-large';
                 } else if (route.name === 'Search') {
-                  iconName = 'Search'
+                  iconName = 'search'
+                } else if (route.name === 'Profile') {
+                  iconName = 'user-circle'
                 }
 
                 // You can return any component that you like here!
@@ -88,6 +99,7 @@ const App = ({
             }}
           >
             <Tab.Screen name="Home" component={productStackNavigator} />
+            <Tab.Screen name="Profile" component={profileStackNavigator} />
         
           </Tab.Navigator>
         ) : (

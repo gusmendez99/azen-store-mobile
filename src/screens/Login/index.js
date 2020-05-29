@@ -29,17 +29,19 @@ const onPressFacebook = loginWithFacebook => {
   );
 };
 
+const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+  return (
+    <TextInput
+      style={styles.body}
+      onChangeText={onChange}
+      {...input}
+      {...rest}
+    />
+  );
+};
+
 const Login = ({ onSubmit, loginWithFacebook, handleSubmit }) => {
-  const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
-    return (
-      <TextInput
-        style={styles.body}
-        onChangeText={onChange}
-        {...input}
-        {...rest}
-      />
-    );
-  };
+  
 
   return (
     <View style={styles.container}>

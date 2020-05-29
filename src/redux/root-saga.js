@@ -7,6 +7,10 @@ import {
   watchRefreshTokenStarted,
 } from './auth/auth.sagas';
 import {
+  watchUserFetch,
+  watchUserUpdate
+} from './user/user.sagas'
+import {
   watchCategoriesFetch,
   watchCategoryProductsFetch
 } from './categories/categories.sagas'
@@ -24,6 +28,8 @@ function* rootSaga() {
     fork(watchCategoriesFetch),
     fork(watchCategoryProductsFetch),
     fork(watchCartFetch),
+    fork(watchUserFetch),
+    fork(watchUserUpdate)
   ]);
 }
 
