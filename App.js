@@ -25,9 +25,11 @@ import ProductDetail from './src/screens/ProductDetail/index';
 import Profile from './src/screens/Profile/index';
 import Cart from './src/screens/Cart/index';
 import Checkout from './src/screens/Checkout/index';
+import ChangeProfile from './src/screens/ChangePassword/index'
 
 
 import * as selectors from './src/redux/root-reducer'
+import ChangePassword from './src/screens/ChangePassword/index';
 
 const productStack = createStackNavigator();
 function productStackNavigator (){
@@ -73,6 +75,7 @@ function profileStackNavigator (){
     <>
       <profileStack.Navigator>
         <profileStack.Screen name="Profile" component={Profile} />
+        <profileStack.Screen name="ChangePassword" component={ChangePassword} />
       </profileStack.Navigator>
     </>
   );

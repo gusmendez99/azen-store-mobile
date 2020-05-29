@@ -32,11 +32,15 @@ const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
 };
 
 
-const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit }) => {
+const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit, navigation, route }) => {
   useEffect(() => {
     fetchUser();
   }, [authUserId]);
 
+  const navigateToChangePassword = () => {
+    console.log('Stating to navigate to ChangePassword...')
+    navigation.navigate('ChangePassword')
+  }
   const { username  } = userProfile;
 
   return (
@@ -120,7 +124,7 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
               )
             }
 
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => navigateToChangePassword()} style={styles.buttonContainer}>
               <Text>Change password</Text>
             </TouchableOpacity>
 
