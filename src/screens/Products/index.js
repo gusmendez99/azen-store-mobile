@@ -25,10 +25,6 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
 
   useEffect(() => fetchCategoryProducts(idCategory), []);
 
-  const addProductToCart = () => {
-    Alert.alert('Success', 'The product has been added to your cart')
-  }
-
   const navigateToProductDetail = (item) => {
     console.log('Stating to navigate to ProductDetail...')
     navigation.navigate('ProductDetail', {

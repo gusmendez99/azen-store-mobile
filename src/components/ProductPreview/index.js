@@ -7,13 +7,26 @@ import {
   StyleSheet,
   Alert
 } from 'react-native';
+import {connect} from 'react-redux';
+import uuid from 'react-native-uuid';
 
+import * as actions from '../../redux/cart/cart.actions';
+import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductPreview = ({ item }) => {
-
+const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem }) => {
   const addToCart = () => {
-    Alert.alert("Success", "Product has beed added to cart")
+    if(cartItem){
+      updateCartItem({...cartItem, quantity: cartItem.quantity+1});
+    } else {
+      const newCartItem = {
+        cart: cartId,
+        product: item.id,
+        quantity: 1
+      };
+      console.log(newCartItem)
+      addCartItem(newCartItem);
+    }
   }
 
 	return (
@@ -26,7 +39,7 @@ const ProductPreview = ({ item }) => {
 			<View style={styles.cardFooter}>
 				<View style={styles.socialBarContainer}>
 					<View style={styles.socialBarSection}>
-						<TouchableOpacity style={styles.socialBarButton} onPress={() => this.addProductToCart()}>
+						<TouchableOpacity style={styles.socialBarButton} onPress={() => console.log('funcion de calificar')}>
 							<Image style={styles.icon} source={{ uri: 'https://www.shareicon.net/data/512x512/2016/09/10/828167_cart_512x512.png' }} />
 							<Text style={[styles.socialBarLabel, styles.buyNow]} onPress={() => addToCart()}>Add to Cart</Text>
 						</TouchableOpacity>
@@ -123,4 +136,23 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ProductPreview;
+export default connect(
+  (state, {item}) => ({
+    cartItem: selectors.getCartItemByProductId(state,item.id),
+    cartId: selectors.getCart(state).id,
+  }),
+  dispatch => ({
+    updateCartItem(cartItem){
+      dispatch(actions.startUpdatingCartItem(cartItem))
+    },
+    addCartItem(newCartItem){
+      dispatch(
+        actions.startAddingCartItem({
+          id: uuid.v4(),
+          ...newCartItem
+        })
+      );
+    },
+  }),
+
+)(ProductPreview);

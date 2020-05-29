@@ -8,16 +8,27 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { autofill } from 'redux-form';
+import uuid from 'react-native-uuid';
+import { connect } from 'react-redux';
 
+import * as actions from '../../redux/cart/cart.actions';
+import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route }) => {
-
+const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem }) => {
   const { item } = route.params;
-
   const addToCart = () => {
-    Alert.alert("Success", "Product has beed added to cart")
+    if(cartItem){
+      updateCartItem({...cartItem, quantity: cartItem.quantity+1});
+    } else {
+      const newCartItem = {
+        cart: cartId,
+        product: item.id,
+        quantity: 1
+      };
+      console.log(newCartItem)
+      addCartItem(newCartItem);
+    }
   }
 
   return (
@@ -108,4 +119,22 @@ const styles = StyleSheet.create({
   }
 }); 
 
-export default ProductDetail;
+export default connect(
+  (state, {route}) => ({
+    cartItem: selectors.getCartItemByProductId(state,route.params.item.id),
+    cartId: selectors.getCart(state).id,
+  }),
+  dispatch => ({
+    updateCartItem(cartItem){
+      dispatch(actions.startUpdatingCartItem(cartItem))
+    },
+    addCartItem(newCartItem){
+      dispatch(
+        actions.startAddingCartItem({
+          id: uuid.v4(),
+          ...newCartItem
+        })
+      );
+    },
+  }),
+)(ProductDetail);

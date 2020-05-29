@@ -11,12 +11,25 @@ import * as selectors from '../../redux/root-reducer';
 
 const COLUMNS_COUNT = 2;
 
-const Categories = ({ fetchCategories, isFetching, dataList, authUserId, fetchCart, fetchCartItems, navigation }) => {
+const Categories = ({ 
+  fetchCategories, 
+  isFetching, 
+  dataList, 
+  authUserId, 
+  getCartItems, 
+  fetchCartItems,
+  getCart,
+  fetchCart,
+  navigation }) => {
+  
   useEffect(() => {
     fetchCategories(); 
   }, []);
   useEffect(() => {
-    fetchCart();
+    getCartItems();
+  }, [authUserId]);
+  useEffect(() => {
+    getCart();
   }, [authUserId]);
 
   const navigateToProduct = (item) => {
@@ -85,6 +98,9 @@ export default connect(
       dispatch(actions.startFetchingCategories())
     },
     fetchCartItems(){
+      dispatch(cartActions.startFetchingCartItems())
+    },
+    fetchCart(){
       dispatch(cartActions.startFetchingCart())
     }
   }),
@@ -92,11 +108,16 @@ export default connect(
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    fetchCart(){
+    getCartItems(){
       if(stateProps.authUserId !== null){
         dispatchProps.fetchCartItems()
       }
-    }
+    },
+    getCart(){
+      if(stateProps.authUserId !== null){
+        dispatchProps.fetchCart()
+      }
+    },
 
   })
 )(Categories);
