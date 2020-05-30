@@ -180,26 +180,30 @@ const styles = StyleSheet.create({
   },
 });
 
-export default reduxForm({ form: 'register-form'})(
-  connect(
-    undefined,
-    dispatch => ({
-      onRegister(values) {
-        const { username, password1, password2, email } = values;
-        if (
-          username.length <= 0 ||
-          password1.length <= 0 ||
-          password2.length <= 0 ||
-          email.length <= 0
-        ) {
-          alert('Please fill out the required fields.');
-          return;
-        }
-        dispatch(actions.startRegister(username, password1, password2, email));
-      },
-      registerWithFacebook(access_token) {
-        dispatch(actions.startFacebookAuth(access_token));
-      },
-    }),
-  )(Signup),
+
+const mapDispatchToProps = dispatch => ({
+  onRegister(values) {
+    const { username, password1, password2, email } = values;
+    if (
+      username.length <= 0 ||
+      password1.length <= 0 ||
+      password2.length <= 0 ||
+      email.length <= 0
+    ) {
+      alert('Please fill out the required fields.');
+      return;
+    }
+    dispatch(actions.startRegister(username, password1, password2, email));
+  },
+  registerWithFacebook(access_token) {
+    dispatch(actions.startFacebookAuth(access_token));
+  },
+})
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(
+  reduxForm({ form: 'register-form' })(Signup)
 );
+

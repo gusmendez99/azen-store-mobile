@@ -1,13 +1,17 @@
 import omit from 'lodash/omit';
 import difference from 'lodash/difference';
+import sum from 'lodash/sum';
 import { combineReducers } from 'redux';
-
 import * as types from './cart.types';
+import * as paymentTypes from '../payment/payments.types'
 
 const cartDetails = (state = {}, action) => {
   switch(action.type){
     case types.CART_FETCH_COMPLETED: {
       return {...state, ...action.payload.cart}
+    }
+    case paymentTypes.POST_PAYMENT_COMPLETED: {
+      return {};
     }
     default: {
       return state;
@@ -57,6 +61,9 @@ const byId = (state = {}, action) => {
       };
       return newState;
     }
+    case paymentTypes.POST_PAYMENT_COMPLETED: {
+      return {};
+    }
     default: {
       return state;
     }
@@ -82,6 +89,9 @@ const order = (state = [], action) => {
     case types.CART_ITEM_UPDATE_COMPLETED: {
       const { oldId, cartItem } = action.payload;
       return state.map(id => id === oldId ? cartItem.id : id);
+    }
+    case paymentTypes.POST_PAYMENT_COMPLETED: {
+      return [];
     }
     default: {
       return state;
@@ -235,3 +245,4 @@ export const getUpdateCartItemError = state => state.updateCartItemError;
 export const getCart = state => state.cartDetails;
 export const getIsFetchingCart = state => state.isFetchingCart;
 export const getFetchCartError = state => state.fetchCartError; 
+export const getCartSubtotal = state => sum(getCartItems(state).map(cartItem =>  cartItem.quantity * cartItem.item_price))

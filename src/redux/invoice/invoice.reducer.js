@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-
-
 import * as types from './invoice.types';
+import * as paymentTypes from '../payment/payments.types'
 
 const invoice = (state = {}, action) => {
   switch(action.type){
-    case types.POST_INVOICE_STARTED: {
+    case types.POST_INVOICE_STARTED:
+    case paymentTypes.POST_PAYMENT_COMPLETED: {
       return {};
     }
     case types.POST_INVOICE_COMPLETED: {

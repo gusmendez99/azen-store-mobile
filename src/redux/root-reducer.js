@@ -60,6 +60,7 @@ export const getUpdateCartItemError = (state) => cartSelectors.getUpdateCartItem
 export const getCart = state => cartSelectors.getCart(state.cart);
 export const getIsFetchingCart = state => cartSelectors.getIsFetchingCart(state.cart);
 export const getFetchCartError = state => cartSelectors.getFetchCartError(state.cart); 
+export const getCartSubtotal = state => cartSelectors.getCartSubtotal(state.cart);
 
 export const getProduct = (state,id) => productsSelectors.getProduct(state.products,id);
 export const getProducts = state => productsSelectors.getProducts(state.products);

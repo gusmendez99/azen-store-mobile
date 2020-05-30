@@ -1,30 +1,42 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 import Button from 'react-native-button';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import isEmpty from 'lodash/isEmpty';
 
+import * as selectors from '../../redux/root-reducer';
+
 import { AppStyles } from '../../AppStyles';
 
 import * as actions from "../../redux/order/order.actions";
-const Checkout = ({ onCheckout, handleSubmit }) => {
-  const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
-    return (
-      <TextInput
-        style={styles.body}
-        onChangeText={onChange}
-        {...input}
-        {...rest}
-      />
-    );
-  };
+
+const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+  return (
+    <TextInput
+      style={styles.body}
+      onChangeText={onChange}
+      {...input}
+      {...rest}
+    />
+  );
+};
+
+const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon }) => {
 
   return (
+    <ScrollView style={styles.scrollView}>
     <View style={styles.container}>
       <Text style={[styles.title, styles.centerTitle]}>Order Details</Text>
+  <Text style={[styles.subtotal, styles.centerTitle]}>Total to pay: Q{
+            coupon ? (
+                subtotal - (subtotal * (parseFloat(coupon.discount) / 100))
+            ) : (
+              subtotal
+            ) 
+          }</Text>
       <View style={styles.InputContainer}>
-         <Field
+        <Field
           name={'deliveryName'}
           props={{
             placeholder: 'Who do we send this products to? (perhaps your own name)',
@@ -97,6 +109,7 @@ const Checkout = ({ onCheckout, handleSubmit }) => {
         Proceed with checkout
       </Button>
     </View>
+    </ScrollView>
   );
 };
 
@@ -122,7 +135,12 @@ const styles = StyleSheet.create({
   centerTitle: {
     alignSelf: 'stretch',
     textAlign: 'center',
-    marginLeft: 20,
+  },
+  subtotal: {
+    fontSize: AppStyles.fontSize.normal,
+    fontWeight: 'bold',
+    color: AppStyles.color.black,
+    marginBottom: 20,
   },
   content: {
     paddingLeft: 50,
@@ -137,6 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30,
+    marginBottom: 20,
   },
   loginText: {
     color: AppStyles.color.white,
@@ -159,51 +178,49 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     color: AppStyles.color.text,
   },
-  facebookContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.facebook,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30,
-  },
-  facebookText: {
-    color: AppStyles.color.white,
-  },
 });
 
-export default reduxForm({ form: 'checkout' })(
-  connect(
-    undefined,
-    dispatch => ({
-      onCheckout(values) {
-        if (!isEmpty(values)){
-          const { deliveryName, deliveryAddress, details, billingName, billingAddress, billingSsn } = values;
-          console.log(values)
-          if (
-            deliveryName.length <= 0 ||
-            deliveryAddress.length <= 0 ||
-            details.length <= 0 ||
-            billingName.length <= 0 ||
-            billingAddress.length <= 0 ||
-            billingSsn.length <= 0 
-            
-          ) {
-            alert('Please fill out the required fields.');
-            return;
-          }
-          dispatch(actions.startpostingOrder({
-            delivery_name: deliveryName, 
-            delivery_address: deliveryAddress, 
-            details: details, 
-            status: 0}, 
-            {
-              billing_name: billingName,
-              billing_address: billingAddress,
-              billing_ssn: billingSsn
-            })
-          );
-        }
+const mapStateToProps = state => ({
+  subtotal: selectors.getCartSubtotal(state),
+  coupon: selectors.getCoupon(state),
+})
+
+const mapDispatchToProps = dispatch => ({
+  onCheckout(values) {
+    if (!isEmpty(values)) {
+      const { deliveryName, deliveryAddress, details, billingName, billingAddress, billingSsn } = values;
+      console.log(values)
+      if (
+        deliveryName.length <= 0 ||
+        deliveryAddress.length <= 0 ||
+        details.length <= 0 ||
+        billingName.length <= 0 ||
+        billingAddress.length <= 0 ||
+        billingSsn.length <= 0
+
+      ) {
+        alert('Please fill out the required fields.');
+        return;
+      }
+      dispatch(actions.startpostingOrder({
+        delivery_name: deliveryName,
+        delivery_address: deliveryAddress,
+        details: details,
+        status: 0
       },
-    }),
-  )(Checkout),
+        {
+          billing_name: billingName,
+          billing_address: billingAddress,
+          billing_ssn: billingSsn
+        })
+      );
+    }
+  },
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  reduxForm({ form: 'checkout' })(Checkout)
 );

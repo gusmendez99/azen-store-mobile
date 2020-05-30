@@ -157,22 +157,24 @@ const styles = StyleSheet.create({
   },
 });
 
-export default reduxForm({ form: 'login-form' })(
-  connect(
-    undefined,
-    dispatch => ({
-      onSubmit(values) {
-        const { username, password } = values;
-        console.log('Credentials: ' + username + ', ' + password);
-        if (username.length <= 0 || password.length <= 0) {
-          alert('Please fill out the required fields.');
-          return;
-        }
-        dispatch(actions.startLogin(username, password));
-      },
-      loginWithFacebook(access_token) {
-        dispatch(actions.startFacebookAuth(access_token));
-      },
-    }),
-  )(Login),
+const mapDispatchToProps = dispatch => ({
+  onSubmit(values) {
+    const { username, password } = values;
+    console.log('Credentials: ' + username + ', ' + password);
+    if (username.length <= 0 || password.length <= 0) {
+      alert('Please fill out the required fields.');
+      return;
+    }
+    dispatch(actions.startLogin(username, password));
+  },
+  loginWithFacebook(access_token) {
+    dispatch(actions.startFacebookAuth(access_token));
+  },
+})
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(
+  reduxForm({ form: 'login-form' })(Login)
 );

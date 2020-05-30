@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-
-
 import * as types from './order.types';
+import * as paymentTypes from '../payment/payments.types'
 
 const order = (state = {}, action) => {
   switch(action.type){
-    case types.POST_ORDER_STARTED: {
+    case types.POST_ORDER_STARTED:
+    case paymentTypes.POST_PAYMENT_COMPLETED: {
       return {};
     }
     case types.POST_ORDER_COMPLETED: {
