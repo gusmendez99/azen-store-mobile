@@ -6,12 +6,14 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef, isMountedRef } from './src/RootNavigation';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { AppStyles } from "./src/AppStyles";
@@ -23,15 +25,16 @@ import Categories from './src/screens/Categories/index';
 import Products from './src/screens/Products/index';
 import ProductDetail from './src/screens/ProductDetail/index';
 import Profile from './src/screens/Profile/index';
+import ChangePassword from './src/screens/ChangePassword/index';
 import Cart from './src/screens/Cart/index';
 import Checkout from './src/screens/Checkout/index';
-import ChangeProfile from './src/screens/ChangePassword/index'
 import Orders from './src/screens/Orders/index';
 import Invoices from './src/screens/Invoices/index'
 import Payments from './src/screens/Payments/index';
+import OrderCompleted from './src/screens/OrderCompleted/index';
+
 
 import * as selectors from './src/redux/root-reducer'
-import ChangePassword from './src/screens/ChangePassword/index';
 
 const productStack = createStackNavigator();
 function productStackNavigator (){
@@ -52,6 +55,7 @@ function cartStackNavigator (){
       <cartStack.Navigator>
         <cartStack.Screen name="Cart" component={Cart} />
         <cartStack.Screen name="Checkout" component={Checkout} />
+        <cartStack.Screen name="OrderCompleted" component={OrderCompleted} />
       </cartStack.Navigator>
     </>
   );
@@ -92,9 +96,17 @@ const Tab = createBottomTabNavigator();
 const App = ({
   isAuthenticated = false
 }) =>  {
+
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    return () => (isMountedRef.current = false);
+  }, []);
+
+
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         {isAuthenticated  ? (
           <Tab.Navigator
             screenOptions={({ route }) => ({

@@ -78,7 +78,7 @@ function* fetchCartItems(action) {
           entities: { cartItems },
           result,
         } = normalize(jsonResult, schemas.cartItems);
-
+        
         yield put(
           actions.completeFetchingCartItems(
             cartItems,

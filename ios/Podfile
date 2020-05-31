@@ -77,6 +77,8 @@ target 'azenMobile' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
   target 'azenMobileTests' do
     inherit! :complete
     # Pods for testing

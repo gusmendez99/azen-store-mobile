@@ -1,4 +1,6 @@
 import * as types from './user.types'
+import * as authTypes from '../auth/auth.types';
+
 import { combineReducers } from 'redux';
 
 const user = (state = {}, action) => {
@@ -7,7 +9,7 @@ const user = (state = {}, action) => {
     case types.USER_UPDATE_COMPLETED: {
       return action.payload.user
     }
-    case types.AUTHENTICATION_IDENTITY_CLEARED: {
+    case authTypes.AUTHENTICATION_IDENTITY_CLEARED: {
       return null;
     }
     default: {

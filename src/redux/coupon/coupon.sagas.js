@@ -7,6 +7,7 @@ import {
   delay,
   select,
 } from 'redux-saga/effects';
+import moment from "moment";
 
 import * as selectors from '../root-reducer';
 import * as actions from './coupon.actions';
@@ -34,7 +35,17 @@ export function* fetchCoupon(action){
       );
       if (response.status === 200) {
         const jsonResult = yield response.json();
-        yield put(actions.completeFetchingCoupon(jsonResult[0]));
+        console.log(jsonResult)
+
+        // Check if exp_datetime 
+        const expDate = new Date(jsonResult[0].exp_datetime)
+        const isValidCoupon = moment(new Date()).isSameOrBefore(expDate);
+
+        if(isValidCoupon){
+          yield put(actions.completeFetchingCoupon(jsonResult[0]));
+        } else {
+          yield put(actions.failFetchingCoupon("This coupon has expired"));
+        }        
       } else {
         const { non_field_errors } = yield response.json();
         yield put(actions.failFetchingCoupon(non_field_errors[0]));

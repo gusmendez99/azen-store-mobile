@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import difference from 'lodash/difference';
 
 import * as types from './order.types';
+import * as paymentTypes from '../payment/payments.types'
 
 const byId = (state = {}, action) => {
   switch(action.type) {
@@ -70,7 +71,8 @@ const error = (state = null, action) => {
 
 const singleOrder = (state = {}, action) => {
   switch(action.type){
-    case types.POST_ORDER_STARTED: {
+    case types.POST_ORDER_STARTED:
+    case paymentTypes.POST_PAYMENT_COMPLETED: {
       return {};
     }
     case types.POST_ORDER_COMPLETED: {

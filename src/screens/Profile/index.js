@@ -41,7 +41,7 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
     console.log('Stating to navigate to ChangePassword...')
     navigation.navigate('ChangePassword')
   }
-  const { username  } = userProfile;
+  const { username } = userProfile;
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -50,8 +50,8 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
           <View style={styles.headerContent}>
             <Image style={styles.avatar} source={{ uri: 'https://i.ya-webdesign.com/images/avatar-png-5.png' }} />
             <Text style={styles.name}>
-              { username }
-                </Text>
+              {username}
+            </Text>
           </View>
         </View>
 
@@ -236,7 +236,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onSubmit(values) {
     const { username, first_name, last_name, email } = values;
-    console.log('Updating: ' + username );
+    console.log('Updating: ' + username);
     if (username.length <= 0) {
       alert('Please fill out the required fields.');
       return;
@@ -260,6 +260,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps, 
+  mergeProps
+)(
   reduxForm({ form: 'profile-form', enableReinitialize: true })(Profile)
 );
