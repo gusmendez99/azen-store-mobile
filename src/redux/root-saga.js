@@ -45,6 +45,9 @@ import {
   watchAddWishlistItem,
   watchRemoveWishlistItem
 } from './wishlist/wishlist.sagas';
+import {
+  watchFilteredProducts
+} from './search/search.sagas';
 
 function* rootSaga() {
   yield all([
@@ -73,6 +76,7 @@ function* rootSaga() {
     fork(watchWishlistFetch),
     fork(watchAddWishlistItem),
     fork(watchRemoveWishlistItem),
+    fork(watchFilteredProducts)
   ]);
 }
 

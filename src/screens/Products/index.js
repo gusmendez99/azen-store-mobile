@@ -38,6 +38,9 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
       {isFetching ? (
         <Text style={styles.isFetchingText}>Retrieving data...</Text>
       ) : (
+        <>
+        
+
           <FlatList style={styles.list}
             contentContainerStyle={styles.listContainer}
             data={dataList}
@@ -61,6 +64,7 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
               )
               }
             }/>
+            </>
         )}
 
     </LinearGradient>
@@ -92,7 +96,6 @@ const styles = StyleSheet.create({
   separator: {
     marginTop: 10,
   },
-
 });
 
 export default connect(

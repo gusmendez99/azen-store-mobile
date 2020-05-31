@@ -11,6 +11,7 @@ import order, * as orderSelectors from './order/order.reducer';
 import invoice, * as invoiceSelectors from './invoice/invoice.reducer';
 import payment, * as paymentSelectors from './payment/payment.reducer';
 import wishlist, * as wishlistSelectors from './wishlist/wishlist.reducer';
+import search, * as searchSelectors from './search/search.reducer';
 
 const reducer = combineReducers({
     auth,
@@ -23,6 +24,7 @@ const reducer = combineReducers({
     invoice,
     payment,
     wishlist,
+    search,
     form: formReducer
   });
   
@@ -44,6 +46,8 @@ export const getRefreshingError = state => authSelectors.getRefreshingError(stat
 
 export const getUser = (state) => userSelectors.getUser(state.user);
 export const getIsFetchingUser = (state) => userSelectors.getIsFetchingUser(state.user);
+export const getIsUpdatingUser = (state) => userSelectors.getIsUpdatingUser(state.user);
+export const getIsChangingPassword = state => userSelectors.getIsChangingPassword(state.user);
 export const getIsFetchingUserError = state => userSelectors.getFetchingUserError(state.user);
 
 export const getCategories = state => categoriesSelectors.getCategories(state.categories);
@@ -108,3 +112,7 @@ export const getFetchingWishlistError = state => wishlistSelectors.getFetchingWi
 export const getAddWishlistItemError = state => wishlistSelectors.getAddWishlistItemError(state.wishlist);
 export const getRemoveWishlistItemError = state => wishlistSelectors.getRemoveWishlistItemError(state.wishlist);
 
+/* search selectors */
+export const getFilteredProducts = state => searchSelectors.getFilteredProducts(state.search);
+export const getIsSearching = state => searchSelectors.getIsSearching(state.search);
+export const getSearchingError = state => searchSelectors.getSearchingError(state.search);

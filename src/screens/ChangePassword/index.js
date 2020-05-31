@@ -3,8 +3,10 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Button from 'react-native-button';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import AnimatedLoader from 'react-native-animated-loader';
 
 import * as actions from '../../redux/user/user.actions';
+import * as selectors from '../../redux/root-reducer';
 
 import { AppStyles } from '../../AppStyles';
 
@@ -19,7 +21,7 @@ const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
   );
 };
 
-const ChangePassword = ({ onChangePassword, handleSubmit }) => {
+const ChangePassword = ({ isChangingPassword, error, onChangePassword, handleSubmit }) => {
 
   return (
     <View style={styles.container}>
@@ -60,12 +62,30 @@ const ChangePassword = ({ onChangePassword, handleSubmit }) => {
           component={renderInput}
         />
       </View>
-      <Button
+
+
+      {
+              isChangingPassword ? (
+                <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
+              ) : (
+                <Button
         containerStyle={[styles.loginContainer, { marginTop: 50 }]}
         style={styles.loginText}
         onPress={handleSubmit(onChangePassword)}>
         Change password
       </Button>
+                )
+            }
+
+            {
+              error && (
+                <Text style={styles.name}>
+                  {error}
+                </Text>
+              )
+            }
+
+      
     </View>
   );
 };
@@ -123,24 +143,41 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     color: AppStyles.color.text,
   },
+  name: {
+    fontSize: 22,
+    color: "#ff5ea3",
+    fontWeight: '600',
+    marginBottom: 16
+  },
+  lottie: { 
+    width: 100, 
+    height: 100, 
+  }
 });
 
-export default reduxForm({ form: 'change-password-form'})(
-  connect(
-    undefined,
-    dispatch => ({
-      onChangePassword(values) {
-        const { newPassword1, newPassword2, oldPassword } = values;
-        if (
-          newPassword1.length <= 0 ||
-          newPassword2.length <= 0 ||
-          oldPassword.length <= 0
-        ) {
-          alert('Please fill out the required fields.');
-          return;
-        }
-        dispatch(actions.startChangingPassword({newPassword1, newPassword2, oldPassword}));
-      }
-    }),
-  )(ChangePassword),
+const mapStateToProps = state => ({
+  isChangingPassword: selectors.getIsChangingPassword(state),
+  error: selectors.getIsFetchingUserError(state)
+})
+
+const mapDispatchToProps = dispatch => ({
+  onChangePassword(values) {
+    const { newPassword1, newPassword2, oldPassword } = values;
+    if (
+      newPassword1.length <= 0 ||
+      newPassword2.length <= 0 ||
+      oldPassword.length <= 0
+    ) {
+      alert('Please fill out the required fields.');
+      return;
+    }
+    dispatch(actions.startChangingPassword({newPassword1, newPassword2, oldPassword}));
+  }
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  reduxForm({ form: 'change-password-form'})(ChangePassword)
 );
