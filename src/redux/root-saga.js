@@ -40,6 +40,11 @@ import {
   watchPostPayment,
   watchPaymentItemsFetch
 } from './payment/payment.sagas';
+import {
+  watchWishlistFetch,
+  watchAddWishlistItem,
+  watchRemoveWishlistItem
+} from './wishlist/wishlist.sagas';
 
 function* rootSaga() {
   yield all([
@@ -65,6 +70,9 @@ function* rootSaga() {
     fork(watchOrderItemsFetch),
     fork(watchInvoiceItemsFetch),
     fork(watchPaymentItemsFetch),
+    fork(watchWishlistFetch),
+    fork(watchAddWishlistItem),
+    fork(watchRemoveWishlistItem),
   ]);
 }
 

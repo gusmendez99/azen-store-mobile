@@ -10,6 +10,7 @@ import coupon, * as couponSelectors from './coupon/coupon.reducer';
 import order, * as orderSelectors from './order/order.reducer';
 import invoice, * as invoiceSelectors from './invoice/invoice.reducer';
 import payment, * as paymentSelectors from './payment/payment.reducer';
+import wishlist, * as wishlistSelectors from './wishlist/wishlist.reducer';
 
 const reducer = combineReducers({
     auth,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
     order,
     invoice,
     payment,
+    wishlist,
     form: formReducer
   });
   
@@ -98,4 +100,11 @@ export const getFecthingPaymentItemsError = state => paymentSelectors.getFecthin
 export const getPayment = state => paymentSelectors.getPayment(state.payment);
 export const getIsPostingPayment = state => paymentSelectors.getIsPostingPayment(state.payment)
 export const getPostingPaymentError = state => paymentSelectors.getPostingPaymentError(state.payment);
+
+/** wishlist selectors */
+export const getWishlist = state => wishlistSelectors.getWishlist(state.wishlist);
+export const getIsFetchingWishlist = state => wishlistSelectors.getIsFetchingWishlist(state.wishlist);
+export const getFetchingWishlistError = state => wishlistSelectors.getFetchingWishlistError(state.wishlist);
+export const getAddWishlistItemError = state => wishlistSelectors.getAddWishlistItemError(state.wishlist);
+export const getRemoveWishlistItemError = state => wishlistSelectors.getRemoveWishlistItemError(state.wishlist);
 
