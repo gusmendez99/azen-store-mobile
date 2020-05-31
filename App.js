@@ -32,6 +32,7 @@ import Orders from './src/screens/Orders/index';
 import Invoices from './src/screens/Invoices/index'
 import Payments from './src/screens/Payments/index';
 import OrderCompleted from './src/screens/OrderCompleted/index';
+import Search from './src/screens/Search/index';
 
 
 import * as selectors from './src/redux/root-reducer'
@@ -48,6 +49,18 @@ function productStackNavigator (){
     </>
   );
 }
+
+const searchStack = createStackNavigator();
+function searchStackNavigator (){
+  return (
+    <>
+      <searchStack.Navigator>
+        <searchStack.Screen name="Search" component={Search} />
+      </searchStack.Navigator>
+    </>
+  );
+}
+
 const cartStack = createStackNavigator();
 function cartStackNavigator (){
   return (
@@ -130,6 +143,7 @@ const App = ({
             }}
           >
             <Tab.Screen name="Home" component={productStackNavigator} />
+            <Tab.Screen name="Search" component={searchStackNavigator} />
             <Tab.Screen name="Profile" component={profileStackNavigator} />
             <Tab.Screen name="Cart" component={cartStackNavigator} />
         

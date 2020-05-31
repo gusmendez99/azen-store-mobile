@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 
+import AnimatedLoader from 'react-native-animated-loader';
 
 import * as selectors from '../../redux/root-reducer';
 import * as userActions from '../../redux/user/user.actions';
@@ -32,7 +33,7 @@ const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
 };
 
 
-const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit, navigation, route }) => {
+const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit, navigation, isUpdatingUser, isFetchingUser, error }) => {
   useEffect(() => {
     fetchUser();
   }, [authUserId]);
@@ -125,9 +126,25 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
               <Text>Change password</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonContainer}>
-              <Text>Save</Text>
-            </TouchableOpacity>
+            {
+              isUpdatingUser ? (
+                <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
+              ) : (
+                <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonContainer}>
+                <Text>Save</Text>
+              </TouchableOpacity>
+                )
+            }
+
+            {
+              error && (
+                <Text style={styles.name}>
+                  {error}
+                </Text>
+              )
+            }
+
+            
             <TouchableOpacity onPress={() => logout()} style={styles.buttonContainer}>
               <Text>Logout</Text>
             </TouchableOpacity>
@@ -222,11 +239,18 @@ const styles = StyleSheet.create({
     borderRadius: AppStyles.borderRadius.main,
     paddingHorizontal: 10
   },
+  lottie: { 
+    width: 100, 
+    height: 100, 
+  }
 });
 
 const mapStateToProps = state => ({
   authUserId: selectors.getAuthUserID(state),
   userProfile: selectors.getUser(state),
+  isFetchingUser: selectors.getIsFetchingUser(state),
+  isUpdatingUser: selectors.getIsUpdatingUser(state),
+  error: selectors.getIsFetchingUser(state),
   initialValues: selectors.getUser(state)
 })
 

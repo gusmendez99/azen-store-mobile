@@ -15,6 +15,9 @@ import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
 const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem }) => {
+
+  const imageUri = item.featured_image.includes("azenstore.herokuapp.com") ? item.featured_image.replace("http", "https") : `${HOST_BASE_URL}${item.featured_image}`
+
   const addToCart = () => {
     if(cartItem){
       updateCartItem({...cartItem, quantity: cartItem.quantity+1});
@@ -34,7 +37,7 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem })
       <Text style={styles.title}>{item.name}</Text>
 			<Text style={styles.price}>Q{item.price}</Text>
 
-			<Image style={styles.cardImage} source={{ uri: `${HOST_BASE_URL}${item.featured_image}` }} />
+			<Image style={styles.cardImage} style={{width: 200, height: 200}} resizeMode={'cover'} source={{ uri: imageUri }} />
 
 			<View style={styles.cardFooter}>
 				<View style={styles.socialBarContainer}>

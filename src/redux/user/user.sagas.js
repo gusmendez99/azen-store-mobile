@@ -10,6 +10,8 @@ import * as selectors from '../root-reducer';
 import * as actions from './user.actions';
 import * as types from './user.types';
 
+import * as RootNavigation from '../../RootNavigation.js';
+
 const API_BASE_URL = 'https://azenstore.herokuapp.com/api/v1';
 
 function* fetchUser(action) {
@@ -118,11 +120,12 @@ function* changePassword(action) {
 
 			console.log("CP Status: ", response.status)
 
-			if (response.status === 200) {
+			if(response.status === 200) {
 				const jsonResult = yield response.json();
 				console.log(jsonResult)
 				yield put(
 					actions.completeChangingPassword(),
+					RootNavigation.navigate('Profile')
 				);
 			} else {
 				const { non_field_errors } = yield response.json();
