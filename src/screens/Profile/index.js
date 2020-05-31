@@ -56,18 +56,15 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
         </View>
 
         <View style={styles.profileDetail}>
-          <View style={styles.detailContent}>
-            <Text style={styles.title}>Orders</Text>
-            <Text style={styles.count}>10</Text>
-          </View>
-          <View style={styles.detailContent}>
-            <Text style={styles.title}>Invoices</Text>
-            <Text style={styles.count}>20</Text>
-          </View>
-          <View style={styles.detailContent}>
-            <Text style={styles.title}>Payments</Text>
-            <Text style={styles.count}>10</Text>
-          </View>
+          <TouchableOpacity style={styles.detailContent} onPress={() => {navigation.navigate('Orders')}}>
+            <Text style={styles.title}>My Orders</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.detailContent} onPress={() => {navigation.navigate('Invoices')}} >
+            <Text style={styles.title}>My Invoices</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.detailContent} onPress={()=> navigation.navigate('Payments')}>
+            <Text style={styles.title}>My Payments</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.body}>

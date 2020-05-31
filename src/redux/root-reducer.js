@@ -69,13 +69,30 @@ export const getIsFetchingCoupon = state => couponSelectors.getIsFetchingCoupon(
 export const getFetchingCouponError = state => couponSelectors.getFetchingCouponError(state.coupon);
 export const getCouponField = state => couponSelectors.getCouponField(state.coupon);
 
+/** order selectors */
+export const getOrderItem = (state,id) => orderSelectors.getOrderItem(state.order,id);
+export const getOrderItems = (state) => orderSelectors.getOrderItems(state.order);
+export const getIsFetchingOrderItems = state => orderSelectors.getIsFetchingOrderItems(state.order);
+export const getFecthingOrderItemsError = state => orderSelectors.getFecthingOrderItemsError(state.order);
 export const getOrder = state => orderSelectors.getOrder(state.order);
 export const getIsPostingOrder = state => orderSelectors.getIsPostingOrder(state.order);
 export const getPostingOrderError = state => orderSelectors.getPostingOrderError(state.order);
 
+/** invoice selectors */
+export const getInvoiceItem = (state,id) => invoiceSelectors.getInvoiceItem(state.invoice,id);
+export const getInvoiceItems = (state) => invoiceSelectors.getInvoiceItems(state.invoice);
+export const getIsFetchingInvoiceItems = state => invoiceSelectors.getIsFetchingInvoiceItems(state.invoice);
+export const getFecthingInvoiceItemsError = state => invoiceSelectors.getFecthingInvoiceItemsError(state.invoice);
+
 export const getInvoice = state => invoiceSelectors.getInvoice(state.invoice);
 export const getIsPostingInvoice = state => invoiceSelectors.getIsPostingInvoice(state.invoice)
 export const getPostingInvoiceError = state => invoiceSelectors.getPostingInvoiceError(state.invoice);
+
+/** payment selectors */
+export const getPaymentItem = (state,id) => paymentSelectors.getPaymentItem(state.payment,id);
+export const getPaymentItems = (state) => paymentSelectors.getPaymentItems(state.payment);
+export const getIsFetchingPaymentItems = state => paymentSelectors.getIsFetchingPaymentItems(state.payment);
+export const getFecthingPaymentItemsError = state => paymentSelectors.getFecthingPaymentItemsError(state.payment);
 
 export const getPayment = state => paymentSelectors.getPayment(state.payment);
 export const getIsPostingPayment = state => paymentSelectors.getIsPostingPayment(state.payment)

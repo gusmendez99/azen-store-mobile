@@ -26,7 +26,9 @@ import Profile from './src/screens/Profile/index';
 import Cart from './src/screens/Cart/index';
 import Checkout from './src/screens/Checkout/index';
 import ChangeProfile from './src/screens/ChangePassword/index'
-
+import Orders from './src/screens/Orders/index';
+import Invoices from './src/screens/Invoices/index'
+import Payments from './src/screens/Payments/index';
 
 import * as selectors from './src/redux/root-reducer'
 import ChangePassword from './src/screens/ChangePassword/index';
@@ -76,6 +78,9 @@ function profileStackNavigator (){
       <profileStack.Navigator>
         <profileStack.Screen name="Profile" component={Profile} />
         <profileStack.Screen name="ChangePassword" component={ChangePassword} />
+        <profileStack.Screen name="Orders" component={Orders} />
+        <profileStack.Screen name="Invoices" component={Invoices} />
+        <profileStack.Screen name="Payments" component={Payments} />
       </profileStack.Navigator>
     </>
   );

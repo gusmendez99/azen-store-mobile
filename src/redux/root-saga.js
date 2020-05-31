@@ -29,13 +29,16 @@ import {
   watchCouponFetch
 } from './coupon/coupon.sagas';
 import {
-  watchPostOrder
+  watchPostOrder,
+  watchOrderItemsFetch
 } from './order/order.sagas';
 import {
-  watchPostInvoice
+  watchPostInvoice,
+  watchInvoiceItemsFetch
 } from './invoice/invoice.sagas';
 import {
-  watchPostPayment
+  watchPostPayment,
+  watchPaymentItemsFetch
 } from './payment/payment.sagas';
 
 function* rootSaga() {
@@ -59,6 +62,9 @@ function* rootSaga() {
     fork(watchPostOrder),
     fork(watchPostInvoice),
     fork(watchPostPayment),
+    fork(watchOrderItemsFetch),
+    fork(watchInvoiceItemsFetch),
+    fork(watchPaymentItemsFetch),
   ]);
 }
 
