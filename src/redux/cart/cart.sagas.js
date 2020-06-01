@@ -105,7 +105,6 @@ export function* watchCartItemsFetch() {
 function* addCartItem(action) {
   try {
     const isAuth = yield select(selectors.isAuthenticated);
-
     if (isAuth) {
       const token = yield select(selectors.getAuthToken);
       const response = yield call(
@@ -120,7 +119,6 @@ function* addCartItem(action) {
           },
         }
       );
-
       if (response.status === 201) {
         const jsonResult = yield response.json();
         yield put(
