@@ -48,7 +48,9 @@ import {
 import {
   watchFilteredProducts
 } from './search/search.sagas';
-
+import {
+  watchGalleryItemsFetch
+} from './galleryitems/galleryitems.sagas';
 function* rootSaga() {
   yield all([
     fork(watchRegisterStarted),
@@ -76,7 +78,8 @@ function* rootSaga() {
     fork(watchWishlistFetch),
     fork(watchAddWishlistItem),
     fork(watchRemoveWishlistItem),
-    fork(watchFilteredProducts)
+    fork(watchFilteredProducts),
+    fork(watchGalleryItemsFetch),
   ]);
 }
 

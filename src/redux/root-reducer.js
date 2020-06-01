@@ -12,6 +12,7 @@ import invoice, * as invoiceSelectors from './invoice/invoice.reducer';
 import payment, * as paymentSelectors from './payment/payment.reducer';
 import wishlist, * as wishlistSelectors from './wishlist/wishlist.reducer';
 import search, * as searchSelectors from './search/search.reducer';
+import galleryItems, * as galleryItemsSelectors from './galleryitems/galleryitems.reducer';
 
 const reducer = combineReducers({
     auth,
@@ -25,6 +26,7 @@ const reducer = combineReducers({
     payment,
     wishlist,
     search,
+    galleryItems,
     form: formReducer
   });
   
@@ -116,3 +118,9 @@ export const getRemoveWishlistItemError = state => wishlistSelectors.getRemoveWi
 export const getFilteredProducts = state => searchSelectors.getFilteredProducts(state.search);
 export const getIsSearching = state => searchSelectors.getIsSearching(state.search);
 export const getSearchingError = state => searchSelectors.getSearchingError(state.search);
+
+/** galleryItems selectors */
+export const getGalleryItem = (state, id) => galleryItemsSelectors.getGalleryItem(state.galleryItems, id);
+export const getGalleryItems = state => galleryItemsSelectors.getGalleryItems(state.galleryItems);
+export const getisFetchingGalleryItems = state => galleryItemsSelectors.getIsFetchingGalleryItems(state.galleryItems);
+export const getFetchingGalleryItemsError = state => galleryItemsSelectors.getFetchingGalleryItemsError(state.galleryItems);

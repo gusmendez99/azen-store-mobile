@@ -13,11 +13,15 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../redux/cart/cart.actions';
 import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
+import * as galleryItemsActions from '../../redux/galleryitems/galleryitems.actions';
 import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts }) => {
+const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts, fetchGalleryItems }) => {
   const { item } = route.params;
+  useEffect( () => {
+    fetchGalleryItems()
+  }, [])
   const addToCart = () => {
     if(cartItem){
       updateCartItem({...cartItem, quantity: cartItem.quantity+1});
@@ -160,6 +164,9 @@ export default connect(
     },
     addWishlistItem(){
       dispatch(wishlistActions.startAddingWishlistItem(route.params.item.id))
-    }
+    },
+    fetchGalleryItems(){
+      dispatch(galleryItemsActions.startFetchingGalleryItems(route.params.item.id));
+    },
   }),
 )(ProductDetail);
