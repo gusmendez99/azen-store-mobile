@@ -12,10 +12,11 @@ import uuid from 'react-native-uuid';
 import { connect } from 'react-redux';
 
 import * as actions from '../../redux/cart/cart.actions';
+import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
 import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem }) => {
+const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts }) => {
   const { item } = route.params;
   const addToCart = () => {
     if(cartItem){
@@ -28,6 +29,21 @@ const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updat
       };
       console.log(newCartItem)
       addCartItem(newCartItem);
+    }
+  }
+  const addToWishlist = () => {
+    if( wishlistProducts.includes(item.id) === false){
+      addWishlistItem()
+    } else {
+      Alert.alert(
+        'This item already exists in your wishlist!',
+        '',
+        [
+          {text: 'Cancel', onPress: () => console.log('Got it'), style: 'cancel'},
+        ],
+        { cancelable: false }
+      );
+      
     }
   }
 
@@ -53,6 +69,11 @@ const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updat
           <View style={styles.addToCarContainer}>
             <TouchableOpacity style={styles.shareButton} onPress={() => addToCart()}>
               <Text style={styles.shareButtonText}>Add To Cart</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.addToCarContainer}>
+            <TouchableOpacity style={styles.shareButton} onPress={() => addToWishlist()}>
+              <Text style={styles.shareButtonText}>Add To Wishlist</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -123,8 +144,9 @@ export default connect(
   (state, {route}) => ({
     cartItem: selectors.getCartItemByProductId(state,route.params.item.id),
     cartId: selectors.getCart(state).id,
+    wishlistProducts: selectors.getWishlist(state).products,
   }),
-  dispatch => ({
+  (dispatch, {route}) => ({
     updateCartItem(cartItem){
       dispatch(actions.startUpdatingCartItem(cartItem))
     },
@@ -136,5 +158,8 @@ export default connect(
         })
       );
     },
+    addWishlistItem(){
+      dispatch(wishlistActions.startAddingWishlistItem(route.params.item.id))
+    }
   }),
 )(ProductDetail);

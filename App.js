@@ -33,7 +33,7 @@ import Invoices from './src/screens/Invoices/index'
 import Payments from './src/screens/Payments/index';
 import OrderCompleted from './src/screens/OrderCompleted/index';
 import Search from './src/screens/Search/index';
-
+import Wishlist from './src/screens/Wishlist/index';
 
 import * as selectors from './src/redux/root-reducer'
 
@@ -46,6 +46,17 @@ function productStackNavigator (){
         <productStack.Screen name="Products" component={Products}/>
         <productStack.Screen name="ProductDetail" component={ProductDetail}/>
       </productStack.Navigator>
+    </>
+  );
+}
+
+const wishlistStack = createStackNavigator();
+function wishlistStackNavigator (){
+  return (
+    <>
+      <wishlistStack.Navigator>
+        <wishlistStack.Screen name="Wishlist" component={Wishlist} />
+      </wishlistStack.Navigator>
     </>
   );
 }
@@ -134,6 +145,9 @@ const App = ({
                 } else if (route.name === 'Cart') {
                   iconName = 'shopping-cart'
                 }
+                else if (route.name === 'Wishlist') {
+                  iconName = 'list-ul'
+                }
                 return <FontAwesome5 name={iconName} size={size} color={color} />;
               },
             })}
@@ -146,6 +160,7 @@ const App = ({
             <Tab.Screen name="Search" component={searchStackNavigator} />
             <Tab.Screen name="Profile" component={profileStackNavigator} />
             <Tab.Screen name="Cart" component={cartStackNavigator} />
+            <Tab.Screen name="Wishlist" component={wishlistStackNavigator} />
         
           </Tab.Navigator>
         ) : (

@@ -11,10 +11,11 @@ import {connect} from 'react-redux';
 import uuid from 'react-native-uuid';
 
 import * as actions from '../../redux/cart/cart.actions';
+import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
 import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem }) => {
+const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts }) => {
 
   const imageUri = item.featured_image.includes("azenstore.herokuapp.com") ? item.featured_image.replace("http", "https") : `${HOST_BASE_URL}${item.featured_image}`
 
@@ -27,11 +28,24 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem })
         product: item.id,
         quantity: 1
       };
-      console.log(newCartItem)
       addCartItem(newCartItem);
     }
   }
-
+  const addToWishlist = () => {
+    if( wishlistProducts.includes(item.id) === false){
+      addWishlistItem()
+    } else {
+      Alert.alert(
+        'This item already exists in your wishlist!',
+        '',
+        [
+          {text: 'Got it', onPress: () => console.log('Got it'), style: 'cancel'},
+        ],
+        { cancelable: false }
+      );
+      
+    }
+  }
 	return (
 		<View style={styles.card}>
       <Text style={styles.title}>{item.name}</Text>
@@ -45,6 +59,10 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem })
 						<TouchableOpacity style={styles.socialBarButton} onPress={() => console.log('funcion de calificar')}>
 							<Image style={styles.icon} source={{ uri: 'https://www.shareicon.net/data/512x512/2016/09/10/828167_cart_512x512.png' }} />
 							<Text style={[styles.socialBarLabel, styles.buyNow]} onPress={() => addToCart()}>Add to Cart</Text>
+						</TouchableOpacity>
+            <TouchableOpacity style={styles.socialBarButton} onPress={() => console.log('funcion de calificar')}>
+							<Image style={styles.icon} source={{ uri: 'https://www.shareicon.net/data/128x128/2016/07/11/598139_list_64x64.png' }} />
+							<Text style={[styles.socialBarLabel, styles.buyNow]} onPress={() => addToWishlist()}>Add to WishList</Text>
 						</TouchableOpacity>
 					</View>
 					<View style={styles.socialBarSection}>
@@ -124,7 +142,7 @@ const styles = StyleSheet.create({
   },
   socialBarSection: {
     justifyContent: 'center',
-    flexDirection: 'row',
+    flexDirection: 'column',
     flex: 1,
   },
   socialBarlabel: {
@@ -143,8 +161,9 @@ export default connect(
   (state, {item}) => ({
     cartItem: selectors.getCartItemByProductId(state,item.id),
     cartId: selectors.getCart(state).id,
+    wishlistProducts: selectors.getWishlist(state).products,
   }),
-  dispatch => ({
+  (dispatch, {item}) => ({
     updateCartItem(cartItem){
       dispatch(actions.startUpdatingCartItem(cartItem))
     },
@@ -156,6 +175,9 @@ export default connect(
         })
       );
     },
+    addWishlistItem(){
+      dispatch(wishlistActions.startAddingWishlistItem(item.id))
+    }
   }),
 
 )(ProductPreview);

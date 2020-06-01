@@ -41,6 +41,11 @@ import {
   watchPaymentItemsFetch
 } from './payment/payment.sagas';
 import {
+  watchWishlistFetch,
+  watchAddWishlistItem,
+  watchRemoveWishlistItem
+} from './wishlist/wishlist.sagas';
+import {
   watchFilteredProducts
 } from './search/search.sagas';
 
@@ -68,6 +73,9 @@ function* rootSaga() {
     fork(watchOrderItemsFetch),
     fork(watchInvoiceItemsFetch),
     fork(watchPaymentItemsFetch),
+    fork(watchWishlistFetch),
+    fork(watchAddWishlistItem),
+    fork(watchRemoveWishlistItem),
     fork(watchFilteredProducts)
   ]);
 }

@@ -7,7 +7,9 @@ import Category from "../../components/Category/index";
 import { AppStyles } from '../../AppStyles';
 import * as actions from '../../redux/categories/categories.actions';
 import * as cartActions from '../../redux/cart/cart.actions';
+import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
 import * as selectors from '../../redux/root-reducer';
+
 
 const COLUMNS_COUNT = 2;
 
@@ -18,6 +20,7 @@ const Categories = ({
   authUserId, 
   getCartItems, 
   fetchCartItems,
+  fetchWishlist,
   getCart,
   fetchCart,
   navigation }) => {
@@ -31,7 +34,9 @@ const Categories = ({
   useEffect(() => {
     getCart();
   }, [authUserId]);
-
+  useEffect(() => {
+    fetchWishlist();
+  }, [])
   const navigateToProduct = (item) => {
     console.log('Stating to navigate to Product...')
     navigation.navigate('Products', {
@@ -102,6 +107,9 @@ export default connect(
     },
     fetchCart(){
       dispatch(cartActions.startFetchingCart())
+    },
+    fetchWishlist(){
+      dispatch(wishlistActions.startFetchingWishlist())
     }
   }),
   (stateProps, dispatchProps, ownProps) => ({
