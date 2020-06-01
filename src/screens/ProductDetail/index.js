@@ -18,14 +18,18 @@ import ReviewPreview from '../../components/ReviewPreview';
 import * as actions from '../../redux/cart/cart.actions';
 import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
 import * as reviewActions from '../../redux/review/review.actions'
+import * as galleryItemsActions from '../../redux/galleryitems/galleryitems.actions';
 import * as selectors from '../../redux/root-reducer';
 
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem, addWishlistItem, getReviews }) => {
+const ProductDetail = ({ navigation, route, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem, addWishlistItem, getReviews, fetchGalleryItems }) => {
   const { item } = route.params;
 
-  useEffect(getReviews, [])
+  useEffect( () => {
+    getReviews()
+    fetchGalleryItems()
+  }, [])
 
   const addToCart = () => {
     if(cartItem){
@@ -202,6 +206,9 @@ export default connect(
     },
     getReviews() {
       dispatch(reviewActions.startFetchingReviews(route.params.item.id))
-    }
+    },
+    fetchGalleryItems(){
+      dispatch(galleryItemsActions.startFetchingGalleryItems(route.params.item.id));
+    },
   }),
 )(ProductDetail);
