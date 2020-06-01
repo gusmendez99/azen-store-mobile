@@ -66,13 +66,18 @@ function* postReview(action) {
   try {
     const isAuth = yield select(selectors.isAuthenticated);
     if (isAuth) {
+      const { reviewData } = action.payload;
       const token = yield select(selectors.getAuthToken);
+      const authUserID = yield select(selectors.getAuthUserID);
+
+      const newReview = {...reviewData, user: authUserID}
+
       const response = yield call(
         fetch,
         `${API_BASE_URL}/reviews/`,
         {
           method: 'POST',
-          body: JSON.stringify(action.payload),
+          body: JSON.stringify(newReview),
           headers:{
             'Content-Type': 'application/json',
             'Authorization': `JWT ${token}`,

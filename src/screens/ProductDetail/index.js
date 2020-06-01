@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  TextInput,
   ScrollView,
-  FlatList
 } from 'react-native';
 import uuid from 'react-native-uuid';
 import { connect } from 'react-redux';
+import { AppStyles } from '../../AppStyles';
 import StarRating from 'react-native-star-rating';
 import Carousel from 'react-native-snap-carousel';
+import Modal from 'react-native-modal';
 import ReviewPreview from '../../components/ReviewPreview';
 
 import * as actions from '../../redux/cart/cart.actions';
@@ -23,17 +25,25 @@ import * as selectors from '../../redux/root-reducer';
 
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem, addWishlistItem, getReviews, fetchGalleryItems }) => {
+const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem, addWishlistItem, getReviews, fetchGalleryItems, postReview }) => {
   const { item } = route.params;
 
-  useEffect( () => {
+  const [isModalVisible, changeModalVisible] = useState(false);
+  const [newReviewContent, changeNewReviewContent] = useState('');
+  const [newReviewRate, changeNewReviewRate] = useState(0);
+
+  const toggleModal = () => {
+    changeModalVisible(!isModalVisible);
+  };
+
+  useEffect(() => {
     getReviews()
     fetchGalleryItems()
   }, [])
 
   const addToCart = () => {
-    if(cartItem){
-      updateCartItem({...cartItem, quantity: cartItem.quantity+1});
+    if (cartItem) {
+      updateCartItem({ ...cartItem, quantity: cartItem.quantity + 1 });
     } else {
       const newCartItem = {
         cart: cartId,
@@ -44,72 +54,134 @@ const ProductDetail = ({ navigation, route, cartItem, cartId, reviews, stars, wi
       addCartItem(newCartItem);
     }
   }
+
   const addToWishlist = () => {
-    if( wishlistProducts.includes(item.id) === false){
+    if (wishlistProducts.includes(item.id) === false) {
       addWishlistItem()
     } else {
       Alert.alert(
         'This item already exists in your wishlist!',
         '',
         [
-          {text: 'Cancel', onPress: () => console.log('Got it'), style: 'cancel'},
+          { text: 'Cancel', onPress: () => console.log('Got it'), style: 'cancel' },
         ],
         { cancelable: false }
       );
-      
+
     }
   }
 
-  return (
-          <ScrollView nestedScrollEnabled={true}  style={styles.container}>
-            <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-              <Image style={styles.productImg} source={{ uri: `${HOST_BASE_URL}${item.featured_image}` }} />
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.price}>Q{item.price}</Text>
-              <Text style={styles.description}>
-                {item.description}
-              </Text>
-            </View>
-            <View style={styles.starContainer}>
-              <StarRating
-                disabled={true}
-                maxStars={5}
-                rating={stars}
-                fullStarColor={'gold'}
-              />
-            </View>          
-            <View style={styles.separator}></View>
-            <View style={styles.addToCarContainer}>
-              <TouchableOpacity style={styles.shareButton} onPress={() => addToCart()}>
-                <Text style={styles.shareButtonText}>Add To Cart</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.addToCarContainer}>
-              <TouchableOpacity style={styles.shareButton} onPress={() => addToWishlist()}>
-                <Text style={styles.shareButtonText}>Add To Wishlist</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-              <Text style={styles.reviewTitle}>Reviews: {reviews.length}</Text>
-                <Carousel
-                  data={reviews}
-                  renderItem={ReviewPreview}
-                  sliderWidth={360}
-                  itemWidth={256}
-                  layout={'default'}
-                />
+  const addReview = () => {
+    postReview({ content: newReviewContent, rate: newReviewRate, product: item.id })
+    toggleModal()
+  }
 
-              {/*<FlatList 
+  const canPostNewReview = () => {
+    if (reviews.length > 0) {
+      // If current user has already posted a review...
+      return !(reviews.find(review => review.username === authUsername));
+    }
+    return true;
+  }
+
+  return (
+    <ScrollView nestedScrollEnabled={true} style={styles.container}>
+      <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
+        <Image style={styles.productImg} source={{ uri: `${HOST_BASE_URL}${item.featured_image}` }} />
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.price}>Q{item.price}</Text>
+        <Text style={styles.description}>
+          {item.description}
+        </Text>
+      </View>
+      <View style={styles.starContainer}>
+        <StarRating
+          disabled={true}
+          maxStars={5}
+          rating={stars}
+          fullStarColor={'gold'}
+        />
+      </View>
+      <View style={styles.separator}></View>
+      <View style={styles.addToCarContainer}>
+        <TouchableOpacity style={styles.shareButton} onPress={() => addToCart()}>
+          <Text style={styles.shareButtonText}>Add To Cart</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.addToCarContainer}>
+        <TouchableOpacity style={styles.shareButton} onPress={() => addToWishlist()}>
+          <Text style={styles.shareButtonText}>Add To Wishlist</Text>
+        </TouchableOpacity>
+      </View>
+      {
+        canPostNewReview() && (
+          <View style={styles.addToCarContainer}>
+            <TouchableOpacity style={styles.shareButton} onPress={() => toggleModal()}>
+              <Text style={styles.shareButtonText}>Add Review</Text>
+            </TouchableOpacity>
+          </View>
+        )
+      }
+      <View style={styles.separator}></View>
+      <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
+        <Text style={styles.reviewTitle}>Reviews: {reviews.length}</Text>
+        <Carousel
+          data={reviews}
+          renderItem={ReviewPreview}
+          sliderWidth={360}
+          itemWidth={256}
+          layout={'default'}
+        />
+
+        {/*<FlatList 
                 style={styles.reviewsList}
                 data={reviews}
                 keyExtractor= {(item) => {
                   return item.id.toString();
                 }}
               renderItem={ReviewPreview}/>*/}
+      </View>
+      {/* Modal to add a new review */}
+      <Modal 
+        isVisible={isModalVisible}
+        onBackdropPress={() => changeModalVisible(false)}
+        backdropColor="white"
+        backdropOpacity={0.98}>
+          <View style={[styles.container]}>
+
+            <Text style={styles.modalTitle}>New Review</Text>
+            <View style={styles.starContainer}>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={newReviewRate}
+                fullStarColor={'gold'}
+                selectedStar={(rating) => changeNewReviewRate(rating)}
+              />
             </View>
-              
-          </ScrollView>
-    );
+            <View style={styles.InputContainer}>
+              <TextInput
+                styles={styles.whiteText}
+                multiline={true}
+                numberOfLines={3}
+                onChangeText={(text) => changeNewReviewContent(text)}
+                value={newReviewContent}/>
+            </View>
+            <View style={styles.addToCarContainer}>
+              <TouchableOpacity style={styles.shareButton} onPress={() => addReview()}>
+                <Text style={styles.shareButtonText}>Post Review</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.addToCarContainer}>
+              <TouchableOpacity style={styles.shareButton} onPress={() => toggleModal()}>
+                <Text style={styles.shareButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -126,15 +198,20 @@ const styles = StyleSheet.create({
     color: "#696969",
     fontWeight: 'bold'
   },
+  modalTitle: {
+    fontSize: 28,
+    color: AppStyles.color.black,
+    fontWeight: 'bold'
+  },
   reviewTitle: {
     fontSize: 20,
     color: "#696969",
     fontWeight: 'bold',
-    margin: 20
+    margin: 10
   },
-  reviewsList:{
-    marginTop:20,
-    padding:10,
+  reviewsList: {
+    marginTop: 20,
+    padding: 10,
   },
   price: {
     marginTop: 10,
@@ -147,14 +224,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "#696969",
   },
-  star: {
-    width: 40,
-    height: 40,
-  },
   starContainer: {
     justifyContent: 'center',
     marginHorizontal: 30,
-    flexDirection: 'row',
+    paddingHorizontal: 50,
     marginTop: 20
   },
   separator: {
@@ -164,7 +237,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   shareButton: {
-    marginTop: 10,
+    marginTop: 15,
     height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -178,22 +251,31 @@ const styles = StyleSheet.create({
   },
   addToCarContainer: {
     marginHorizontal: 30
-  }
-}); 
+  },
+  InputContainer: {
+    width:"100%",
+    marginTop: 30,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: AppStyles.color.grey,
+    borderRadius: AppStyles.borderRadius.main,
+  },
+});
 
 export default connect(
-  (state, {route}) => ({
-    cartItem: selectors.getCartItemByProductId(state,route.params.item.id),
+  (state, { route }) => ({
+    authUsername: selectors.getAuthUsername(state),
+    cartItem: selectors.getCartItemByProductId(state, route.params.item.id),
     cartId: selectors.getCart(state).id,
     wishlistProducts: selectors.getWishlist(state).products,
     reviews: selectors.getReviews(state),
     stars: selectors.getReviewsStars(state)
   }),
-  (dispatch, {route}) => ({
-    updateCartItem(cartItem){
+  (dispatch, { route }) => ({
+    updateCartItem(cartItem) {
       dispatch(actions.startUpdatingCartItem(cartItem))
     },
-    addCartItem(newCartItem){
+    addCartItem(newCartItem) {
       dispatch(
         actions.startAddingCartItem({
           id: uuid.v4(),
@@ -201,14 +283,17 @@ export default connect(
         })
       );
     },
-    addWishlistItem(){
+    addWishlistItem() {
       dispatch(wishlistActions.startAddingWishlistItem(route.params.item.id))
     },
     getReviews() {
       dispatch(reviewActions.startFetchingReviews(route.params.item.id))
     },
-    fetchGalleryItems(){
+    fetchGalleryItems() {
       dispatch(galleryItemsActions.startFetchingGalleryItems(route.params.item.id));
     },
+    postReview(review) {
+      dispatch(reviewActions.startPostingReview(review))
+    }
   }),
 )(ProductDetail);
