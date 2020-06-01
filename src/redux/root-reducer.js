@@ -122,7 +122,8 @@ export const getSearchingError = state => searchSelectors.getSearchingError(stat
 /* reviews selectors */
 export const getReview = (state,id) => reviewSelectors.getReview(state.review, id);
 export const getReviews = (state) => reviewSelectors.getReviews(state.review);
-export const getIsFetchingPaymentItems = state => reviewSelectors.getIsFetchingReview(state.review);
+export const getReviewsStars = state => reviewSelectors.getReviewsStars(state.review);
+export const getIsFetchingReview = state => reviewSelectors.getIsFetchingReview(state.review);
 export const getIsPostingReview = state => reviewSelectors.getIsPostingReview(state.review);
 export const getFecthingReviewError = state => reviewSelectors.getFecthingReviewError(state.review);
 export const getPostingReviewError = state => reviewSelectors.getPostingReviewError(state.review);

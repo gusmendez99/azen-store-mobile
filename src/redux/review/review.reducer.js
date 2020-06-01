@@ -1,3 +1,4 @@
+import meanBy from 'lodash/meanBy';
 import { combineReducers } from 'redux';
 import * as types from './review.types';
 
@@ -122,6 +123,7 @@ export default combineReducers({
 
 export const getReview = (state, id) => state.byId[id];
 export const getReviews = state => state.order.map(id => getReview(state, id));
+export const getReviewsStars = state => (getReviews(state) && getReviews(state).length > 0) ? meanBy(getReviews(state), (review) => review.rate) : 0.00;
 export const getIsFetchingReview = state => state.isFetching;
 export const getFecthingReviewError = state => state.fetchError;
 export const getIsPostingReview = (state) => state.isPosting;

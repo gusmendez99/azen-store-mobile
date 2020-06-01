@@ -48,6 +48,10 @@ import {
 import {
   watchFilteredProducts
 } from './search/search.sagas';
+import {
+  watchPostReview,
+  watchReviewsFetch
+} from './review/review.sagas';
 
 function* rootSaga() {
   yield all([
@@ -76,7 +80,9 @@ function* rootSaga() {
     fork(watchWishlistFetch),
     fork(watchAddWishlistItem),
     fork(watchRemoveWishlistItem),
-    fork(watchFilteredProducts)
+    fork(watchFilteredProducts),
+    fork(watchReviewsFetch),
+    fork(watchPostReview)
   ]);
 }
 
