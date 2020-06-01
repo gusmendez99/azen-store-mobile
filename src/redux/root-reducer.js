@@ -13,6 +13,7 @@ import payment, * as paymentSelectors from './payment/payment.reducer';
 import wishlist, * as wishlistSelectors from './wishlist/wishlist.reducer';
 import search, * as searchSelectors from './search/search.reducer';
 import galleryItems, * as galleryItemsSelectors from './galleryitems/galleryitems.reducer';
+import review, * as reviewSelectors from './review/review.reducer';
 
 const reducer = combineReducers({
     auth,
@@ -27,6 +28,7 @@ const reducer = combineReducers({
     wishlist,
     search,
     galleryItems,
+    review,
     form: formReducer
   });
   
@@ -124,3 +126,11 @@ export const getGalleryItem = (state, id) => galleryItemsSelectors.getGalleryIte
 export const getGalleryItems = state => galleryItemsSelectors.getGalleryItems(state.galleryItems);
 export const getisFetchingGalleryItems = state => galleryItemsSelectors.getIsFetchingGalleryItems(state.galleryItems);
 export const getFetchingGalleryItemsError = state => galleryItemsSelectors.getFetchingGalleryItemsError(state.galleryItems);
+
+/* reviews selectors */
+export const getReview = (state,id) => reviewSelectors.getReview(state.review, id);
+export const getReviews = (state) => reviewSelectors.getReviews(state.review);
+export const getIsFetchingPaymentItems = state => reviewSelectors.getIsFetchingReview(state.review);
+export const getIsPostingReview = state => reviewSelectors.getIsPostingReview(state.review);
+export const getFecthingReviewError = state => reviewSelectors.getFecthingReviewError(state.review);
+export const getPostingReviewError = state => reviewSelectors.getPostingReviewError(state.review);
