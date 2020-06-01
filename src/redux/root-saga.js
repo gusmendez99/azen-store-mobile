@@ -49,6 +49,10 @@ import {
   watchFilteredProducts
 } from './search/search.sagas';
 import {
+  watchPostReview,
+  watchReviewsFetch
+} from './review/review.sagas';
+import {
   watchGalleryItemsFetch
 } from './galleryitems/galleryitems.sagas';
 function* rootSaga() {
@@ -79,6 +83,8 @@ function* rootSaga() {
     fork(watchAddWishlistItem),
     fork(watchRemoveWishlistItem),
     fork(watchFilteredProducts),
+    fork(watchReviewsFetch),
+    fork(watchPostReview),
     fork(watchGalleryItemsFetch),
   ]);
 }

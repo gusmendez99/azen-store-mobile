@@ -7,22 +7,31 @@ import {
   Image,
   Alert,
   ScrollView,
+  FlatList
 } from 'react-native';
 import uuid from 'react-native-uuid';
 import { connect } from 'react-redux';
 import { SliderBox } from "react-native-image-slider-box";
+import StarRating from 'react-native-star-rating';
+import Carousel from 'react-native-snap-carousel';
+import ReviewPreview from '../../components/ReviewPreview';
 
 import * as actions from '../../redux/cart/cart.actions';
 import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
+import * as reviewActions from '../../redux/review/review.actions'
 import * as galleryItemsActions from '../../redux/galleryitems/galleryitems.actions';
 import * as selectors from '../../redux/root-reducer';
+
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts, fetchGalleryItems, galleryItems, isFetchingGalleryItems }) => {
+const ProductDetail = ({ navigation, route, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem, addWishlistItem, getReviews, fetchGalleryItems, galleryItems, isFetchingGalleryItems }) => {
   const { item } = route.params;
+
   useEffect( () => {
+    getReviews()
     fetchGalleryItems()
   }, [])
+
   const addToCart = () => {
     if(cartItem){
       updateCartItem({...cartItem, quantity: cartItem.quantity+1});
@@ -52,47 +61,65 @@ const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updat
     }
   }
   return (
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={{ alignItems: 'center', marginHorizontal: 30 }} >
-            { isFetchingGalleryItems ? (
-              <></>
-            ) : (
-                <View style={{ alignItems: 'center', height: 200}}>
-                  <SliderBox
-                    images={galleryItems}
-                    ImageComponentStyle={{width: '50%'}}
-                    />
+          <ScrollView nestedScrollEnabled={true}  style={styles.container}>
+            <View style={{ alignItems: 'center', marginHorizontal: 30 }} >
+              { isFetchingGalleryItems ? (
+                <></>
+              ) : (
+                  <View style={{ alignItems: 'center', height: 200}}>
+                    <SliderBox
+                      images={galleryItems}
+                      ImageComponentStyle={{width: '50%'}}
+                      />
+                
+                  </View>
+                  )
+              }
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.price}>Q{item.price}</Text>
+              <Text style={styles.description}>
+                {item.description}
+              </Text>
+            </View>
+            <View style={styles.starContainer}>
+              <StarRating
+                disabled={true}
+                maxStars={5}
+                rating={stars}
+                fullStarColor={'gold'}
+              />
+            </View>          
+            <View style={styles.separator}></View>
+            <View style={styles.addToCarContainer}>
+              <TouchableOpacity style={styles.shareButton} onPress={() => addToCart()}>
+                <Text style={styles.shareButtonText}>Add To Cart</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.addToCarContainer}>
+              <TouchableOpacity style={styles.shareButton} onPress={() => addToWishlist()}>
+                <Text style={styles.shareButtonText}>Add To Wishlist</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
+              <Text style={styles.reviewTitle}>Reviews: {reviews.length}</Text>
+                <Carousel
+                  data={reviews}
+                  renderItem={ReviewPreview}
+                  sliderWidth={360}
+                  itemWidth={256}
+                  layout={'default'}
+                />
+
+              {/*<FlatList 
+                style={styles.reviewsList}
+                data={reviews}
+                keyExtractor= {(item) => {
+                  return item.id.toString();
+                }}
+              renderItem={ReviewPreview}/>*/}
+            </View>
               
-                </View>
-                )
-            }
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.price}>Q{item.price}</Text>
-            <Text style={styles.description}>
-              {item.description}
-            </Text>
-          </View>
-          <View style={styles.starContainer}>
-            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-          </View>          
-          <View style={styles.separator}></View>
-          <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => addToCart()}>
-              <Text style={styles.shareButtonText}>Add To Cart</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => addToWishlist()}>
-              <Text style={styles.shareButtonText}>Add To Wishlist</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
     );
 }
 
@@ -109,6 +136,16 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: "#696969",
     fontWeight: 'bold'
+  },
+  reviewTitle: {
+    fontSize: 20,
+    color: "#696969",
+    fontWeight: 'bold',
+    margin: 20
+  },
+  reviewsList:{
+    marginTop:20,
+    padding:10,
   },
   price: {
     marginTop: 10,
@@ -161,7 +198,9 @@ export default connect(
     cartId: selectors.getCart(state).id,
     wishlistProducts: selectors.getWishlist(state).products,
     isFetchingGalleryItems: selectors.getisFetchingGalleryItems(state),
-    galleryItems: selectors.getGalleryItems(state).map(galleryItem => galleryItem.image)
+    galleryItems: selectors.getGalleryItems(state).map(galleryItem => galleryItem.image),
+    reviews: selectors.getReviews(state),
+    stars: selectors.getReviewsStars(state)
   }),
   (dispatch, {route}) => ({
     updateCartItem(cartItem){
@@ -177,6 +216,9 @@ export default connect(
     },
     addWishlistItem(){
       dispatch(wishlistActions.startAddingWishlistItem(route.params.item.id))
+    },
+    getReviews() {
+      dispatch(reviewActions.startFetchingReviews(route.params.item.id))
     },
     fetchGalleryItems(){
       dispatch(galleryItemsActions.startFetchingGalleryItems(route.params.item.id));
