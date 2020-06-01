@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
   Alert,
   TextInput,
   ScrollView,
@@ -12,6 +11,7 @@ import {
 import uuid from 'react-native-uuid';
 import { connect } from 'react-redux';
 import { AppStyles } from '../../AppStyles';
+import { SliderBox } from "react-native-image-slider-box";
 import StarRating from 'react-native-star-rating';
 import Carousel from 'react-native-snap-carousel';
 import Modal from 'react-native-modal';
@@ -25,7 +25,8 @@ import * as selectors from '../../redux/root-reducer';
 
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem, addWishlistItem, getReviews, fetchGalleryItems, postReview }) => {
+const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem,
+  addWishlistItem, getReviews, fetchGalleryItems, postReview, galleryItems, isFetchingGalleryItems }) => {
   const { item } = route.params;
 
   const [isModalVisible, changeModalVisible] = useState(false);
@@ -83,11 +84,21 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
     }
     return true;
   }
-
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-        <Image style={styles.productImg} source={{ uri: `${HOST_BASE_URL}${item.featured_image}` }} />
+      <View style={{ alignItems: 'center', marginHorizontal: 30 }} >
+        {isFetchingGalleryItems ? (
+          <></>
+        ) : (
+            <View style={{ alignItems: 'center', height: 200 }}>
+              <SliderBox
+                images={galleryItems}
+                ImageComponentStyle={{ width: '50%' }}
+              />
+
+            </View>
+          )
+        }
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.price}>Q{item.price}</Text>
         <Text style={styles.description}>
@@ -142,43 +153,43 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
               renderItem={ReviewPreview}/>*/}
       </View>
       {/* Modal to add a new review */}
-      <Modal 
+      <Modal
         isVisible={isModalVisible}
         onBackdropPress={() => changeModalVisible(false)}
         backdropColor="white"
         backdropOpacity={0.98}>
-          <View style={[styles.container]}>
+        <View style={[styles.container]}>
 
-            <Text style={styles.modalTitle}>New Review</Text>
-            <View style={styles.starContainer}>
-              <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={newReviewRate}
-                fullStarColor={'gold'}
-                selectedStar={(rating) => changeNewReviewRate(rating)}
-              />
-            </View>
-            <View style={styles.InputContainer}>
-              <TextInput
-                styles={styles.whiteText}
-                multiline={true}
-                numberOfLines={3}
-                onChangeText={(text) => changeNewReviewContent(text)}
-                value={newReviewContent}/>
-            </View>
-            <View style={styles.addToCarContainer}>
-              <TouchableOpacity style={styles.shareButton} onPress={() => addReview()}>
-                <Text style={styles.shareButtonText}>Post Review</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.addToCarContainer}>
-              <TouchableOpacity style={styles.shareButton} onPress={() => toggleModal()}>
-                <Text style={styles.shareButtonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
+          <Text style={styles.modalTitle}>New Review</Text>
+          <View style={styles.starContainer}>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={newReviewRate}
+              fullStarColor={'gold'}
+              selectedStar={(rating) => changeNewReviewRate(rating)}
+            />
           </View>
-        </Modal>
+          <View style={styles.InputContainer}>
+            <TextInput
+              styles={styles.whiteText}
+              multiline={true}
+              numberOfLines={3}
+              onChangeText={(text) => changeNewReviewContent(text)}
+              value={newReviewContent} />
+          </View>
+          <View style={styles.addToCarContainer}>
+            <TouchableOpacity style={styles.shareButton} onPress={() => addReview()}>
+              <Text style={styles.shareButtonText}>Post Review</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.addToCarContainer}>
+            <TouchableOpacity style={styles.shareButton} onPress={() => toggleModal()}>
+              <Text style={styles.shareButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
     </ScrollView>
   );
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
   },
   productImg: {
     height: 200,
-    width: 200
+    width: 60
   },
   name: {
     fontSize: 28,
@@ -253,7 +264,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   InputContainer: {
-    width:"100%",
+    width: "100%",
     marginTop: 30,
     borderWidth: 1,
     borderStyle: 'solid',
@@ -268,6 +279,8 @@ export default connect(
     cartItem: selectors.getCartItemByProductId(state, route.params.item.id),
     cartId: selectors.getCart(state).id,
     wishlistProducts: selectors.getWishlist(state).products,
+    isFetchingGalleryItems: selectors.getisFetchingGalleryItems(state),
+    galleryItems: selectors.getGalleryItems(state).map(galleryItem => galleryItem.image),
     reviews: selectors.getReviews(state),
     stars: selectors.getReviewsStars(state)
   }),
