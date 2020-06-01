@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import uuid from 'react-native-uuid';
 import { connect } from 'react-redux';
+import { SliderBox } from "react-native-image-slider-box";
 
 import * as actions from '../../redux/cart/cart.actions';
 import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
@@ -17,7 +18,7 @@ import * as galleryItemsActions from '../../redux/galleryitems/galleryitems.acti
 import * as selectors from '../../redux/root-reducer';
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts, fetchGalleryItems }) => {
+const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts, fetchGalleryItems, galleryItems, isFetchingGalleryItems }) => {
   const { item } = route.params;
   useEffect( () => {
     fetchGalleryItems()
@@ -50,12 +51,22 @@ const ProductDetail = ({ navigation, route, cartItem, cartId, addCartItem, updat
       
     }
   }
-
   return (
       <View style={styles.container}>
         <ScrollView>
-          <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-            <Image style={styles.productImg} source={{ uri: `${HOST_BASE_URL}${item.featured_image}` }} />
+          <View style={{ alignItems: 'center', marginHorizontal: 30 }} >
+            { isFetchingGalleryItems ? (
+              <></>
+            ) : (
+                <View style={{ alignItems: 'center', height: 200}}>
+                  <SliderBox
+                    images={galleryItems}
+                    ImageComponentStyle={{width: '50%'}}
+                    />
+              
+                </View>
+                )
+            }
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.price}>Q{item.price}</Text>
             <Text style={styles.description}>
@@ -92,7 +103,7 @@ const styles = StyleSheet.create({
   },
   productImg: {
     height: 200,
-    width: 200
+    width: 60
   },
   name: {
     fontSize: 28,
@@ -149,6 +160,8 @@ export default connect(
     cartItem: selectors.getCartItemByProductId(state,route.params.item.id),
     cartId: selectors.getCart(state).id,
     wishlistProducts: selectors.getWishlist(state).products,
+    isFetchingGalleryItems: selectors.getisFetchingGalleryItems(state),
+    galleryItems: selectors.getGalleryItems(state).map(galleryItem => galleryItem.image)
   }),
   (dispatch, {route}) => ({
     updateCartItem(cartItem){
