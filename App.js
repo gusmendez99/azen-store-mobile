@@ -132,10 +132,10 @@ const App = ({
 
   return (
     <>
-      <TokenRefresh/>
+      
       <NavigationContainer ref={navigationRef}>
         {isAuthenticated  ? (
-          
+        <>
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
@@ -165,8 +165,9 @@ const App = ({
             <Tab.Screen name="Profile" component={profileStackNavigator} />
             <Tab.Screen name="Cart" component={cartStackNavigator} />
             <Tab.Screen name="Wishlist" component={wishlistStackNavigator} />
-        
           </Tab.Navigator>
+          <TokenRefresh/>
+        </>
         ) : (
           <>
             <AuthStackNavigator />
