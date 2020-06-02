@@ -35,6 +35,8 @@ import OrderCompleted from './src/screens/OrderCompleted/index';
 import Search from './src/screens/Search/index';
 import Wishlist from './src/screens/Wishlist/index';
 
+import TokenRefresh from './src/components/TokenRefresh';
+
 import * as selectors from './src/redux/root-reducer'
 
 const productStack = createStackNavigator();
@@ -130,8 +132,10 @@ const App = ({
 
   return (
     <>
+      <TokenRefresh/>
       <NavigationContainer ref={navigationRef}>
         {isAuthenticated  ? (
+          
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
@@ -168,6 +172,7 @@ const App = ({
             <AuthStackNavigator />
           </>
         )}
+      
       </NavigationContainer>
     </>
   );

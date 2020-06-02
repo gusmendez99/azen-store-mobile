@@ -203,7 +203,7 @@ const refreshingError = (state = null, action) => {
   return state;
 };
 
-const auth = combineReducers({
+export default combineReducers({
   token,
   decoded,
   isRegistering,
@@ -215,9 +215,6 @@ const auth = combineReducers({
   facebookAuthError,
   refreshingError,
 });
-
-
-export default auth;
 
 
 export const getAuthToken = state => state.token;

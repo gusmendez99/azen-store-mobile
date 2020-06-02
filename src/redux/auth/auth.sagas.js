@@ -8,7 +8,7 @@ import {
     select,
   } from 'redux-saga/effects';
   
-  import * as selectors from './auth.reducer';
+  import * as selectors from '../root-reducer';
   import * as actions from './auth.actions';
   import * as types from './auth.types';
   
@@ -117,7 +117,6 @@ import {
   function* refreshToken(action) {
     const expiration = yield select(selectors.getAuthExpiration);
     const now =  parseInt(new Date().getTime() / 1000);
-  
     if (expiration - now < 3600) {
       try {
         const token = yield select(selectors.getAuthToken);
