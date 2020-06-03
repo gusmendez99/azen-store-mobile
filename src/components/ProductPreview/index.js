@@ -60,12 +60,12 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem, a
 				<View style={styles.socialBarContainer}>
 					<View style={styles.socialBarSection}>
 						<TouchableOpacity style={styles.socialBarButton} onPress={() => addToCart()}>
-              <FontAwesome5 name="shopping-cart" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="black" />
-							<Text style={styles.socialBarLabel} >Add to Cart</Text>
+              <FontAwesome5 name="shopping-cart" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="white" />
+							<Text style={styles.label} >Add to Cart</Text>
 						</TouchableOpacity>
             <TouchableOpacity style={styles.socialBarButton} onPress={() => addToWishlist()}>
-            <FontAwesome5 name="list-ul" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="black" />
-							<Text style={styles.socialBarLabel} >Add to WishList</Text>
+            <FontAwesome5 name="list-ul" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="white" />
+							<Text style={styles.label} >Add to WishList</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -128,11 +128,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: 'center',
     borderRadius: 25,
-    borderColor: theme.COLORS.PRIMARY,
-    borderWidth: theme.SIZES.BASE / 8 ,
+    backgroundColor: "#6984ff",
   },
-  socialBarlabel: {
-    marginLeft: 10,
+  label: {
+    fontSize: theme.SIZES.BASE,
+    color: theme.COLORS.WHITE
   },
   socialBarIcon: {
     marginRight: 20,

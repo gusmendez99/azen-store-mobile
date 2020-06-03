@@ -19,7 +19,7 @@ import { theme, withTheme, ThemeProvider } from './src/theme'
 const customTheme = {
   SIZES: { BASE: 16, },
   // this will overwrite the Theme SIZES BASE value 16
-  COLORS: { PRIMARY: '#2196f3', } 
+  COLORS: { PRIMARY: '#2196f3', WHITE: '#ffffff' } 
   // this will overwrite the Theme COLORS PRIMARY color #B23AFC
 };
 

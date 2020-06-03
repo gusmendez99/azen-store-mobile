@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import {
   StyleSheet,
   View,
-  Alert,
   ScrollView,
   Text,
-  TextInput,
+  ActivityIndicator,
   TouchableOpacity
 } from 'react-native';
 
@@ -57,7 +56,7 @@ const Search = ({ isSearching, dataList, navigation, route, searchProduct }) => 
         {
           isSearching && (
             <View style={styles.isSearchingContainer}>
-              <Text>...</Text>
+              <ActivityIndicator size="large" color={theme.COLORS.INFO}/>
             </View>
           )
         }

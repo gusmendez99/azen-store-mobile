@@ -102,6 +102,7 @@ function* removeWishlistItem(action) {
     const wishlist = yield select(selectors.getWishlist);
     const newProducts = pull(wishlist.products,action.payload.productId)
     const data = {...wishlist, ["products"]: newProducts}
+    console.log(data)
     if (isAuth) {
       const token = yield select(selectors.getAuthToken);
       const response = yield call(
@@ -116,6 +117,7 @@ function* removeWishlistItem(action) {
           },
         }
       );
+      console.log("in sagas", response.status)
       if (response.status === 200) {
         const jsonResult = yield response.json();
         yield put(actions.completeRemovingWishlistItem(jsonResult));
