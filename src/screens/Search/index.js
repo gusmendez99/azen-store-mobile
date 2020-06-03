@@ -4,22 +4,21 @@ import {
   StyleSheet,
   View,
   Alert,
-  FlatList,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity
 } from 'react-native';
+
+import { theme, Input } from '../../components/UIComponents';
+
 import ProductPreview from '../../components/ProductPreview';
-import LinearGradient from 'react-native-linear-gradient';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedLoader from 'react-native-animated-loader';
 
 import * as actions from '../../redux/search/search.actions';
 import * as selectors from '../../redux/root-reducer';
 
-import { AppStyles, AppIcon } from '../../AppStyles';
-
-const COLUMNS_COUNT = 2;
+import { AppStyles } from '../../AppStyles';
 
 const Search = ({ isSearching, dataList, navigation, route, searchProduct }) => {
 
@@ -42,50 +41,53 @@ const Search = ({ isSearching, dataList, navigation, route, searchProduct }) => 
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <MaterialIcons style={[styles.icon, styles.inputIcon]} name={"search"} size={26} color={"#2196f3"} />
-        <TextInput style={styles.inputs}
+      <Input
           placeholder="Search a product..."
+          left
+          rounded
+          icon="search"
+          family="fontawesome5"
+          iconSize={25}
+          iconColor={theme.COLORS.INFO}
           value={searchQuery}
-          onChangeText={(text) => changeQueryField(text)} />
+          onChangeText={(text) => changeQueryField(text)}
+      />
       </View>
       <View>
         {
           isSearching && (
-            <Text>{'Searching...'}</Text>
+            <View style={styles.isSearchingContainer}>
+              <Text>...</Text>
+            </View>
           )
         }
 
         {
            !(searchQuery.length > 0) && !isSearching && (
-            <Text>{'No items found :('}</Text>
+            <View style={styles.isSearchingContainer}>
+              <Text>Your new awesome purchase is waiting...</Text>
+            </View>
           )
         }
 
         {
           (searchQuery.length > 0 && !isSearching) && (
-            <FlatList style={styles.list}
-              contentContainerStyle={styles.listContainer}
-              data={dataList}
-              horizontal={false}
-              numColumns={COLUMNS_COUNT}
-              keyExtractor={(item) => {
-                return item.id;
-              }}
-              ItemSeparatorComponent={() => {
-                return (
-                  <View style={styles.separator} />
-                )
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.8} style={styles.item} onPress={() => navigateToProductDetail(item)}>
-
-                    <ProductPreview item={item} />
-                  </TouchableOpacity>
-                )
-              }}
-            />
+            <>
+            <ScrollView>
+              {dataList && dataList.map((item, i) => (
+                <TouchableOpacity
+                  key={i}
+                  activeOpacity={0.8} 
+                  style={styles.item} 
+                  onPress={() => navigateToProductDetail(item)}>
+                  <ProductPreview
+                    item={item} 
+                  />
+                </TouchableOpacity>
+                
+              ))}
+            </ScrollView>
+            </>
           )
         }
       </View>
@@ -101,34 +103,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: AppStyles.color.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 6,
-    marginRight: 6,
-    marginBottom: 6,
-    marginTop: 6,
+    flex: 1,
+    justifyContent: "center",
+    margin: 6,
     borderRadius: 15,
-  },
-  list: {
-    paddingHorizontal: 5,
-    backgroundColor: "#E6E6E6",
-  },
-  listContainer: {
-    alignItems: 'center'
-  },
-  separator: {
-    marginTop: 10,
+    borderColor: AppStyles.color.gray,
+    borderWidth: 1,
   },
   inputContainer: {
-    borderBottomColor: '#000000',
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    width: "100%",
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10
+    marginTop: 6,
+  },
+  isSearchingContainer: {
+    alignItems: "center", 
+    justifyContent: "center", 
+    height: "100%"
   },
   inputs: {
     height: 50,
@@ -139,10 +127,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 30,
     height: 30,
-  },
-  inputIcon: {
-    justifyContent: 'center'
-
   },
   lottie: {
     width: 100,
