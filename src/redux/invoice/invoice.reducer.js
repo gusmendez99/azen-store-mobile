@@ -130,6 +130,7 @@ export default combineReducers({
 })
 export const getInvoiceItem = (state, id) => state.byId[id];
 export const getInvoiceItems = state => state.order.map(id => getInvoiceItem(state, id));
+export const getInvoiceItemsCount = state => state.order.length;
 export const getIsFetchingInvoiceItems = state => state.isFetching;
 export const getFecthingInvoiceItemsError = state => state.error;
 

@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   Alert,
   TextInput,
-  SafeAreaView,
+  ImageBackground,
   ScrollView
 } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-import { Text } from '../../components/UIComponents';
+import { Block, Text, Button, Input } from '../../components/UIComponents';
 
 import AnimatedLoader from 'react-native-animated-loader';
 
@@ -23,8 +23,7 @@ import { AppStyles } from '../../AppStyles';
 
 const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
   return (
-    <TextInput
-      style={styles.body}
+    <Input
       onChangeText={onChange}
       {...input}
       {...rest}
@@ -33,7 +32,7 @@ const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
 };
 
 
-const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit, navigation, isUpdatingUser, isFetchingUser, error }) => {
+const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit, navigation, isUpdatingUser, isFetchingUser, error, ordersCount, invoicesCount, paymentsCount }) => {
   useEffect(() => {
     fetchUser();
   }, [authUserId]);
@@ -46,201 +45,236 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
 
   return (
     <ScrollView style={styles.scrollView}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Image style={styles.avatar} source={{ uri: 'https://i.ya-webdesign.com/images/avatar-png-5.png' }} />
-            <Text h4>{username}</Text>
-          </View>
-        </View>
 
-        <View style={styles.profileDetail}>
-          <TouchableOpacity style={styles.detailContent} onPress={() => {navigation.navigate('Orders')}}>
-            <Text p style={styles.title}>My Orders</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.detailContent} onPress={() => {navigation.navigate('Invoices')}} >
-            <Text p style={styles.title}>My Invoices</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.detailContent} onPress={()=> navigation.navigate('Payments')}>
-            <Text p style={styles.title}>My Payments</Text>
-          </TouchableOpacity>
-        </View>
+      <Block flex >
+        <ImageBackground
+          source={{ uri: "https://raw.githubusercontent.com/creativetimofficial/argon-react-native/master/assets/imgs/profile-screen-bg.png" }}
+          style={styles.profileContainer}
+          imageStyle={styles.profileBackground}
+        >
 
-        <View style={styles.body}>
-          <View style={styles.bodyContent}>
-
-            {
-              userProfile && (
-                <>
-                  <View style={styles.InputContainer}>
-                    <Field
-                      name={'username'}
-                      props={{
-                        placeholder: 'Enter username...',
-                        placeholderTextColor: AppStyles.color.grey,
-                        underlineColorAndroid: 'transparent',
-                      }}
-                      component={renderInput}
-                    />
-                  </View>
-                  <View style={styles.InputContainer}>
-                    <Field
-                      name={'email'}
-                      props={{
-                        placeholder: 'Enter email...',
-                        placeholderTextColor: AppStyles.color.grey,
-                        underlineColorAndroid: 'transparent',
-                      }}
-                      component={renderInput}
-                    />
-                  </View>
-                  <View style={styles.InputContainer}>
-                    <Field
-                      name={'first_name'}
-                      props={{
-                        placeholder: 'Enter first name...',
-                        placeholderTextColor: AppStyles.color.grey,
-                        underlineColorAndroid: 'transparent',
-                      }}
-                      component={renderInput}
-                    />
-                  </View>
-                  <View style={styles.InputContainer}>
-                    <Field
-                      name={'last_name'}
-                      props={{
-                        placeholder: 'Enter last name...',
-                        placeholderTextColor: AppStyles.color.grey,
-                        underlineColorAndroid: 'transparent',
-                      }}
-                      component={renderInput}
-                    />
-                  </View>
-                </>
-              )
-            }
-
-            <TouchableOpacity onPress={() => navigateToChangePassword()} style={styles.buttonContainer}>
-              <Text p>Change password</Text>
-            </TouchableOpacity>
-
-            {
-              isUpdatingUser ? (
-                <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
-              ) : (
-                <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonContainer}>
-                <Text p>Save</Text>
-              </TouchableOpacity>
-                )
-            }
-
-            {
-              error && (
-                <Text p style={styles.name}>
-                  {error}
+          <Block flex style={styles.profileCard}>
+            <Block middle style={styles.avatarContainer}>
+              <Image
+                source={{ uri: "https://i.ya-webdesign.com/images/avatar-png-5.png" }}
+                style={styles.avatar}
+              />
+            </Block>
+            <Block style={styles.info}>
+            <Block middle style={styles.nameInfo}>
+                <Text bold size={28} color="#32325D">
+                  {username}
                 </Text>
-              )
-            }
+              </Block>
+              <Block row space="between" style={styles.stats}>
+                <TouchableOpacity onPress={() => { navigation.navigate('Invoices') }}>
+                  <Block middle>
+                    <Text
+                      bold
+                      color="#525F7F"
+                      size={18}
+                      style={{ marginBottom: 4 }}
+                    >
+                      {invoicesCount}
+                      </Text>
+                    <Text size={12} >Invoices</Text>
+                  </Block>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('Orders') }}>
+                  <Block middle >
+                    <Text
+                      bold
+                      size={18}
+                      color="#525F7F"
+                      style={{ marginBottom: 4 }}
+                    >
+                      {ordersCount}
+                      </Text>
+                    <Text size={12} >Orders</Text>
+                  </Block>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('Payments') }}>
+                  <Block middle>
+                    <Text
+                      bold
+                      color="#525F7F"
+                      size={18}
+                      style={{ marginBottom: 4 }}
+                    >
+                      {paymentsCount}
+                      </Text>
+                    <Text size={12}  >Payments</Text>
+                  </Block>
+                </TouchableOpacity>
+              </Block>
+            </Block>
+            <Block flex>
+              
+              <Block middle style={{ marginTop: 30, marginBottom: 16 }}>
+                <Block style={styles.divider} />
+              </Block>
+              <Block middle>
 
-            
-            <TouchableOpacity onPress={() => logout()} style={styles.buttonContainer}>
-              <Text p>Logout</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+                {
+                  userProfile && (
+                    <>
+                      <Field
+                        name={'username'}
+                        style={styles.input}
+                        props={{
+                          placeholder: 'Enter username...',
+                          rounded: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                      <Field
+                        name={'email'}
+                        style={styles.input}
+                        props={{
+                          placeholder: 'Enter email...',
+                          rounded: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                      <Field
+                        name={'first_name'}
+                        style={styles.input}
+                        props={{
+                          placeholder: 'Enter first name...',
+                          rounded: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
 
-      </View>
+                      <Field
+                        name={'last_name'}
+                        style={styles.input}
+                        props={{
+                          placeholder: 'Enter last name...',
+                          rounded: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                    </>
+                  )
+                }
+
+                <View>
+                  <Button
+                    round
+                    uppercase
+                    size="small"
+                    style={styles.button}
+                    onPress={() => navigateToChangePassword()}>
+                    Change password
+                  </Button>
+                  {
+                    isUpdatingUser ? (
+                      <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
+                    ) : (
+                        <Button
+                          size="small"
+                          round
+                          uppercase
+                          style={styles.button}
+                          onPress={handleSubmit(onSubmit)}>
+                          Save
+                        </Button>
+                      )
+                  }
+                  {
+                    error && (
+                      <Text p style={styles.name}>
+                        {error}
+                      </Text>
+                    )
+                  }
+                  <Button
+                    round
+                    uppercase
+                    size="small"
+                    style={styles.button}
+                    onPress={() => logout()}>
+                    Logout
+                  </Button>
+                </View>
+              </Block>
+            </Block>
+          </Block>
+        </ImageBackground>
+      </Block>
     </ScrollView>
   );
 
 }
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#2196f3",
+  lottie: {
+    width: 100,
+    height: 100,
   },
-  headerContent: {
+  input: {
+    marginVertical: 4,
+  },
+  button: {
+    marginVertical: 8,
+  },
+  profile: {
+    flex: 1
+  },
+  profileContainer: {
+    width: "100%",
+    height: "100%",
+    padding: 0,
+    zIndex: 1
+  },
+  profileBackground: {
+    width: "100%",
+    height: "50%"
+  },
+  profileCard: {
+    // position: "relative",
     padding: 30,
-    alignItems: 'center',
+    marginHorizontal: 30,
+    marginTop: 65,
+    marginBottom: 20,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    backgroundColor: AppStyles.color.white,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    zIndex: 2
+  },
+  info: {
+    paddingHorizontal: 40
+  },
+  stats: {
+    marginTop: 20
+  },
+  avatarContainer: {
+    position: "relative",
+    marginTop: -80
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
-    borderWidth: 4,
-    borderColor: "white",
-    marginBottom: 10,
+    width: 124,
+    height: 124,
+    borderRadius: 62,
+    borderWidth: 0
   },
-  name: {
-    fontSize: 22,
-    color: "#FFFFFF",
-    fontWeight: '600',
-    marginBottom: 16
+  nameInfo: {
+    marginTop: 20
   },
-  profileDetail: {
-    alignSelf: 'center',
-    marginTop: 200,
-    alignItems: 'center',
-    flexDirection: 'row',
-    position: 'absolute',
-    backgroundColor: "#ffffff"
-  },
-  detailContent: {
-    margin: 10,
-    alignItems: 'center'
-  },
-  title: {
-    fontSize: 20,
-    color: "#2196f3"
-  },
-  count: {
-    fontSize: 18,
-  },
-  body: {
-    paddingLeft: 2,
-    paddingRight: 2,
-  },
-  bodyContent: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 6,
-    marginTop: 60,
-  },
-  textInfo: {
-    fontSize: 18,
-    marginTop: 20,
-    color: "#696969",
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: AppStyles.buttonWidth.main,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 15,
-    backgroundColor: "#2196f3",
-  },
-  description: {
-    fontSize: 20,
-    color: "#2196f3",
-    marginTop: 10,
-    textAlign: 'center'
-  },
-  InputContainer: {
-    width: AppStyles.textInputWidth.main,
-    marginBottom: 20,
+  divider: {
+    width: "90%",
     borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: AppStyles.color.grey,
-    borderRadius: AppStyles.borderRadius.main,
-    paddingHorizontal: 10
+    borderColor: "#E9ECEF"
   },
-  lottie: { 
-    width: 100, 
-    height: 100, 
-  }
 });
 
 const mapStateToProps = state => ({
@@ -249,7 +283,10 @@ const mapStateToProps = state => ({
   isFetchingUser: selectors.getIsFetchingUser(state),
   isUpdatingUser: selectors.getIsUpdatingUser(state),
   error: selectors.getIsFetchingUser(state),
-  initialValues: selectors.getUser(state)
+  initialValues: selectors.getUser(state),
+  ordersCount: selectors.getOrderItemsCount(state),
+  invoicesCount: selectors.getInvoiceItemsCount(state),
+  paymentsCount: selectors.getPaymentItemsCount(state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -283,8 +320,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 })
 
 export default connect(
-  mapStateToProps, 
-  mapDispatchToProps, 
+  mapStateToProps,
+  mapDispatchToProps,
   mergeProps
 )(
   reduxForm({ form: 'profile-form', enableReinitialize: true })(Profile)

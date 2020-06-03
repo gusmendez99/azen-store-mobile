@@ -130,6 +130,7 @@ export default combineReducers({
 })
 export const getOrderItem = (state, id) => state.byId[id];
 export const getOrderItems = state => state.order.map(id => getOrderItem(state, id));
+export const getOrderItemsCount = state => state.order.length;
 export const getIsFetchingOrderItems = state => state.isFetching;
 export const getFecthingOrderItemsError = state => state.error;
 
