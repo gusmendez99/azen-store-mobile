@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TouchableOpacity,
@@ -12,6 +11,7 @@ import {
   ScrollView
 } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
+import { Text } from '../../components/UIComponents';
 
 import AnimatedLoader from 'react-native-animated-loader';
 
@@ -50,21 +50,19 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <Image style={styles.avatar} source={{ uri: 'https://i.ya-webdesign.com/images/avatar-png-5.png' }} />
-            <Text style={styles.name}>
-              {username}
-            </Text>
+            <Text h4>{username}</Text>
           </View>
         </View>
 
         <View style={styles.profileDetail}>
           <TouchableOpacity style={styles.detailContent} onPress={() => {navigation.navigate('Orders')}}>
-            <Text style={styles.title}>My Orders</Text>
+            <Text p style={styles.title}>My Orders</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.detailContent} onPress={() => {navigation.navigate('Invoices')}} >
-            <Text style={styles.title}>My Invoices</Text>
+            <Text p style={styles.title}>My Invoices</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.detailContent} onPress={()=> navigation.navigate('Payments')}>
-            <Text style={styles.title}>My Payments</Text>
+            <Text p style={styles.title}>My Payments</Text>
           </TouchableOpacity>
         </View>
 
@@ -123,7 +121,7 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
             }
 
             <TouchableOpacity onPress={() => navigateToChangePassword()} style={styles.buttonContainer}>
-              <Text>Change password</Text>
+              <Text p>Change password</Text>
             </TouchableOpacity>
 
             {
@@ -131,14 +129,14 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
                 <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
               ) : (
                 <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonContainer}>
-                <Text>Save</Text>
+                <Text p>Save</Text>
               </TouchableOpacity>
                 )
             }
 
             {
               error && (
-                <Text style={styles.name}>
+                <Text p style={styles.name}>
                   {error}
                 </Text>
               )
@@ -146,7 +144,7 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
 
             
             <TouchableOpacity onPress={() => logout()} style={styles.buttonContainer}>
-              <Text>Logout</Text>
+              <Text p>Logout</Text>
             </TouchableOpacity>
           </View>
         </View>

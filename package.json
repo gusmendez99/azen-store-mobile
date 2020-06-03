@@ -24,6 +24,7 @@
     "lottie-react-native": "^3.4.0",
     "moment": "^2.26.0",
     "normalizr": "^3.6.0",
+    "prop-types": "^15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-animated-loader": "^0.0.8",
