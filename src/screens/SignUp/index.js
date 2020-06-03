@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import Button from 'react-native-button';
+//import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Button, Input, Text } from '../../components/UIComponents';
+//import Button from 'react-native-button';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
@@ -32,8 +34,7 @@ const onPressFacebook = registerWithFacebook => {
 
 const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
   return (
-    <TextInput
-      style={styles.body}
+    <Input
       onChangeText={onChange}
       {...input}
       {...rest}
@@ -46,62 +47,64 @@ const Signup = ({ onRegister, registerWithFacebook, handleSubmit }) => {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, styles.centerTitle]}>Create new account</Text>
-      <View style={styles.InputContainer}>
         <Field
           name={'username'}
           props={{
             placeholder: 'Pick a username...',
-            placeholderTextColor: AppStyles.color.grey,
+            rounded: true,
+            borderless: true,
             underlineColorAndroid: 'transparent',
           }}
           component={renderInput}
         />
-      </View>
-      <View style={styles.InputContainer}>
         <Field
           name={'email'}
           props={{
             placeholder: 'Enter your email...',
-            placeholderTextColor: AppStyles.color.grey,
+            type: "email-address",
+            rounded: true,
+            borderless: true,
             underlineColorAndroid: 'transparent',
           }}
           component={renderInput}
         />
-      </View>
-      <View style={styles.InputContainer}>
-        <Field
+      <Field
           name={'password1'}
           props={{
             placeholder: 'Create your password',
-            secureTextEntry: true,
-            placeholderTextColor: AppStyles.color.grey,
+            rounded: true,
+            borderless: true,
             underlineColorAndroid: 'transparent',
+            password: true,
+            viewPass: true,
           }}
           component={renderInput}
         />
-      </View>
-      <View style={styles.InputContainer}>
         <Field
           name={'password2'}
           props={{
             placeholder: 'Confirm your password',
-            secureTextEntry: true,
-            placeholderTextColor: AppStyles.color.grey,
+            rounded: true,
+            borderless: true,
             underlineColorAndroid: 'transparent',
+            password: true,
+            viewPass: true,
           }}
           component={renderInput}
         />
-      </View>
       <Button
-        containerStyle={[styles.loginContainer, { marginTop: 50 }]}
-        style={styles.loginText}
+        round 
+        uppercase
+        color="success"
+        style={styles.button}
         onPress={handleSubmit(onRegister)}>
         Sign Up
       </Button>
       <Text style={styles.or}>OR</Text>
       <Button
-        containerStyle={styles.facebookContainer}
-        style={styles.facebookText}
+        round 
+        uppercase
+        style={styles.button}
         onPress={() => onPressFacebook(registerWithFacebook)}>
         Sign Up With Facebook
       </Button>
@@ -114,69 +117,29 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20
   },
   or: {
     fontFamily: AppStyles.fontName.main,
     color: 'black',
-    marginTop: 40,
+    marginTop: 10,
     marginBottom: 10,
   },
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: 'bold',
-    color: AppStyles.color.tint,
     marginTop: 20,
     marginBottom: 20,
   },
-  centerTitle: {
+  leftCenter: {
     alignSelf: 'stretch',
     textAlign: 'center',
-    marginLeft: 20,
   },
-  content: {
-    paddingLeft: 50,
-    paddingRight: 50,
-    textAlign: 'center',
-    fontSize: AppStyles.fontSize.content,
-    color: AppStyles.color.text,
+  input: {
+    marginVertical: 4,
   },
-  loginContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30,
-  },
-  loginText: {
-    color: AppStyles.color.white,
-  },
-  placeholder: {
-    fontFamily: AppStyles.fontName.text,
-    color: 'red',
-  },
-  InputContainer: {
-    width: AppStyles.textInputWidth.main,
-    marginTop: 30,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: AppStyles.color.grey,
-    borderRadius: AppStyles.borderRadius.main,
-  },
-  body: {
-    height: 42,
-    paddingLeft: 20,
-    paddingRight: 20,
-    color: AppStyles.color.text,
-  },
-  facebookContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.facebook,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30,
-  },
-  facebookText: {
-    color: AppStyles.color.white,
+  button: {
+    marginVertical: 8,
   },
 });
 
