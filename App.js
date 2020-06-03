@@ -156,8 +156,8 @@ const App = ({
               },
             })}
             tabBarOptions={{
-              activeTintColor: AppStyles.color.main,
-              inactiveTintColor: 'gray',
+              activeTintColor: AppStyles.color.primary,
+              inactiveTintColor: AppStyles.color.gray,
             }}
           >
             <Tab.Screen name="Home" component={productStackNavigator} />

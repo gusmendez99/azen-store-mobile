@@ -6,10 +6,12 @@ import {
   Alert,
   FlatList,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
+import AnimatedLoader from 'react-native-animated-loader';
+
 import ProductPreview from '../../components/ProductPreview';
-import LinearGradient from 'react-native-linear-gradient';
 
 import * as actions from '../../redux/categories/categories.actions';
 import * as selectors from '../../redux/root-reducer';
@@ -34,26 +36,33 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
   }
 
   return (
-    <LinearGradient colors={[AppStyles.color.primaryGradientStart, AppStyles.color.primaryGradientEnd]} style={styles.container}>
+    <View style={styles.container}>
       {isFetching ? (
-        <Text style={styles.isFetchingText}>Retrieving data...</Text>
+        <></>
       ) : (
         <>
-        
-
-          <FlatList style={styles.list}
+          <ScrollView>
+            {dataList && dataList.map((item, i) => (
+              <TouchableOpacity
+                key={i}
+                activeOpacity={0.8} 
+                style={styles.item} 
+                onPress={() => navigateToProductDetail(item)}>
+                
+                <ProductPreview
+                  item={item} />
+              </TouchableOpacity>
+              
+            ))}
+          </ScrollView>
+          {/* <FlatList style={styles.list}
             contentContainerStyle={styles.listContainer}
             data={dataList}
             horizontal={false}
-            numColumns={COLUMNS_COUNT}
             keyExtractor={(item) => {
               return item.id;
             }}
-            ItemSeparatorComponent={() => {
-              return (
-                <View style={styles.separator} />
-              )
-            }}
+
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
@@ -63,11 +72,11 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
                 </TouchableOpacity>
               )
               }
-            }/>
+            }/> */}
             </>
         )}
 
-    </LinearGradient>
+    </View>
   );
 
 }
@@ -77,27 +86,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: AppStyles.color.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 6,
-    marginRight: 6,
-    marginBottom: 6,
-    marginTop: 6,
+    flex: 1,
+    justifyContent: "center",
+    margin: 6,
     borderRadius: 15,
-  },
-  list: {
-    paddingHorizontal: 5,
-    backgroundColor: "#E6E6E6",
-  },
-  listContainer: {
-    alignItems: 'center'
-  },
-  separator: {
-    marginTop: 10,
+    borderColor: AppStyles.color.gray,
+    borderWidth: 1,
   },
 });
-
 export default connect(
   state => ({
     isFetching: selectors.getIsFetchingCategories(state),
