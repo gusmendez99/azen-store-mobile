@@ -5,14 +5,14 @@ import {
   StyleSheet
 } from 'react-native';
 
+import { Block } from '../../components/UIComponents'
+
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { AppStyles, AppIcon } from '../../AppStyles';
 
 const Category = ({ item, index }) => {
   return (
-    <View
-      style={styles.item}
-    >
+    <Block card={true} center={true} style={styles.item}>
       <View style={styles.icon}>
         <FontAwesome5 name={item.icon} color={AppStyles.color.primary} size={25} />
       </View>
@@ -20,18 +20,19 @@ const Category = ({ item, index }) => {
         style={styles.titleText}>{item.name}</Text>
       <Text
         style={styles.descriptionText}>{item.description}</Text>
-    </View>
+    </Block>
+    
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    alignItems: 'center',
-    justifyContent: 'center'
+    borderWidth: 0,
   },
   titleText: {
     fontSize: AppStyles.fontSize.content,
     color: AppStyles.color.black,
+    textAlign: "center",
     marginBottom: 16
   },
   descriptionText: {

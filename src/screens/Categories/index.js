@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, FlatList, TouchableOpacity, View } from "react-native";
+import { StyleSheet, FlatList, TouchableOpacity, View, ImageBackground } from "react-native";
+import { Text, Block } from '../../components/UIComponents';
 import { connect } from 'react-redux';
 import AnimatedLoader from 'react-native-animated-loader';
 
@@ -12,20 +13,20 @@ import * as selectors from '../../redux/root-reducer';
 
 const COLUMNS_COUNT = 2;
 
-const Categories = ({ 
-  fetchCategories, 
-  isFetching, 
-  dataList, 
-  authUserId, 
-  getCartItems, 
+const Categories = ({
+  fetchCategories,
+  isFetching,
+  dataList,
+  authUserId,
+  getCartItems,
   fetchCartItems,
   fetchWishlist,
   getCart,
   fetchCart,
   navigation }) => {
-  
+
   useEffect(() => {
-    fetchCategories(); 
+    fetchCategories();
   }, []);
   useEffect(() => {
     getCartItems();
@@ -44,9 +45,21 @@ const Categories = ({
   }
   return (
     <View style={styles.container}>
+
+      <Block style={styles.categoriesHeader}>
+        <ImageBackground
+          source={{ uri: "https://wallpaperaccess.com/full/1516900.jpg" }}
+          style={{ zIndex: 1, height: 170, alignContent: "center", alignItems:"center", justifyContent:"center" }}
+        >
+          <Text color={AppStyles.color.white} h4>
+            Explore
+          </Text>
+        </ImageBackground>
+      </Block>
       {isFetching ? (
-        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} source={require( '../../assets/loader/loader.json')} speed={1} />
+        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} source={require('../../assets/loader/loader.json')} speed={1} />
       ) : (
+
           <FlatList
             data={dataList}
             renderItem={({ item }) => {
@@ -56,7 +69,7 @@ const Categories = ({
                   <Category item={item} />
                 </TouchableOpacity>
               )
-              }
+            }
             }
             keyExtractor={(item, index) => index.toString()}
             numColumns={COLUMNS_COUNT}
@@ -70,6 +83,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  categoriesHeader: {
+    height: 170,
+    marginBottom: 10
+  },
   item: {
     backgroundColor: AppStyles.color.secondary,
     alignItems: 'center',
@@ -77,12 +94,10 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 6,
     padding: 4,
-    borderRadius: 15,
-    borderColor: AppStyles.color.gray,
-    borderWidth: 1
+    borderRadius: 15
   },
-  lottie: { 
-    width: 100, 
+  lottie: {
+    width: 100,
     height: 100
   }
 })
@@ -96,13 +111,13 @@ export default connect(
     fetchCategories() {
       dispatch(actions.startFetchingCategories())
     },
-    fetchCartItems(){
+    fetchCartItems() {
       dispatch(cartActions.startFetchingCartItems())
     },
-    fetchCart(){
+    fetchCart() {
       dispatch(cartActions.startFetchingCart())
     },
-    fetchWishlist(){
+    fetchWishlist() {
       dispatch(wishlistActions.startFetchingWishlist())
     }
   }),
@@ -110,13 +125,13 @@ export default connect(
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    getCartItems(){
-      if(stateProps.authUserId !== null){
+    getCartItems() {
+      if (stateProps.authUserId !== null) {
         dispatchProps.fetchCartItems()
       }
     },
-    getCart(){
-      if(stateProps.authUserId !== null){
+    getCart() {
+      if (stateProps.authUserId !== null) {
         dispatchProps.fetchCart()
       }
     },

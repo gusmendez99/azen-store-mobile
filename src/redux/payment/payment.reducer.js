@@ -129,6 +129,7 @@ export default combineReducers({
 
 export const getPaymentItem = (state, id) => state.byId[id];
 export const getPaymentItems = state => state.order.map(id => getPaymentItem(state, id));
+export const getPaymentItemsCount = state => state.order.length;
 export const getIsFetchingPaymentItems = state => state.isFetching;
 export const getFecthingPaymentItemsError = state => state.error;
 
