@@ -2,25 +2,15 @@ import { Platform, StyleSheet, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 const SCREEN_WIDTH = width < height ? width : height;
-const numColumns = 2;
 
 export const AppStyles = {
   color: {
-    primary: '#555CC4',
-    primaryLight: '#829BF8',
-    primaryGradientStart: '#4f44b6',
-    primaryGradientEnd: '#FF1358',
-    profileGradientStart: '#54CBF6',
-    profileGradientEnd: '#49D2D0',
-    secondary: '#FF1358',
-    grey: '#acacac',
-    gray: '#5f5f5f',
-    darkGray: '#4d4d4d',
-    lightGray: '#9b9b9b',
-    white: '#ffffff',
-    blue: '#5A81F7',
-    bluish: '#F1F1F7',
-    black: '#000000',
+    primary: '#1da1f2',
+    secondary: '#ffffff',
+    primaryLight: '#72c4f7',
+    primaryLightest: '#e6ecf0',
+    black: '#14171a',
+    gray: '#858585',
     green: '#6DD0A3',
     yellow: '#ffc247',
     main: "#5ea23a",

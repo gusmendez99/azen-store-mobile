@@ -14,7 +14,7 @@ const Category = ({ item, index }) => {
       style={styles.item}
     >
       <View style={styles.icon}>
-        <FontAwesome5 name={item.icon} color={AppStyles.color.tint} size={25} />
+        <FontAwesome5 name={item.icon} color={AppStyles.color.primary} size={25} />
       </View>
       <Text
         style={styles.titleText}>{item.name}</Text>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: AppStyles.fontSize.normal,
-    color: AppStyles.color.darkGray,
+    color: AppStyles.color.gray,
     fontWeight: "100",
     marginBottom: 16
   },

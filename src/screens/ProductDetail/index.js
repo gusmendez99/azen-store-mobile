@@ -92,7 +92,7 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
         ) : (
             <View style={{ alignItems: 'center', height: 200 }}>
               <SliderBox
-                images={galleryItems}
+                images={[`${HOST_BASE_URL}${item.featured_image}`,...galleryItems]}
                 ImageComponentStyle={{ width: '50%' }}
               />
 

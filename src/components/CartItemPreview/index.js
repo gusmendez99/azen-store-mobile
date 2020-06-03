@@ -65,8 +65,17 @@ const CartItemPreview = ({item, product, onProductFetch, updateCartItem, removeC
   );
 };
 const styles = StyleSheet.create({
-  cartItemContainer: {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120},
-  cartItemSecondaryContainer: {flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'},
+  cartItemContainer: {
+    flexDirection: 'row', 
+    backgroundColor: '#fff', 
+    marginBottom: 2, 
+    height: 120
+  },
+  cartItemSecondaryContainer: {
+    flexDirection: 'row', 
+    flexGrow: 1, 
+    flexShrink: 1, 
+    alignSelf: 'center'},
   imageContainer: {paddingRight: 10},
   image: {height: 60, width: 60, backgroundColor: '#eeeeee'},
   detailsContainer: {flexGrow: 1, flexShrink: 1, alignSelf: 'center'},

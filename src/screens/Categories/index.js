@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, FlatList, TouchableOpacity } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, Text, FlatList, TouchableOpacity, View } from "react-native";
 import { connect } from 'react-redux';
+import AnimatedLoader from 'react-native-animated-loader';
 
 import Category from "../../components/Category/index";
 import { AppStyles } from '../../AppStyles';
@@ -9,7 +9,6 @@ import * as actions from '../../redux/categories/categories.actions';
 import * as cartActions from '../../redux/cart/cart.actions';
 import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
 import * as selectors from '../../redux/root-reducer';
-
 
 const COLUMNS_COUNT = 2;
 
@@ -38,17 +37,15 @@ const Categories = ({
     fetchWishlist();
   }, [])
   const navigateToProduct = (item) => {
-    console.log('Stating to navigate to Product...')
     navigation.navigate('Products', {
       title: item.name,
       idCategory: item.id
     })
   }
-
   return (
-    <LinearGradient colors={[AppStyles.color.primaryGradientStart, AppStyles.color.primaryGradientEnd]} style={styles.container}>
+    <View style={styles.container}>
       {isFetching ? (
-        <Text style={styles.isFetchingText}>Retrieving data...</Text>
+        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} source={require( '../../assets/loader/loader.json')} speed={1} />
       ) : (
           <FlatList
             data={dataList}
@@ -56,7 +53,6 @@ const Categories = ({
               return (
                 <TouchableOpacity
                   activeOpacity={0.8} style={styles.item} onPress={() => navigateToProduct(item)}>
-
                   <Category item={item} />
                 </TouchableOpacity>
               )
@@ -67,30 +63,28 @@ const Categories = ({
           >
           </FlatList>
         )}
-    </LinearGradient>
+    </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  isFetchingText: {
-    color: AppStyles.color.white,
-    fontSize: AppStyles.fontSize.content,
-    alignSelf: "center"
-  },
   item: {
-    backgroundColor: AppStyles.color.white,
+    backgroundColor: AppStyles.color.secondary,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
     flex: 1,
-    marginLeft: 6,
-    marginRight: 6,
-    marginBottom: 6,
-    marginTop: 6,
-    borderRadius: 15
+    margin: 6,
+    padding: 4,
+    borderRadius: 15,
+    borderColor: AppStyles.color.gray,
+    borderWidth: 1
   },
+  lottie: { 
+    width: 100, 
+    height: 100
+  }
 })
 export default connect(
   state => ({
