@@ -8,6 +8,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -125,6 +126,7 @@ const App = ({
 
   useEffect(() => {
     isMountedRef.current = true;
+    SplashScreen.hide();
 
     return () => (isMountedRef.current = false);
   }, []);

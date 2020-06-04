@@ -40,6 +40,7 @@
     "react-native-safe-area-context": "^1.0.0",
     "react-native-screens": "^2.7.0",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-star-rating": "^1.1.0",
     "react-native-uuid": "^1.4.9",
     "react-native-vector-icons": "^6.6.0",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
+    "@bam.tech/react-native-make": "^3.0.0",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.1",
