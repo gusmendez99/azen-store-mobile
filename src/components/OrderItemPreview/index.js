@@ -1,91 +1,84 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
-  TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
-import { AppStyles, AppIcon } from '../../AppStyles';
+
+import { Block, Text, Button, Input, Icon, theme } from '../../components/UIComponents';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const BASE_SIZE = theme.SIZES.BASE;
+const COLOR_WHITE = theme.COLORS.WHITE;
+const COLOR_INFO = theme.COLORS.INFO
+
 
 const OrderItemPreview = ({ item, index }) => {
+  //const gradientColors = index % 2 ? GRADIENT_BLUE : GRADIENT_PINK;
   return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.item}>
-      <View style={styles.singleRow}>
-        <Text
-          style={styles.titleText}>{"Order number: "}</Text>
-        <Text
-          style={styles.descriptionText}>{item.id}</Text>
-      </View>
-      <View style={styles.singleRow}>
-        <Text
-          style={styles.titleText}>{"Delivery Address: "}</Text>
-        <Text
-          style={styles.descriptionText}>{item.delivery_address}</Text>
-      </View>
-      <View style={styles.singleRow}>
-        <Text
-          style={styles.titleText}>{"Details: "}</Text>
-        <Text
-          style={styles.descriptionText}>{item.details}</Text>
-      </View>
-      <View style={styles.singleRow}>
-        <Text
-          style={styles.titleText}>{"Order date: "}</Text>
-        <Text
-          style={styles.descriptionText}>{moment(item.order_date).format("DD MM YYYY hh:mm:ss")}</Text>
-      </View>
-      <View style={styles.singleRow}>
-        <Text
-          style={styles.titleText}>{"Delivered to: "}</Text>
-        <Text
-          style={styles.descriptionText}>{item.delivery_name}</Text>
-      </View>
-      <View style={styles.singleRow}>
-        <Text
-          style={styles.titleText}>{"Total: "}</Text>
-        <Text
-          style={styles.descriptionText}>{item.total}</Text>
-      </View>
-    </TouchableOpacity>
+    <Block row center card shadow space="between" style={styles.card} key={item.id}>
+      <Block
+        // start={[0.45, 0.45]}
+        // end={[0.90, 0.90]}
+        // colors={gradientColors}
+        style={[styles.gradient, styles.left]}
+      >
+        <MaterialCommunityIcons
+          size={BASE_SIZE*1.125}
+          name={"package-variant-closed"}
+          color={COLOR_INFO}
+        />
+      </Block>
+
+      <Block flex>
+        <Text size={BASE_SIZE * 1.125}>{`Order number: ${item.id}`}</Text>
+        <Text size={BASE_SIZE * 0.875} muted>{`Delivery Address: ${item.delivery_address}`}</Text>
+        <Text size={BASE_SIZE * 0.875} muted>{`Details: ${item.details}`}</Text>
+        <Text size={BASE_SIZE * 0.875} muted>{`Order Date: ${moment(item.order_date).format("DD MM YYYY hh:mm:ss")}`}</Text>
+        <Text size={BASE_SIZE * 0.875} muted>{`Delivered to: ${item.delivery_name}`}</Text>
+        <Text size={BASE_SIZE * 0.875}>{`Total: Q.${item.total}`}</Text>
+      </Block>
+      <Button style={styles.right}>
+        
+        <MaterialCommunityIcons size={BASE_SIZE*1.125} name={item.status === 0 ? "truck-delivery" : "truck-check"} color={COLOR_INFO} />
+      </Button>
+    </Block>
   );
 }
 
+
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: AppStyles.color.white,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    flex: 1,
-    marginLeft: 6,
-    marginRight: 6,
-    marginBottom: 6,
-    marginTop: 6,
-    borderRadius: 15
-  },
-  singleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: '#0000',
-    backgroundColor: AppStyles.color.white,
-    marginHorizontal: 6,
-    marginVertical: 6,
-    justifyContent: 'space-between'
-  },
-  titleText: {
-    fontSize: AppStyles.fontSize.normal,
-    color: AppStyles.color.black
-  },
-  descriptionText: {
-    fontSize: AppStyles.fontSize.normal,
-    color: AppStyles.color.darkGray,
-    fontWeight: "100",
-    marginBottom: 4
-  },
-  icon: {
-    paddingTop: 16,
-    paddingBottom: 16
-  }
-})
+card: {
+  borderColor: 'transparent',
+  marginHorizontal: BASE_SIZE,
+  marginVertical: BASE_SIZE / 2,
+  padding: BASE_SIZE,
+  backgroundColor: COLOR_WHITE,
+  shadowOpacity: 0.40,
+},
+menu: {
+  width: BASE_SIZE * 2,
+  borderColor: 'transparent',
+},
+settings: {
+  width: BASE_SIZE * 2,
+  borderColor: 'transparent',
+},
+left: {
+  marginRight: BASE_SIZE,
+},
+right: {
+  width: BASE_SIZE * 2,
+  backgroundColor: 'transparent',
+  elevation: 0,
+},
+gradient: {
+  width: BASE_SIZE * 3.25,
+  height: BASE_SIZE * 3.25,
+  borderRadius: BASE_SIZE * 3.25,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+});
+
 
 export default OrderItemPreview;
