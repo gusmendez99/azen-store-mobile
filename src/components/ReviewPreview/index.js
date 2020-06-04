@@ -13,9 +13,9 @@ const ProductPreview = ({ item }) => {
   const { content, username, rate } = item
   
 	return (
-    <View style={[styles.card, {borderColor: "#000000"}]} >
+    <View style={[styles.card, {borderColor: "#455a64"}]} >
       <View style={styles.cardContent}>
-        <Image style={[styles.image, styles.imageContent]}  source={{ uri: "https://i.ya-webdesign.com/images/avatar-png-5.png" }} />
+        <Image style={[styles.image, styles.imageContent]}  source={{ uri: "https://rndout.com/images/avatar.png" }} />
         <Text style={styles.name}>{username}</Text>
       </View>
       <View >
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   starContainer: {
-    justifyContent: 'flex-start',
+    justifyContent: 'space-evenly',
     marginHorizontal: 12,
     marginVertical: 12
   },

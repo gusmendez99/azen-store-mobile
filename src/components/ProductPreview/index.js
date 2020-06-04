@@ -64,7 +64,7 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem, a
 							<Text style={styles.label} >Add to Cart</Text>
 						</TouchableOpacity>
             <TouchableOpacity style={styles.socialBarButton} onPress={() => addToWishlist()}>
-            <FontAwesome5 name="list-ul" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="white" />
+            <FontAwesome5 name="heart" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="white" />
 							<Text style={styles.label} >Add to WishList</Text>
 						</TouchableOpacity>
 					</View>

@@ -33,7 +33,7 @@ const Cart = ({ cartItems, subtotal, onCouponFieldChange, onCouponValidate, coup
 
             <View style={styles.inputContainer}>
               <Input 
-                placeholder="Enter coupon code"
+                placeholder="Enter coupon code..."
                 value={couponField}
                 onChangeText={(input) => { onCouponFieldChange(input) }} />
 
@@ -55,11 +55,11 @@ const Cart = ({ cartItems, subtotal, onCouponFieldChange, onCouponValidate, coup
                 <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
               ) : (
                   <Button 
-                  style={{ width: "35%", height: 50, marginRight: 24 }} 
+                  style={{ width: "30%", height: 50, marginRight: 24 }} 
                   onPress={() => onCouponValidate()}
                   round
                   size='small'>
-                    Validate Coupon
+                    Validate
                   </Button>
                 )
             }
@@ -97,11 +97,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   inputContainer: {
-    borderBottomColor: '#F5FCFF',
-    backgroundColor: '#f3f3f3',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent:"center"
+    width: "55%",
+    marginHorizontal: 6
   },
   inputs: {
     height: 45,

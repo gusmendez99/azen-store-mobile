@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   Alert,
-  TextInput,
   ScrollView,
 } from 'react-native';
+import { Text, Input, Block, Button } from '../../components/UIComponents'; 
 import uuid from 'react-native-uuid';
 import { connect } from 'react-redux';
 import { AppStyles } from '../../AppStyles';
@@ -90,52 +89,61 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
         {isFetchingGalleryItems ? (
           <></>
         ) : (
-            <View style={{ alignItems: 'center', height: 200 }}>
+            <View style={{ alignItems: 'center', height: 300 }}>
               <SliderBox
+                sliderBoxHeight={280}
+                resizeMethod={'resize'}
+                resizeMode={'cover'}
+                autoplay
                 images={[`${HOST_BASE_URL}${item.featured_image}`,...galleryItems]}
-                ImageComponentStyle={{ width: '50%' }}
+                paginationBoxVerticalPadding={20}
+                ImageComponentStyle={{height: '100%', width: '100%'}}
+                dotColor="#2196f3"
+                inactiveDotColor="#90A4AE"
+                dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  marginHorizontal: 0,
+                  padding: 0,
+                  margin: 0,
+                  backgroundColor: "rgba(128, 128, 128, 0.92)"
+                }}
               />
 
             </View>
           )
         }
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.price}>Q{item.price}</Text>
-        <Text style={styles.description}>
+        <Text style={styles.name} h4>{item.name}</Text>
+        <Text style={styles.price} p>Q{item.price}</Text>
+        <Text style={styles.description} muted>
           {item.description}
         </Text>
       </View>
-      <View style={styles.starContainer}>
-        <StarRating
-          disabled={true}
-          maxStars={5}
-          rating={stars}
-          fullStarColor={'gold'}
-        />
+      
+      <View style={styles.separator}></View>
+      <View style={styles.actionsContainer}>
+        <Button onlyIcon icon="shopping-cart" iconFamily="materialicons" iconSize={30} color="primary" iconColor="#fff" style={ styles.actionCircleButton } onPress={() => addToCart()}></Button>
+        <Button onlyIcon icon="favorite" iconFamily="materialicons" iconSize={30} color="red" iconColor="#fff" style={ styles.actionCircleButton } onPress={() => addToWishlist()}></Button>
+        {
+          canPostNewReview() && (
+            <Button onlyIcon icon="star" iconFamily="materialicons" iconSize={30} color="warning" iconColor="#fff" style={ styles.actionCircleButton } onPress={() => toggleModal()}></Button>
+          )
+        }
+        
       </View>
       <View style={styles.separator}></View>
-      <View style={styles.addToCarContainer}>
-        <TouchableOpacity style={styles.shareButton} onPress={() => addToCart()}>
-          <Text style={styles.shareButtonText}>Add To Cart</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.addToCarContainer}>
-        <TouchableOpacity style={styles.shareButton} onPress={() => addToWishlist()}>
-          <Text style={styles.shareButtonText}>Add To Wishlist</Text>
-        </TouchableOpacity>
-      </View>
-      {
-        canPostNewReview() && (
-          <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => toggleModal()}>
-              <Text style={styles.shareButtonText}>Add Review</Text>
-            </TouchableOpacity>
-          </View>
-        )
-      }
-      <View style={styles.separator}></View>
-      <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-        <Text style={styles.reviewTitle}>Reviews: {reviews.length}</Text>
+      
+      <View style={{ alignItems: 'center', marginHorizontal: 30, marginVertical: 10 }}>
+        <Text p>Reviews({reviews.length})</Text>
+        <View style={styles.starContainer}>
+          <StarRating
+            disabled={true}
+            maxStars={5}
+            rating={stars}
+            fullStarColor={'gold'}
+          />
+        </View>
         <Carousel
           data={reviews}
           renderItem={ReviewPreview}
@@ -155,8 +163,10 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
       {/* Modal to add a new review */}
       <Modal
         isVisible={isModalVisible}
+        onBackButtonPress={() => changeModalVisible(false)}
         onBackdropPress={() => changeModalVisible(false)}
         backdropColor="white"
+        style={{ alignContent: "center", justifyContent: 'center', flex: 1}}
         backdropOpacity={0.98}>
         <View style={[styles.container]}>
 
@@ -170,23 +180,25 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
               selectedStar={(rating) => changeNewReviewRate(rating)}
             />
           </View>
-          <View style={styles.InputContainer}>
-            <TextInput
-              styles={styles.whiteText}
-              multiline={true}
-              numberOfLines={3}
+            <Input
+              rounded
+              placeholder="Write your review..."
               onChangeText={(text) => changeNewReviewContent(text)}
               value={newReviewContent} />
+          <View style={styles.addToCarContainer}>
+            <Button 
+              rounded
+              onPress={() => addReview()}>
+              Post Review
+            </Button>
           </View>
           <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => addReview()}>
-              <Text style={styles.shareButtonText}>Post Review</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => toggleModal()}>
-              <Text style={styles.shareButtonText}>Cancel</Text>
-            </TouchableOpacity>
+            <Button
+              rounded 
+              color="red"
+              onPress={() => toggleModal()}>
+              Cancel
+            </Button>
           </View>
         </View>
       </Modal>
@@ -198,16 +210,21 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
   },
-  productImg: {
-    height: 200,
-    width: 60
+  actionsContainer: {
+    flexDirection: 'row', 
+    padding: 20, 
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  actionCircleButton : {
+    width: 50, 
+    height: 50
   },
   name: {
-    fontSize: 28,
-    color: "#696969",
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    margin: 10,
+    textAlign: "center",
   },
   modalTitle: {
     fontSize: 28,
@@ -225,21 +242,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   price: {
-    marginTop: 10,
-    fontSize: 18,
-    color: "green",
+    margin: 10,
     fontWeight: 'bold'
   },
   description: {
     textAlign: 'center',
     marginTop: 10,
-    color: "#696969",
   },
   starContainer: {
     justifyContent: 'center',
     marginHorizontal: 30,
     paddingHorizontal: 50,
-    marginTop: 20
+    marginVertical: 20
   },
   separator: {
     height: 2,
@@ -261,7 +275,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   addToCarContainer: {
-    marginHorizontal: 30
+    marginVertical: 10
   },
   InputContainer: {
     width: "100%",

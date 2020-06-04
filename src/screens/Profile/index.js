@@ -56,7 +56,7 @@ const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleS
           <Block flex style={styles.profileCard}>
             <Block middle style={styles.avatarContainer}>
               <Image
-                source={{ uri: "https://i.ya-webdesign.com/images/avatar-png-5.png" }}
+                source={{ uri: "https://rndout.com/images/avatar.png" }}
                 style={styles.avatar}
               />
             </Block>

@@ -2,12 +2,12 @@ import React from 'react';
 import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 // components
-import { Icon } from './Icon';
+import { Icon } from './index';
 import CustomTheme, { withTheme } from '../../theme';
 
 const { width } = Dimensions.get('window');
 
-function Button({
+const Button = ({
     color,
     children,
     capitalize,
@@ -32,8 +32,8 @@ function Button({
     textStyle,
     uppercase,
     ...rest
-}) {
-  function renderContent() {
+}) => {
+  const renderContent = () => {
     const textStyles = [styles.customText, textStyle];
 
     // workaround for textTransform not supported on Expo SDK 29.0.0 or 30.0.0

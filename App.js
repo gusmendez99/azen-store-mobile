@@ -150,7 +150,7 @@ const App = ({
                   iconName = 'shopping-cart'
                 }
                 else if (route.name === 'Wishlist') {
-                  iconName = 'list-ul'
+                  iconName = 'heart'
                 }
                 return <FontAwesome5 name={iconName} size={size} color={color} />;
               },

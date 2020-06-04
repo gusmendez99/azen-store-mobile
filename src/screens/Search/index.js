@@ -12,7 +12,6 @@ import {
 import { theme, Input } from '../../components/UIComponents';
 
 import ProductPreview from '../../components/ProductPreview';
-import AnimatedLoader from 'react-native-animated-loader';
 
 import * as actions from '../../redux/search/search.actions';
 import * as selectors from '../../redux/root-reducer';
@@ -43,7 +42,7 @@ const Search = ({ isSearching, dataList, navigation, route, searchProduct }) => 
       <Input
           placeholder="Search a product..."
           left
-          rounded
+          borderless
           icon="search"
           family="fontawesome5"
           iconSize={25}
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   inputContainer: {
-    marginTop: 6,
+    marginTop: -10,
   },
   isSearchingContainer: {
     alignItems: "center", 
