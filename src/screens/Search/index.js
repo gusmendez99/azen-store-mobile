@@ -46,7 +46,7 @@ const Search = ({ isSearching, dataList, navigation, route, searchProduct }) => 
           icon="search"
           family="fontawesome5"
           iconSize={25}
-          iconColor={theme.COLORS.INFO}
+          iconColor={theme.COLORS.PRIMARY}
           value={searchQuery}
           onChangeText={(text) => changeQueryField(text)}
       />
@@ -80,6 +80,7 @@ const Search = ({ isSearching, dataList, navigation, route, searchProduct }) => 
                   onPress={() => navigateToProductDetail(item)}>
                   <ProductPreview
                     item={item} 
+                    horizontal
                   />
                 </TouchableOpacity>
                 
@@ -103,13 +104,9 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     justifyContent: "center",
-    margin: 6,
-    borderRadius: 15,
-    borderColor: AppStyles.color.gray,
-    borderWidth: 1,
   },
   inputContainer: {
-    marginTop: -10,
+    marginTop: -6,
   },
   isSearchingContainer: {
     alignItems: "center", 

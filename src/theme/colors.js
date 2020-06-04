@@ -5,8 +5,8 @@ export const SOCIAL = {
 };
 
 export const THEME = {
-  THEME: '#B23AFC',
-  PRIMARY: '#B23AFC',
+  THEME: '#2196f3',
+  PRIMARY: '#2196f3',
   INFO: '#1232FF',
   ERROR: '#FE2472',
   WARNING: '#FF9C09',

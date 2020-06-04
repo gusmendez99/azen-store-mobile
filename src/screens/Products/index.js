@@ -50,7 +50,7 @@ const Products = ({ fetchCategoryProducts, isFetching, dataList, navigation, rou
                 onPress={() => navigateToProductDetail(item)}>
                 
                 <ProductPreview
-                  item={item} />
+                  item={item} horizontal />
               </TouchableOpacity>
               
             ))}
@@ -88,10 +88,6 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     justifyContent: "center",
-    margin: 6,
-    borderRadius: 15,
-    borderColor: AppStyles.color.gray,
-    borderWidth: 1,
   },
 });
 export default connect(

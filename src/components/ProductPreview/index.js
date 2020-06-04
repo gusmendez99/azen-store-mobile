@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Text,
   View,
   TouchableOpacity,
   Image,
@@ -11,14 +10,15 @@ import {connect} from 'react-redux';
 import uuid from 'react-native-uuid';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { theme, Button } from '../../components/UIComponents';
+import { theme, Button, Block, Text } from '../../components/UIComponents';
 import * as actions from '../../redux/cart/cart.actions';
 import * as wishlistActions from '../../redux/wishlist/wishlist.actions';
 import * as selectors from '../../redux/root-reducer';
 import { AppStyles } from '../../AppStyles';
+
 const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 
-const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts }) => {
+const ProductPreview = ({ item, horizontal, cartItem, cartId, addCartItem, updateCartItem, addWishlistItem, wishlistProducts }) => {
 
   const imageUri = item.featured_image.includes("azenstore.herokuapp.com") ? item.featured_image.replace("http", "https") : `${HOST_BASE_URL}${item.featured_image}`
 
@@ -49,12 +49,40 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem, a
       
     }
   }
-	return (
+    
+    const imageStyles = [
+      styles.horizontalImage
+    ];
+    const cardContainer = [styles.card, styles.shadow];
+    const imgContainer = [styles.imageContainer,
+      horizontal ? styles.horizontalStyles : styles.verticalStyles,
+      styles.shadow
+    ];
+
+    return (
+      <Block row={horizontal} card flex style={cardContainer}>
+          <Block flex style={imgContainer}>
+            <Image source={{uri: imageUri}} style={imageStyles} />
+          </Block>
+          <Block flex space="between" style={styles.cardDescription}>
+            <Text style={styles.title} p>{item.name}</Text>
+            <Text style={styles.price}>Q{item.price}</Text>
+            <View style={styles.socialBarContainer}>
+
+            <Button onlyIcon icon="shopping-cart" iconFamily="materialicons" iconSize={28} color="primary" iconColor="#fff" style={ styles.actionCicleButton }></Button>
+            <Button onlyIcon icon="favorite" iconFamily="materialicons" iconSize={28} color="red" iconColor="#fff" style={ styles.actionCicleButton }></Button>
+            
+            </View>
+          </Block>
+      </Block>
+    );
+
+	/* return (
 		<View style={styles.card}>
       <View style={styles.cardLeft}>
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.price}>Q{item.price}</Text>
-        <Image style={styles.cardImage} style={{width: 200, height: 200}} resizeMode={'cover'} source={{ uri: imageUri }} />
+        <Image style={styles.cardImage} style={{width: 160, height: 160}} resizeMode={'cover'} source={{ uri: imageUri }} />
       </View>    
 			<View style={styles.cardFooter}>
 				<View style={styles.socialBarContainer}>
@@ -71,11 +99,11 @@ const ProductPreview = ({ item, cartItem, cartId, addCartItem, updateCartItem, a
 				</View>
 			</View>
 		</View>
-	)
+	) */
 }
 
 const styles = StyleSheet.create({
-  cardLeft: {
+  /* cardLeft: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
@@ -88,6 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     shadowOpacity: 0.5,
     shadowRadius: 4,
+    borderRadius: 24,
     marginVertical: theme.SIZES.BASE / 2,
     backgroundColor:"white",
     marginHorizontal: theme.SIZES.BASE / 3,
@@ -97,46 +126,76 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomLeftRadius: 1,
     borderBottomRightRadius: 1,
-  },
-  /******** card components **************/
-  title:{
-    fontSize: theme.SIZES.FONT,
-    flex:1,
+  },*/
+  title: {
+    fontWeight: "700",
   },
   price:{
     fontSize:16,
-    color: theme.COLORS.FACEBOOK,
-    marginTop: 5
-  },
-  /******** social bar ******************/
+    color: theme.COLORS.PRIMARY,
+    marginTop: 5,
+  }, 
   socialBarContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     alignItems: "center",
-    flexDirection: 'column',
-  },
-  socialBarSection: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: 'column',
-    margin: theme.SIZES.BASE
-  },
-  socialBarButton:{
-    padding: theme.SIZES.BASE,
     flexDirection: 'row',
-    justifyContent: "space-between",
-    alignItems: 'center',
-    borderRadius: 25,
-    backgroundColor: "#6984ff",
   },
-  label: {
-    fontSize: theme.SIZES.BASE,
-    color: theme.COLORS.WHITE
+  
+  card: {
+    backgroundColor: theme.COLORS.WHITE,
+    marginVertical: theme.SIZES.BASE,
+    borderWidth: 0,
+    minHeight: 114,
+    marginBottom: 0
   },
-  socialBarIcon: {
-    marginRight: 20,
+  cardTitle:{
+    fontSize: theme.SIZES.FONT,
+    flex:1,
+    flexWrap: 'wrap',
+    paddingBottom: 6
+  },
+  cardDescription: {
+    padding: (theme.SIZES.BASE / 2)
+  },
+  imageContainer: {
+    borderRadius: 3,
+    elevation: 1,
+    overflow: 'hidden',
+  },
+  image: {
+    borderRadius: 3,
+  },
+  horizontalImage: {
+    height: 180,
+    width: 'auto',
+    padding: 2
+  },
+  horizontalStyles: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  verticalStyles: {
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0
+  },
+  fullImage: {
+    height: 215
+  },
+  shadow: {
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    elevation: 2,
+  },
+  actionCicleButton: { 
+    width: 40, 
+    height: 40,
+    marginHorizontal: 5
   }
+
   
 })
 

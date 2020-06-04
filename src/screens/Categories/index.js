@@ -87,6 +87,15 @@ const styles = StyleSheet.create({
     height: 170,
     marginBottom: 10
   },
+  item: {
+    backgroundColor: AppStyles.color.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 6,
+    padding: 4,
+    borderRadius: 15
+  },
   lottie: {
     width: 100,
     height: 100
