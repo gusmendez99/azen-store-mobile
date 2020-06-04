@@ -50,7 +50,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon }) => {
         <Field
           name={'deliveryAddress'}
           props={{
-            placeholder: 'Where do we deliver this (NASA address not allowed..)?',
+            placeholder: 'Where do we deliver this? (NASA address not allowed..)',
             placeholderTextColor: AppStyles.color.grey,
             underlineColorAndroid: 'transparent',
           }}

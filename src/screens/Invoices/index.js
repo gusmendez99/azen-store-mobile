@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, FlatList, TouchableOpacity } from "react-native";
+import { StyleSheet, FlatList, View } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
+import AnimatedLoader from 'react-native-animated-loader';
+
 
 import InvoiceItemPreview from "../../components/InvoiceItemPreview/index";
 import { AppStyles } from '../../AppStyles';
@@ -19,31 +21,16 @@ const Invoices = ({
   useEffect(() => {
     fetchInvoiceItems(); 
   }, []);
-
-  // const navigateToProduct = (item) => {
-  //   console.log('Stating to navigate to Product...')
-  //   navigation.navigate('Products', {
-  //     title: item.name,
-  //     idCategory: item.id
-  //   })
-  // }
-
   return (
-    <LinearGradient colors={[AppStyles.color.primaryGradientStart, AppStyles.color.primaryGradientEnd]} style={styles.container}>
+    <View style={styles.container}>
       {isFetching ? (
-        <Text style={styles.isFetchingText}>Retrieving data...</Text>
+        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} source={require('../../assets/loader/loader.json')} speed={1} />
       ) : (
           <FlatList
             data={dataList}
             renderItem={({ item }) => {
               return (
-                // <TouchableOpacity
-                //   activeOpacity={0.8} style={styles.item} 
-                  /* onPress={() => navigateToProduct(item)} */
-                //   >
-
                   <InvoiceItemPreview item={item} />
-                //</TouchableOpacity>
               )
               }
             }
@@ -52,7 +39,7 @@ const Invoices = ({
           >
           </FlatList>
         )}
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -77,6 +64,10 @@ const styles = StyleSheet.create({
     marginTop: 6,
     borderRadius: 15
   },
+  lottie: {
+    height: 100,
+    width: 100
+  }
 })
 
 export default connect(
