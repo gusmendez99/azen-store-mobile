@@ -1,9 +1,18 @@
 import React from "react";
-import Button from "react-native-button";
-import { Text, View, StyleSheet } from "react-native";
 import { AppStyles } from "../../AppStyles";
-import { AsyncStorage, ActivityIndicator } from "react-native";
 //import firebase from "react-native-firebase";
+
+
+import {
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  KeyboardAvoidingView,
+} from "react-native";
+import { Block, Text, theme, Button } from "../../components/UIComponents";
+
+const { width, height } = Dimensions.get("screen");
+
 
 class Welcome extends React.Component {
   static navigationOptions = {
@@ -28,25 +37,78 @@ class Welcome extends React.Component {
     //     />
     //   );
     // }
-    return (
+    /* return (
       <View style={styles.container}>
         <Text style={styles.title}>Say hello to your new app</Text>
         <Button
           containerStyle={styles.loginContainer}
           style={styles.loginText}
-          onPress={() => this.props.navigation.navigate("Login")}
+          
         >
           Log In
         </Button>
         <Button
           containerStyle={styles.signupContainer}
           style={styles.signupText}
-          onPress={() => this.props.navigation.navigate("Signup")}
         >
           Sign Up
         </Button>
       </View>
-    );
+    ); */
+
+    return (
+      <Block flex middle>
+        <ImageBackground
+          source={{ uri: "https://raw.githubusercontent.com/creativetimofficial/argon-react-native/master/assets/imgs/register-bg.png" }}
+          style={{ width, height, zIndex: 1, marginTop: 100 }}
+        >
+          <Block flex middle>
+            <Block style={styles.registerContainer}>
+              <Block flex={0.25} middle style={styles.socialConnect}>
+                <Text color="#8898AA" h4>
+                  Azen Store
+                </Text>
+              </Block>
+              <Block flex>
+                <Block flex={0.17} middle>
+                  <Text color="#8898AA" size={12}>
+                    #1 Gadgets Store App
+                  </Text>
+                </Block>
+                <Block flex center>
+                  <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior="padding"
+                    enabled
+                  >
+                    
+                    <Block middle>
+                      <Button round uppercase color="primary" style={styles.createButton} onPress={() => this.props.navigation.navigate("Login")}>
+                        <Text bold size={14} color={theme.COLORS.WHITE}>
+                          LOGIN
+                        </Text>
+                      </Button>
+                      <Button round color="#fff" style={styles.createButton} onPress={() => this.props.navigation.navigate("Signup")}>
+                        <Text bold size={14} color={theme.COLORS.PRIMARY}>
+                          SIGN UP
+                        </Text>
+                      </Button>
+                    </Block>
+                  </KeyboardAvoidingView>
+                </Block>
+              </Block>
+            </Block>
+          </Block>
+        </ImageBackground>
+
+      </Block>
+    )
+
+
+
+
+
+
   }
 
   //async tryToLoginFirst() {
@@ -129,50 +191,56 @@ class Welcome extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 150
+  registerContainer: {
+    width: width * 0.9,
+    height: height * 0.4,
+    backgroundColor: "#F4F5F7",
+    borderRadius: 4,
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    marginTop: -64,
+    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    elevation: 1,
+    overflow: "hidden"
   },
-  logo: {
-    width: 200,
-    height: 200
+  socialConnect: {
+    backgroundColor: theme.COLORS.WHITE,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "#8898AA",
   },
-  title: {
-    fontSize: AppStyles.fontSize.title,
-    fontWeight: "bold",
-    color: AppStyles.color.tint,
-    marginTop: 20,
-    textAlign: "center",
-    marginBottom: 20,
-    marginLeft: 20,
-    marginRight: 20
+  socialButtons: {
+    width: 120,
+    height: 40,
+    backgroundColor: "#fff",
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    elevation: 1
   },
-  loginContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30
+  socialTextButtons: {
+    color: theme.COLORS.PRIMARY,
+    fontWeight: "800",
+    fontSize: 14
   },
-  loginText: {
-    color: AppStyles.color.white
+  inputIcons: {
+    marginRight: 12
   },
-  signupContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.white,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 8,
-    borderWidth: 1,
-    borderColor: AppStyles.color.tint,
-    marginTop: 15
+  passwordCheck: {
+    paddingLeft: 15,
+    paddingTop: 13,
+    paddingBottom: 30
   },
-  signupText: {
-    color: AppStyles.color.tint
-  },
-  spinner: {
-    marginTop: 200
+  createButton: {
+    width: width * 0.5,
+    marginTop: 25
   }
 });
 
