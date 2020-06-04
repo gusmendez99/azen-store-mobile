@@ -27,6 +27,7 @@ const HOST_BASE_URL = "https://azenstore.herokuapp.com"
 const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, reviews, stars, wishlistProducts, addCartItem, updateCartItem,
   addWishlistItem, getReviews, fetchGalleryItems, postReview, galleryItems, isFetchingGalleryItems }) => {
   const { item } = route.params;
+  const imageUri = item.featured_image.includes("azenstore.herokuapp.com") ? item.featured_image.replace("http", "https") : `${HOST_BASE_URL}${item.featured_image}`
 
   const [isModalVisible, changeModalVisible] = useState(false);
   const [newReviewContent, changeNewReviewContent] = useState('');
@@ -95,7 +96,7 @@ const ProductDetail = ({ navigation, route, authUsername, cartItem, cartId, revi
                 resizeMethod={'resize'}
                 resizeMode={'cover'}
                 autoplay
-                images={[`${HOST_BASE_URL}${item.featured_image}`,...galleryItems]}
+                images={[imageUri,...galleryItems]}
                 paginationBoxVerticalPadding={20}
                 ImageComponentStyle={{height: '100%', width: '100%'}}
                 dotColor="#2196f3"

@@ -22,6 +22,8 @@ const ProductPreview = ({ item, horizontal, cartItem, cartId, addCartItem, updat
 
   const imageUri = item.featured_image.includes("azenstore.herokuapp.com") ? item.featured_image.replace("http", "https") : `${HOST_BASE_URL}${item.featured_image}`
 
+  console.log(imageUri)
+
   const addToCart = () => {
     if(cartItem){
       updateCartItem({...cartItem, quantity: cartItem.quantity+1});
@@ -62,15 +64,15 @@ const ProductPreview = ({ item, horizontal, cartItem, cartId, addCartItem, updat
     return (
       <Block row={horizontal} card flex style={cardContainer}>
           <Block flex style={imgContainer}>
-            <Image source={{uri: imageUri}} style={imageStyles} />
+            <Image resizeMode={'cover'} source={{uri: imageUri}} style={imageStyles} />
           </Block>
           <Block flex space="between" style={styles.cardDescription}>
             <Text style={styles.title} p>{item.name}</Text>
             <Text style={styles.price}>Q{item.price}</Text>
             <View style={styles.socialBarContainer}>
 
-            <Button onlyIcon icon="shopping-cart" iconFamily="materialicons" iconSize={28} color="primary" iconColor="#fff" style={ styles.actionCicleButton }></Button>
-            <Button onlyIcon icon="favorite" iconFamily="materialicons" iconSize={28} color="red" iconColor="#fff" style={ styles.actionCicleButton }></Button>
+            <Button onlyIcon icon="shopping-cart" iconFamily="materialicons" iconSize={28} color="primary" iconColor="#fff" style={ styles.actionCicleButton } onPress={() => addToCart()}></Button>
+            <Button onlyIcon icon="favorite" iconFamily="materialicons" iconSize={28} color="red" iconColor="#fff" style={ styles.actionCicleButton } onPress={() => addToWishlist()}></Button>
             
             </View>
           </Block>
@@ -87,11 +89,11 @@ const ProductPreview = ({ item, horizontal, cartItem, cartId, addCartItem, updat
 			<View style={styles.cardFooter}>
 				<View style={styles.socialBarContainer}>
 					<View style={styles.socialBarSection}>
-						<TouchableOpacity style={styles.socialBarButton} onPress={() => addToCart()}>
+						<TouchableOpacity style={styles.socialBarButton} >
               <FontAwesome5 name="shopping-cart" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="white" />
 							<Text style={styles.label} >Add to Cart</Text>
 						</TouchableOpacity>
-            <TouchableOpacity style={styles.socialBarButton} onPress={() => addToWishlist()}>
+            <TouchableOpacity style={styles.socialBarButton} >
             <FontAwesome5 name="heart" size={theme.SIZES.BASE} style={styles.socialBarIcon} color="white" />
 							<Text style={styles.label} >Add to WishList</Text>
 						</TouchableOpacity>

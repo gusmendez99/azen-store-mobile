@@ -89,7 +89,6 @@ export const completeUpdatingCartItem = (oldId, cartItem) => ({
 export const failUpdatingCartItem = (oldId, error) => ({
   type: types.CART_ITEM_UPDATE_FAILED,
   payload: {
-    oldId,
     error,
   },
 });

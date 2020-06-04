@@ -18,6 +18,9 @@ import AnimatedLoader from 'react-native-animated-loader';
 import * as selectors from '../../redux/root-reducer';
 import * as userActions from '../../redux/user/user.actions';
 import * as authActions from '../../redux/auth/auth.actions';
+import * as orderActions from '../../redux/order/order.actions';
+import * as invoiceActions from '../../redux/invoice/invoice.actions';
+import * as paymentActions from '../../redux/payment/payment.actions';
 
 import { AppStyles } from '../../AppStyles';
 
@@ -32,10 +35,13 @@ const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
 };
 
 
-const Profile = ({ authUserId, userProfile, fetchUser, logout, onSubmit, handleSubmit, navigation, isUpdatingUser, isFetchingUser, error, ordersCount, invoicesCount, paymentsCount }) => {
+const Profile = ({ authUserId, userProfile, fetchUserData, logout, onSubmit, handleSubmit, navigation, isUpdatingUser, isFetchingUser, error, ordersCount, invoicesCount, paymentsCount, fetchPaymentItems, fetchInvoiceItems, fetchOrderItems }) => {
   useEffect(() => {
-    fetchUser();
-  }, [authUserId]);
+    fetchUserData();
+    fetchPaymentItems();
+    fetchInvoiceItems();
+    fetchOrderItems();
+  }, []);
 
   const navigateToChangePassword = () => {
     console.log('Stating to navigate to ChangePassword...')
@@ -302,27 +308,22 @@ const mapDispatchToProps = dispatch => ({
     }
     dispatch(userActions.startUpdatingUser({ username, first_name, last_name }));
   },
+  fetchPaymentItems(){
+    dispatch(paymentActions.startFetchingPaymentItems())
+  },
+  fetchInvoiceItems(){
+    dispatch(invoiceActions.startFetchingInvoiceItems())
+  },
+  fetchOrderItems(){
+    dispatch(orderActions.startFetchingOrderItems())
+  },
   logout() {
     dispatch(authActions.logout())
-  }
+  },
 })
-
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...ownProps,
-  ...stateProps,
-  ...dispatchProps,
-  fetchUser() {
-    if (stateProps.authUserId !== null) {
-      dispatchProps.fetchUserData()
-    }
-  }
-
-})
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps
 )(
   reduxForm({ form: 'profile-form', enableReinitialize: true })(Profile)
 );
