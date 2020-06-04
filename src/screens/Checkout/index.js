@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import isEmpty from 'lodash/isEmpty';
 
+import AnimatedLoader from 'react-native-animated-loader';
 import * as selectors from '../../redux/root-reducer';
 import * as actions from "../../redux/order/order.actions";
 
@@ -32,93 +33,16 @@ const renderInput = ({ input: { onChange, ...input }, meta: { error }, ...rest }
   );
 };
 
-const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon }) => {
+const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, isPostingInvoice, isPostingPayment }) => {
 
   return (
     <ScrollView style={styles.scrollView}>
-      {/* <View style={styles.container}>
-      <Text style={[styles.title, styles.centerTitle]}>Order Details</Text>
-  <Text style={[styles.subtotal, styles.centerTitle]}>Total to pay: Q{
-            coupon ? (
-                subtotal - (subtotal * (parseFloat(coupon.discount) / 100))
-            ) : (
-              subtotal
-            ) 
-          }</Text>
-      <View style={styles.InputContainer}>
-        <Field
-          name={'deliveryName'}
-          props={{
-            placeholder: 'Who do we send this products to? (perhaps your own name)',
-            placeholderTextColor: AppStyles.color.grey,
-            underlineColorAndroid: 'transparent',
-          }}
-          component={renderInput}
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <Field
-          name={'deliveryAddress'}
-          props={{
-            placeholder: 'Where do we deliver this? (NASA address not allowed..)',
-            placeholderTextColor: AppStyles.color.grey,
-            underlineColorAndroid: 'transparent',
-          }}
-          component={renderInput}
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <Field
-          name={'details'}
-          props={{
-            placeholder: 'Details.... Something else we have to know?',
-            placeholderTextColor: AppStyles.color.grey,
-            underlineColorAndroid: 'transparent',
-          }}
-          component={renderInput}
-        />
-      </View>
-      <Text style={[styles.title, styles.centerTitle]}>Invoice Details</Text>
-      <View style={styles.InputContainer}>
-        <Field
-          name={'billingName'}
-          props={{
-            placeholder: 'Billing Name',
-            placeholderTextColor: AppStyles.color.grey,
-            underlineColorAndroid: 'transparent',
-          }}
-          component={renderInput}
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <Field
-          name={'billingAddress'}
-          props={{
-            placeholder: 'Billing Address',
-            placeholderTextColor: AppStyles.color.grey,
-            underlineColorAndroid: 'transparent',
-          }}
-          component={renderInput}
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <Field
-          name={'billingSsn'}
-          props={{
-            placeholder: 'Billing SSN',
-            placeholderTextColor: AppStyles.color.grey,
-            underlineColorAndroid: 'transparent',
-          }}
-          component={renderInput}
-        />
-      </View>
-      <Button
-        containerStyle={[styles.loginContainer, { marginTop: 50 }]}
-        style={styles.loginText}
-        onPress={handleSubmit(onCheckout)}>
-        Proceed with checkout
-      </Button>
-    </View> */}
+      
+      {
+         (isPostingOrder || isPostingInvoice || isPostingPayment) && (
+            <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} source={require('../../assets/loader/loader.json')} speed={1} />
+          ) 
+      }
       <Block flex middle>
         <ImageBackground
           source={{ uri: "https://raw.githubusercontent.com/creativetimofficial/argon-react-native/master/assets/imgs/register-bg.png" }}
@@ -294,12 +218,19 @@ const styles = StyleSheet.create({
   createButton: {
     width: width * 0.5,
     marginTop: 25
+  },
+  lottie: {
+    height: 100,
+    width: 100
   }
 });
 
 const mapStateToProps = state => ({
   subtotal: selectors.getCartSubtotal(state),
   coupon: selectors.getCoupon(state),
+  isPostingOrder: selectors.getIsPostingOrder(state),
+  isPostingInvoice: selectors.getIsPostingInvoice(state),
+  isPostingPayment: selectors.getIsPostingPayment(state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -356,7 +287,7 @@ const validate = values => {
   if (!values.billingSsn) {
     errors.billingSsn = 'Required'
   }
-  
+
   return errors
 }
 
