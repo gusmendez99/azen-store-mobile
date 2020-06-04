@@ -97,8 +97,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   inputContainer: {
-    width: "55%",
-    marginHorizontal: 6
+    flexDirection: "row",
+    alignContent: "space-between",
+    width: "70%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 2
   },
   inputs: {
     height: 45,

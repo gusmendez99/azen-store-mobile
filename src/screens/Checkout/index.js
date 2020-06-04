@@ -72,7 +72,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, 
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Block width={width * 0.8}>
                       <Field
                         name={'deliveryName'}
                         props={{
@@ -86,7 +86,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, 
 
                     </Block>
 
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Block width={width * 0.8} >
                       <Field
                         name={'deliveryAddress'}
                         props={{
@@ -98,7 +98,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, 
                         component={renderInput}
                       />
                     </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Block width={width * 0.8}>
                       <Field
                         name={'details'}
                         props={{
@@ -113,7 +113,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, 
                     <Block row width={width * 0.75}>
                       <Text p>Invoice Details</Text>
                     </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Block width={width * 0.8} >
                       <Field
                         name={'billingName'}
                         props={{
@@ -125,7 +125,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, 
                         component={renderInput}
                       />
                     </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Block width={width * 0.8} >
                       <Field
                         name={'billingAddress'}
                         props={{
@@ -137,7 +137,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon, isPostingOrder, 
                         component={renderInput}
                       />
                     </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Block width={width * 0.8} >
                       <Field
                         name={'billingSsn'}
                         props={{
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: width * 0.5,
-    marginTop: 25
+    marginTop: 10
   },
   lottie: {
     height: 100,
@@ -241,7 +241,6 @@ const mapDispatchToProps = dispatch => ({
       if (
         deliveryName.length <= 0 ||
         deliveryAddress.length <= 0 ||
-        details.length <= 0 ||
         billingName.length <= 0 ||
         billingAddress.length <= 0 ||
         billingSsn.length <= 0
