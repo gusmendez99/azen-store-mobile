@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Button, Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, TextInput, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedLoader from 'react-native-animated-loader';
 import { connect } from 'react-redux';
+
+import { theme, Button, Input } from '../../components/UIComponents';
 
 import * as selectors from '../../redux/root-reducer';
 import CartItemPreview from '../../components/CartItemPreview/index';
@@ -26,11 +28,11 @@ const Cart = ({ cartItems, subtotal, onCouponFieldChange, onCouponValidate, coup
       </ScrollView>
       <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', borderTopWidth: 2, borderColor: '#f6f6f6', paddingVertical: 5 }}>
         <View style={{ flexDirection: 'row' }}>
-          <View style={{ flexDirection: 'row', flexGrow: 1, flexShrink: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', flexGrow: 1, flexShrink: 1, justifyContent: 'space-around', alignItems: 'center' }}>
             {/* <Text>Coupon code</Text> */}
 
             <View style={styles.inputContainer}>
-              <TextInput style={styles.inputs}
+              <Input 
                 placeholder="Enter coupon code"
                 value={couponField}
                 onChangeText={(input) => { onCouponFieldChange(input) }} />
@@ -46,18 +48,19 @@ const Cart = ({ cartItems, subtotal, onCouponFieldChange, onCouponValidate, coup
                   <MaterialIcons style={[styles.icon, styles.inputIcon]} name={"check-circle"} size={26} color={"#4caf50"} />
                 )
               }
-
-
-
             </View>
 
             {
               isFetchingCoupon ? (
                 <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" animationStyle={styles.lottie} speed={1} />
               ) : (
-                  <TouchableOpacity style={[styles.centerElement, { backgroundColor: '#0faf9a', width: 100, height: 50, borderRadius: 5, padding: 20 }]} onPress={() => onCouponValidate()}>
-                    <Text style={{ color: '#ffffff' }}>Validate Coupon</Text>
-                  </TouchableOpacity>
+                  <Button 
+                  style={{ width: "35%", height: 50, marginRight: 24 }} 
+                  onPress={() => onCouponValidate()}
+                  round
+                  size='small'>
+                    Validate Coupon
+                  </Button>
                 )
             }
 
@@ -65,8 +68,8 @@ const Cart = ({ cartItems, subtotal, onCouponFieldChange, onCouponValidate, coup
           </View>
         </View>
         <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center' }}>
-          <Text style={{ color: '#8f8f8f' }}>Total: </Text>
-          <Text>Q{
+          <Text style={{ color: theme.COLORS.GREY, fontSize: theme.SIZES.BASE }}>Total: </Text>
+          <Text style={{ color: theme.COLORS.BLACK, fontSize: theme.SIZES.BASE }}>Q{
             coupon ? (
                 subtotal - (subtotal * (parseFloat(coupon.discount) / 100))
             ) : (
@@ -74,10 +77,14 @@ const Cart = ({ cartItems, subtotal, onCouponFieldChange, onCouponValidate, coup
             ) 
           }</Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', height: 32, padding: 20, alignItems: 'center' }}>
-          <TouchableOpacity style={[styles.centerElement, { backgroundColor: '#0faf9a', width: 100, height: 25, borderRadius: 5 }]} onPress={() => navigateToCheckout()}>
-            <Text style={{ color: '#ffffff' }}>Checkout</Text>
-          </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 20, alignItems: 'center' }}>
+          <Button
+          color="success"
+          round
+          size = 'small' 
+          onPress={() => navigateToCheckout()}>
+            Checkout
+          </Button>
         </View>
       </View>
     </View>
@@ -92,13 +99,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderBottomColor: '#F5FCFF',
     backgroundColor: '#f3f3f3',
-    borderRadius: 30,
-    borderBottomWidth: 1,
-    width: 250,
-    height: 45,
-    marginRight: 10,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent:"center"
   },
   inputs: {
     height: 45,
