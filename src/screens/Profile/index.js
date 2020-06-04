@@ -54,7 +54,7 @@ const Profile = ({ authUserId, userProfile, fetchUserData, logout, onSubmit, han
 
       <Block flex >
         <ImageBackground
-          source={{ uri: "https://raw.githubusercontent.com/creativetimofficial/argon-react-native/master/assets/imgs/profile-screen-bg.png" }}
+          source={{ uri: "https://raw.githubusercontent.com/creativetimofficial/argon-react-native/master/assets/imgs/register-bg.png" }}
           style={styles.profileContainer}
           imageStyle={styles.profileBackground}
         >
