@@ -1,24 +1,34 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
-import Button from 'react-native-button';
+import {
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  KeyboardAvoidingView,
+  View,
+  ScrollView
+} from 'react-native';
+import { Text, Input, Button, Block, Icon, theme } from '../../components/UIComponents';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import isEmpty from 'lodash/isEmpty';
 
 import * as selectors from '../../redux/root-reducer';
+import * as actions from "../../redux/order/order.actions";
 
 import { AppStyles } from '../../AppStyles';
 
-import * as actions from "../../redux/order/order.actions";
+const { width, height } = Dimensions.get("screen");
 
-const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+const renderInput = ({ input: { onChange, ...input }, meta: { error }, ...rest }) => {
   return (
-    <TextInput
-      style={styles.body}
-      onChangeText={onChange}
-      {...input}
-      {...rest}
-    />
+    <>
+      <Input
+        onChangeText={onChange}
+        {...input}
+        {...rest}
+      />
+      <Text muted>{error}</Text>
+    </>
   );
 };
 
@@ -26,7 +36,7 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon }) => {
 
   return (
     <ScrollView style={styles.scrollView}>
-    <View style={styles.container}>
+      {/* <View style={styles.container}>
       <Text style={[styles.title, styles.centerTitle]}>Order Details</Text>
   <Text style={[styles.subtotal, styles.centerTitle]}>Total to pay: Q{
             coupon ? (
@@ -108,76 +118,183 @@ const Checkout = ({ onCheckout, handleSubmit, subtotal, coupon }) => {
         onPress={handleSubmit(onCheckout)}>
         Proceed with checkout
       </Button>
-    </View>
+    </View> */}
+      <Block flex middle>
+        <ImageBackground
+          source={{ uri: "https://raw.githubusercontent.com/creativetimofficial/argon-react-native/master/assets/imgs/register-bg.png" }}
+          style={{ width, height, zIndex: 1 }}
+        >
+          <Block flex middle>
+            <Block style={styles.registerContainer}>
+              <Block flex={0.25} middle style={styles.socialConnect}>
+                <Text color="#8898AA" h5>
+                  Order Details
+                </Text>
+                <Block row style={{ marginTop: theme.SIZES.BASE }}>
+                  <Text style={styles.socialTextButtons}>Total to pay: Q{
+                    coupon ? (
+                      subtotal - (subtotal * (parseFloat(coupon.discount) / 100))
+                    ) : (
+                        subtotal
+                      )
+                  }</Text>
+
+                </Block>
+              </Block>
+              <Block flex>
+                <Block flex center>
+                  <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior="padding"
+                    enabled
+                  >
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Field
+                        name={'deliveryName'}
+                        props={{
+                          placeholder: 'Who do we send this products to? (perhaps your own name)',
+                          rounded: true,
+                          borderless: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+
+                    </Block>
+
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Field
+                        name={'deliveryAddress'}
+                        props={{
+                          placeholder: 'Where do we deliver this? (NASA address not allowed..)',
+                          rounded: true,
+                          borderless: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                    </Block>
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Field
+                        name={'details'}
+                        props={{
+                          placeholder: 'Details.... Something else we have to know?',
+                          rounded: true,
+                          borderless: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                    </Block>
+                    <Block row width={width * 0.75}>
+                      <Text p>Invoice Details</Text>
+                    </Block>
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Field
+                        name={'billingName'}
+                        props={{
+                          placeholder: 'Billing Name',
+                          rounded: true,
+                          borderless: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                    </Block>
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Field
+                        name={'billingAddress'}
+                        props={{
+                          placeholder: 'Billing Address',
+                          rounded: true,
+                          borderless: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                    </Block>
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Field
+                        name={'billingSsn'}
+                        props={{
+                          placeholder: 'Billing SSN',
+                          rounded: true,
+                          borderless: true,
+                          underlineColorAndroid: 'transparent',
+                        }}
+                        component={renderInput}
+                      />
+                    </Block>
+                    <Block middle>
+                      <Button round color="primary" style={styles.createButton} onPress={handleSubmit(onCheckout)}>
+                        <Text bold size={14} color={theme.COLORS.WHITE}>
+                          PROCEED WITH CHECKOUT
+                        </Text>
+                      </Button>
+                    </Block>
+                  </KeyboardAvoidingView>
+                </Block>
+              </Block>
+            </Block>
+          </Block>
+        </ImageBackground>
+      </Block>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  or: {
-    fontFamily: AppStyles.fontName.main,
-    color: 'black',
-    marginTop: 40,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: AppStyles.fontSize.title,
-    fontWeight: 'bold',
-    color: AppStyles.color.tint,
+  registerContainer: {
+    width: width * 0.9,
+    height: height * 0.9,
+    backgroundColor: "#F4F5F7",
+    borderRadius: 4,
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
     marginTop: 20,
-    marginBottom: 20,
+    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    elevation: 1,
+    overflow: "hidden",
   },
-  centerTitle: {
-    alignSelf: 'stretch',
-    textAlign: 'center',
+  socialConnect: {
+    backgroundColor: theme.COLORS.WHITE,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "#8898AA"
   },
-  subtotal: {
-    fontSize: AppStyles.fontSize.normal,
-    fontWeight: 'bold',
-    color: AppStyles.color.black,
-    marginBottom: 20,
+  socialButtons: {
+    width: 120,
+    height: 40,
+    backgroundColor: "#fff",
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    elevation: 1
   },
-  content: {
-    paddingLeft: 50,
-    paddingRight: 50,
-    textAlign: 'center',
-    fontSize: AppStyles.fontSize.content,
-    color: AppStyles.color.text,
+  socialTextButtons: {
+    color: theme.COLORS.PRIMARY,
+    fontWeight: "800",
+    fontSize: 14
   },
-  loginContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30,
-    marginBottom: 20,
+  inputIcons: {
+    marginRight: 12
   },
-  loginText: {
-    color: AppStyles.color.white,
+  passwordCheck: {
+    paddingLeft: 15,
+    paddingTop: 13,
+    paddingBottom: 30
   },
-  placeholder: {
-    fontFamily: AppStyles.fontName.text,
-    color: 'red',
-  },
-  InputContainer: {
-    width: AppStyles.textInputWidth.main,
-    marginTop: 30,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: AppStyles.color.grey,
-    borderRadius: AppStyles.borderRadius.main,
-  },
-  body: {
-    height: 42,
-    paddingLeft: 20,
-    paddingRight: 20,
-    color: AppStyles.color.text,
-  },
+  createButton: {
+    width: width * 0.5,
+    marginTop: 25
+  }
 });
 
 const mapStateToProps = state => ({
@@ -218,9 +335,34 @@ const mapDispatchToProps = dispatch => ({
   },
 })
 
+const validate = values => {
+  const errors = {}
+  if (!values.deliveryName) {
+    errors.deliveryName = 'Required'
+  }
+
+  if (!values.deliveryAddress) {
+    errors.deliveryAddress = 'Required'
+  }
+
+  if (!values.billingName) {
+    errors.billingName = 'Required'
+  }
+
+  if (!values.billingAddress) {
+    errors.billingAddress = 'Required'
+  }
+
+  if (!values.billingSsn) {
+    errors.billingSsn = 'Required'
+  }
+  
+  return errors
+}
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  reduxForm({ form: 'checkout' })(Checkout)
+  reduxForm({ form: 'checkout', validate })(Checkout)
 );

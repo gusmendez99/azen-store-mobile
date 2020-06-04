@@ -3,7 +3,7 @@ import { StyleSheet,
   ImageBackground,
   Dimensions,
   KeyboardAvoidingView,
-  View 
+  View ,
 } from 'react-native';
 import { Text, Input, Button, Block, Icon, theme } from '../../components/UIComponents';
 //import Button from 'react-native-button';
@@ -37,13 +37,16 @@ const onPressFacebook = loginWithFacebook => {
   );
 };
 
-const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+const renderInput = ({ input: { onChange, ...input }, meta: {error}, ...rest }) => {
   return (
-    <Input
-      onChangeText={onChange}
-      {...input}
-      {...rest}
-    />
+    <>
+      <Input
+        onChangeText={onChange}
+        {...input}
+        {...rest}
+      />
+      <Text muted>{ error }</Text>
+    </>
   );
 };
 
@@ -237,15 +240,40 @@ const styles = StyleSheet.create({
   }
 });
 
+const validate = values => {
+  const errors = {}
+  if (!values.username) {
+    errors.username = 'Required'
+  } else if (values.username.length < 8 || values.username.length > 15) {
+    errors.username = 'Must be 8 - 15 characters'
+  }
+
+  if (!values.password) {
+    errors.password = 'Required'
+  } else if (values.password.length < 8) {
+    errors.password = 'Must be at least 8 characters'
+  }
+  /*else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }*/
+  
+  return errors
+}
+
 const mapDispatchToProps = dispatch => ({
   onSubmit(values) {
     const { username, password } = values;
     console.log('Credentials: ' + username + ', ' + password);
-    if (username.length <= 0 || password.length <= 0) {
+    if( username && password) {
+      if (username.length < 8 || password.length < 8) {
+        alert('Please check fields.');
+        return;
+      }
+      dispatch(actions.startLogin(username, password));
+    } else {
       alert('Please fill out the required fields.');
-      return;
+      return
     }
-    dispatch(actions.startLogin(username, password));
   },
   loginWithFacebook(access_token) {
     dispatch(actions.startFacebookAuth(access_token));
@@ -256,5 +284,5 @@ export default connect(
   undefined,
   mapDispatchToProps
 )(
-  reduxForm({ form: 'login-form' })(Login)
+  reduxForm({ form: 'login-form', validate })(Login)
 );

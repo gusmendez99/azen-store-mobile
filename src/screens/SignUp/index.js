@@ -38,13 +38,16 @@ const onPressFacebook = registerWithFacebook => {
   );
 };
 
-const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+const renderInput = ({ input: { onChange, ...input }, meta: {error}, ...rest }) => {
   return (
-    <Input
-      onChangeText={onChange}
-      {...input}
-      {...rest}
-    />
+    <>
+      <Input
+        onChangeText={onChange}
+        {...input}
+        {...rest}
+      />
+      <Text muted>{ error }</Text>
+    </>
   );
 };
 
@@ -286,26 +289,61 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => ({
   onRegister(values) {
     const { username, password1, password2, email } = values;
-    if (
-      username.length <= 0 ||
-      password1.length <= 0 ||
-      password2.length <= 0 ||
-      email.length <= 0
-    ) {
+    if( username && password1 && password2 && email) {
+      if (
+        username.length < 8 ||
+        password1.length < 8 ||
+        password2.length < 8
+      ) {
+        alert('Please check fields.');
+        return;
+      }
+      dispatch(actions.startRegister(username, password1, password2, email));
+
+    } else {
       alert('Please fill out the required fields.');
-      return;
+      return 
     }
-    dispatch(actions.startRegister(username, password1, password2, email));
   },
   registerWithFacebook(access_token) {
     dispatch(actions.startFacebookAuth(access_token));
   },
 })
 
+const validate = values => {
+  const errors = {}
+  if (!values.username) {
+    errors.username = 'Required'
+  } else if (values.username.length < 8 || values.username.length > 15) {
+    errors.username = 'Must be 8 - 15 characters'
+  }
+
+  if (!values.password1) {
+    errors.password1 = 'Required'
+  } else if (values.password1.length < 8) {
+    errors.password1 = 'Must be at least 8 characters'
+  }
+
+  if (!values.password2) {
+    errors.password2 = 'Required'
+  } else if (values.password2.length < 8) {
+    errors.password2 = 'Must be at least 8 characters'
+  }
+
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  /**/
+  
+  return errors
+}
+
 export default connect(
   undefined,
   mapDispatchToProps
 )(
-  reduxForm({ form: 'register-form' })(Signup)
+  reduxForm({ form: 'register-form', validate })(Signup)
 );
 

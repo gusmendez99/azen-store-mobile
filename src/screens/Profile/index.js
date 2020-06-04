@@ -24,13 +24,16 @@ import * as paymentActions from '../../redux/payment/payment.actions';
 
 import { AppStyles } from '../../AppStyles';
 
-const renderInput = ({ input: { onChange, ...input }, ...rest }) => {
+const renderInput = ({ input: { onChange, ...input }, meta: {error}, ...rest }) => {
   return (
-    <Input
-      onChangeText={onChange}
-      {...input}
-      {...rest}
-    />
+    <>
+      <Input
+        onChangeText={onChange}
+        {...input}
+        {...rest}
+      />
+      <Text muted>{ error }</Text>
+    </>
   );
 };
 
@@ -141,7 +144,9 @@ const Profile = ({ authUserId, userProfile, fetchUserData, logout, onSubmit, han
                           placeholder: 'Enter email...',
                           rounded: true,
                           underlineColorAndroid: 'transparent',
+                          disabled: true
                         }}
+                        disabled
                         component={renderInput}
                       />
                       <Field
@@ -283,6 +288,24 @@ const styles = StyleSheet.create({
   },
 });
 
+const validate = values => {
+  const errors = {}
+  if (!values.username) {
+    errors.username = 'Required'
+  } else if (values.username.length < 8 || values.username.length > 15) {
+    errors.username = 'Must be 8 - 15 characters'
+  }
+
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  /**/
+  
+  return errors
+}
+
 const mapStateToProps = state => ({
   authUserId: selectors.getAuthUserID(state),
   userProfile: selectors.getUser(state),
@@ -302,11 +325,21 @@ const mapDispatchToProps = dispatch => ({
   onSubmit(values) {
     const { username, first_name, last_name, email } = values;
     console.log('Updating: ' + username);
-    if (username.length <= 0) {
+
+    if( username && email) {
+      if (
+        username.length < 8
+      ) {
+        alert('Please check fields.');
+        return;
+      }
+      dispatch(userActions.startUpdatingUser({ username, first_name, last_name }));
+
+    } else {
       alert('Please fill out the required fields.');
-      return;
+      return 
     }
-    dispatch(userActions.startUpdatingUser({ username, first_name, last_name }));
+    
   },
   fetchPaymentItems(){
     dispatch(paymentActions.startFetchingPaymentItems())
@@ -325,5 +358,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(
-  reduxForm({ form: 'profile-form', enableReinitialize: true })(Profile)
+  reduxForm({ form: 'profile-form', enableReinitialize: true, validate })(Profile)
 );
